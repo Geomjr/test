@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geom Joseph | Portfolio.xlsx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #217346;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Title Bar */
+        .title-bar {
+            background: #217346;
+            color: white;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+        }
+
+        .title-bar .logo {
+            width: 16px;
+            height: 16px;
+            background: white;
+            color: #217346;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .title-bar .filename {
+            flex: 1;
+            text-align: center;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-controls span {
+            cursor: pointer;
+            padding: 0 6px;
+        }
+
+        /* Ribbon */
+        .ribbon {
+            background: #f3f3f3;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+        .ribbon-tabs {
+            display: flex;
+            background: #217346;
+            padding: 0 5px;
+        }
+
+        .ribbon-tab {
+            padding: 6px 16px;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            font-size: 13px;
+            border: none;
+            background: none;
+        }
+
+        .ribbon-tab:hover {
+            color: white;
+        }
+
+        .ribbon-tab.active {
+            background: #f3f3f3;
+            color: #217346;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .ribbon-content {
+            padding: 8px 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            min-height: 85px;
+        }
+
+        .ribbon-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 15px;
+            border-right: 1px solid #d4d4d4;
+        }
+
+        .ribbon-group:last-child {
+            border-right: none;
+        }
+
+        .ribbon-group-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .ribbon-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .ribbon-btn {
+            padding: 5px 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+            border-radius: 3px;
+        }
+
+        .ribbon-btn:hover {
+            background: #e5e5e5;
+        }
+
+        .ribbon-btn .icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        /* Formula Bar */
+        .formula-bar {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #d4d4d4;
+            height: 26px;
+            align-items: center;
+        }
+
+        .cell-reference {
+            width: 80px;
+            padding: 0 10px;
+            border-right: 1px solid #d4d4d4;
+            font-size: 12px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background: #f8f8f8;
+        }
+
+        .fx-symbol {
+            padding: 0 10px;
+            color: #666;
+            font-style: italic;
+            border-right: 1px solid #d4d4d4;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .formula-input {
+            flex: 1;
+            padding: 0 10px;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        /* Spreadsheet Container */
+        .spreadsheet-container {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 160px);
+        }
+
+        .spreadsheet {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        /* Grid */
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: max-content;
+            min-width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 4px 8px;
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        /* Column Headers */
+        thead th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        thead th:first-child {
+            width: 40px;
+            min-width: 40px;
+            position: sticky;
+            left: 0;
+            z-index: 11;
+        }
+
+        /* Row Numbers */
+        tbody td:first-child {
+            background: #f8f9fa;
+            color: #666;
+            text-align: center;
+            font-weight: 400;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            width: 40px;
+            min-width: 40px;
+        }
+
+        /* Cell Selection */
+        td.selected {
+            outline: 2px solid #217346;
+            outline-offset: -1px;
+            background: #e8f5e9 !important;
+        }
+
+        td:hover:not(:first-child) {
+            background: #f5f5f5;
+        }
+
+        /* Cell Types */
+        .cell-header {
+            background: #217346 !important;
+            color: white !important;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .cell-subheader {
+            background: #e8f5e9 !important;
+            font-weight: 600;
+            color: #217346;
+        }
+
+        .cell-label {
+            background: #f8f9fa;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .cell-value {
+            color: #333;
+        }
+
+        .cell-link {
+            color: #0066cc;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cell-link:hover {
+            color: #004499;
+        }
+
+        .cell-formula {
+            color: #217346;
+            font-style: italic;
+        }
+
+        .cell-number {
+            text-align: right;
+            font-family: 'Consolas', monospace;
+        }
+
+        .cell-date {
+            color: #666;
+        }
+
+        .cell-highlight {
+            background: #fff3cd !important;
+        }
+
+        .cell-skill {
+            background: #d4edda !important;
+        }
+
+        .cell-merged {
+            text-align: center;
+        }
+
+        /* Column Widths */
+        .col-narrow { width: 60px; min-width: 60px; }
+        .col-medium { width: 120px; min-width: 120px; }
+        .col-wide { width: 200px; min-width: 200px; }
+        .col-extra-wide { width: 300px; min-width: 300px; }
+
+        /* Sheet Tabs */
+        .sheet-tabs {
+            display: flex;
+            background: #f3f3f3;
+            border-top: 1px solid #d4d4d4;
+            padding: 5px 10px 0;
+            gap: 2px;
+        }
+
+        .sheet-tab {
+            padding: 8px 20px;
+            background: #e8e8e8;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .sheet-tab:hover {
+            background: #f8f8f8;
+        }
+
+        .sheet-tab.active {
+            background: #fff;
+            color: #217346;
+            font-weight: 600;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+        }
+
+        .sheet-tab-add {
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: #217346;
+            color: white;
+            padding: 4px 15px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Sheet Content */
+        .sheet-content {
+            display: none;
+        }
+
+        .sheet-content.active {
+            display: block;
+        }
+
+        /* Profile Image Cell */
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #217346 0%, #2d9254 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Progress bar cell */
+        .skill-bar {
+            background: #e0e0e0;
+            height: 16px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #217346, #2d9254);
+            transition: width 0.5s ease;
+        }
+
+        /* Sparkline */
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 20px;
+        }
+
+        .sparkline-bar {
+            width: 6px;
+            background: #217346;
+            border-radius: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .ribbon-content {
+                display: none;
+            }
+
+            th, td {
+                font-size: 11px;
+                padding: 3px 5px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .title-bar, .ribbon, .formula-bar, .sheet-tabs, .status-bar {
+                display: none;
+            }
+
+            .spreadsheet-container {
+                height: auto;
+            }
+        }
+
+        /* Animations */
+        @keyframes cellPulse {
+            0% { background: #e8f5e9; }
+            50% { background: #c8e6c9; }
+            100% { background: #e8f5e9; }
+        }
+
+        .cell-animated {
+            animation: cellPulse 2s ease-in-out infinite;
+        }
+
+        /* Freeze pane indicator */
+        .freeze-line-col {
+            border-left: 2px solid #217346 !important;
+        }
+
+        .freeze-line-row {
+            border-top: 2px solid #217346 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Bar -->
+    <div class="title-bar">
+        <div class="logo">X</div>
+        <span>Geom_Joseph_Portfolio.xlsx - Excel</span>
+        <div class="filename"></div>
+        <div class="window-controls">
+            <span>&#8212;</span>
+            <span>&#9633;</span>
+            <span>&#10005;</span>
+        </div>
+    </div>
+
+    <!-- Ribbon -->
+    <div class="ribbon">
+        <div class="ribbon-tabs">
+            <button class="ribbon-tab active">File</button>
+            <button class="ribbon-tab">Home</button>
+            <button class="ribbon-tab">Insert</button>
+            <button class="ribbon-tab">Page Layout</button>
+            <button class="ribbon-tab">Formulas</button>
+            <button class="ribbon-tab">Data</button>
+            <button class="ribbon-tab">Review</button>
+            <button class="ribbon-tab">View</button>
+            <button class="ribbon-tab">Help</button>
+        </div>
+        <div class="ribbon-content">
+            <div class="ribbon-group">
+                <div class="ribbon-buttons">
+                    <button class="ribbon-btn">
+                        <span class="icon">&#128196;</span>
+                        Paste
+                    </button>
+                </div>
+                <span class="ribbon-group-label">Clipboard</span>
+            </div>
+            <div class="ribbon-group">
+                <div class="ribbon-buttons">
+                    <button class="ribbon-btn"><span class="icon">B</span></button>
+                    <button class="ribbon-btn"><span class="icon"><i>I</i></span></button>
+                    <button class="ribbon-btn"><span class="icon"><u>U</u></span></button>
+                </div>
+                <span class="ribbon-group-label">Font</span>
+            </div>
+            <div class="ribbon-group">
+                <div class="ribbon-buttons">
+                    <button class="ribbon-btn"><span class="icon">&#8801;</span></button>
+                    <button class="ribbon-btn"><span class="icon">&#8803;</span></button>
+                </div>
+                <span class="ribbon-group-label">Alignment</span>
+            </div>
+            <div class="ribbon-group">
+                <div class="ribbon-buttons">
+                    <button class="ribbon-btn">
+                        <span class="icon">$</span>
+                    </button>
+                    <button class="ribbon-btn">
+                        <span class="icon">%</span>
+                    </button>
+                </div>
+                <span class="ribbon-group-label">Number</span>
+            </div>
+            <div class="ribbon-group">
+                <div class="ribbon-buttons">
+                    <button class="ribbon-btn" onclick="window.open('https://www.linkedin.com/in/geomj/', '_blank')">
+                        <span class="icon">&#128279;</span>
+                        LinkedIn
+                    </button>
+                    <button class="ribbon-btn" onclick="document.getElementById('contact-sheet').click()">
+                        <span class="icon">&#9993;</span>
+                        Contact
+                    </button>
+                </div>
+                <span class="ribbon-group-label">Connect</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formula Bar -->
+    <div class="formula-bar">
+        <div class="cell-reference" id="cellRef">A1</div>
+        <div class="fx-symbol">fx</div>
+        <input type="text" class="formula-input" id="formulaInput" value="=WELCOME(&quot;Geom Joseph's Portfolio&quot;)" readonly>
+    </div>
+
+    <!-- Spreadsheet -->
+    <div class="spreadsheet-container">
+        <div class="spreadsheet">
+            <!-- About Sheet -->
+            <div class="sheet-content active" id="sheet-about">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                            <th>E</th>
+                            <th>F</th>
+                            <th>G</th>
+                            <th>H</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="8" class="cell-header cell-merged">GEOM JOSEPH - PROFESSIONAL PORTFOLIO</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader">PROFILE</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-subheader">QUICK STATS</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="cell-label">Name:</td>
+                            <td class="cell-value" colspan="2">Geom Joseph</td>
+                            <td></td>
+                            <td class="cell-label">Years Exp:</td>
+                            <td class="cell-number">5+</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="cell-label">Title:</td>
+                            <td class="cell-value" colspan="2">Software Engineer</td>
+                            <td></td>
+                            <td class="cell-label">Projects:</td>
+                            <td class="cell-number">20+</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="cell-label">Location:</td>
+                            <td class="cell-value" colspan="2">Open to Remote</td>
+                            <td></td>
+                            <td class="cell-label">Languages:</td>
+                            <td class="cell-number">8+</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="cell-label">Email:</td>
+                            <td class="cell-link" colspan="2" onclick="document.getElementById('contact-sheet').click()">Click to View Contact</td>
+                            <td></td>
+                            <td class="cell-label">Certifications:</td>
+                            <td class="cell-number">3</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td class="cell-label">LinkedIn:</td>
+                            <td class="cell-link" colspan="2" onclick="window.open('https://www.linkedin.com/in/geomj/', '_blank')">linkedin.com/in/geomj</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="cell-subheader" colspan="8">PROFESSIONAL SUMMARY</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td class="cell-value" colspan="7">Passionate software engineer with expertise in full-stack development, cloud technologies, and building scalable applications.</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td class="cell-value" colspan="7">Experienced in leading technical projects, mentoring teams, and delivering high-quality software solutions.</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="cell-value" colspan="7">Strong focus on clean code, best practices, and continuous improvement.</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td class="cell-subheader" colspan="3">CORE COMPETENCIES</td>
+                            <td></td>
+                            <td class="cell-subheader" colspan="3">ACTIVITY</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td class="cell-skill">Full-Stack Development</td>
+                            <td class="cell-skill">Cloud Architecture</td>
+                            <td class="cell-skill">API Design</td>
+                            <td></td>
+                            <td colspan="2">
+                                <div class="sparkline">
+                                    <div class="sparkline-bar" style="height: 60%"></div>
+                                    <div class="sparkline-bar" style="height: 80%"></div>
+                                    <div class="sparkline-bar" style="height: 45%"></div>
+                                    <div class="sparkline-bar" style="height: 90%"></div>
+                                    <div class="sparkline-bar" style="height: 70%"></div>
+                                    <div class="sparkline-bar" style="height: 85%"></div>
+                                    <div class="sparkline-bar" style="height: 95%"></div>
+                                    <div class="sparkline-bar" style="height: 75%"></div>
+                                    <div class="sparkline-bar" style="height: 88%"></div>
+                                    <div class="sparkline-bar" style="height: 92%"></div>
+                                </div>
+                            </td>
+                            <td class="cell-formula">=SPARKLINE(commits)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td class="cell-skill">Database Design</td>
+                            <td class="cell-skill">DevOps/CI-CD</td>
+                            <td class="cell-skill">Agile/Scrum</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td class="cell-formula">=TODAY()</td>
+                            <td class="cell-date" id="today-date"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-formula">=STATUS()</td>
+                            <td class="cell-value cell-animated">Open to Opportunities</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Experience Sheet -->
+            <div class="sheet-content" id="sheet-experience">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-medium">A</th>
+                            <th class="col-wide">B</th>
+                            <th class="col-extra-wide">C</th>
+                            <th class="col-medium">D</th>
+                            <th class="col-medium">E</th>
+                            <th>F</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="6" class="cell-header cell-merged">WORK EXPERIENCE</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader">Period</td>
+                            <td class="cell-subheader">Company</td>
+                            <td class="cell-subheader">Role</td>
+                            <td class="cell-subheader">Location</td>
+                            <td class="cell-subheader">Type</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="cell-date">2022 - Present</td>
+                            <td class="cell-value">Tech Company</td>
+                            <td class="cell-value">Senior Software Engineer</td>
+                            <td class="cell-value">Remote</td>
+                            <td class="cell-value">Full-time</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td></td>
+                            <td class="cell-label">Key Achievements:</td>
+                            <td class="cell-value" colspan="3">Led development of microservices architecture serving 1M+ users</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-value" colspan="3">Reduced system latency by 40% through optimization</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-value" colspan="3">Mentored junior developers and conducted code reviews</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td class="cell-date">2020 - 2022</td>
+                            <td class="cell-value">Startup Inc</td>
+                            <td class="cell-value">Software Engineer</td>
+                            <td class="cell-value">Hybrid</td>
+                            <td class="cell-value">Full-time</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td></td>
+                            <td class="cell-label">Key Achievements:</td>
+                            <td class="cell-value" colspan="3">Built RESTful APIs handling 500K+ daily requests</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-value" colspan="3">Implemented CI/CD pipelines reducing deployment time by 60%</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-value" colspan="3">Developed real-time notification system using WebSockets</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td class="cell-date">2018 - 2020</td>
+                            <td class="cell-value">Digital Agency</td>
+                            <td class="cell-value">Junior Developer</td>
+                            <td class="cell-value">On-site</td>
+                            <td class="cell-value">Full-time</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td></td>
+                            <td class="cell-label">Key Achievements:</td>
+                            <td class="cell-value" colspan="3">Developed responsive web applications for 20+ clients</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td></td>
+                            <td></td>
+                            <td class="cell-value" colspan="3">Collaborated with design team on UI/UX improvements</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td colspan="2" class="cell-formula">=COUNTIF(Experience,"Years")</td>
+                            <td class="cell-highlight">Total Experience: 5+ Years</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Skills Sheet -->
+            <div class="sheet-content" id="sheet-skills">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-wide">A</th>
+                            <th class="col-medium">B</th>
+                            <th class="col-wide">C</th>
+                            <th class="col-wide">D</th>
+                            <th class="col-medium">E</th>
+                            <th>F</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="6" class="cell-header cell-merged">TECHNICAL SKILLS & PROFICIENCY</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader">LANGUAGES</td>
+                            <td class="cell-subheader">Level</td>
+                            <td class="cell-subheader">Proficiency</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="cell-value">JavaScript/TypeScript</td>
+                            <td class="cell-value">Expert</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 95%"></div></div></td>
+                            <td class="cell-formula">=ROUND(95,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="cell-value">Python</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 85%"></div></div></td>
+                            <td class="cell-formula">=ROUND(85,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="cell-value">Java</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 80%"></div></div></td>
+                            <td class="cell-formula">=ROUND(80,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="cell-value">Go</td>
+                            <td class="cell-value">Intermediate</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 70%"></div></div></td>
+                            <td class="cell-formula">=ROUND(70,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td class="cell-value">SQL</td>
+                            <td class="cell-value">Expert</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div></td>
+                            <td class="cell-formula">=ROUND(90,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="cell-subheader">FRAMEWORKS</td>
+                            <td class="cell-subheader">Level</td>
+                            <td class="cell-subheader">Proficiency</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td class="cell-value">React/Next.js</td>
+                            <td class="cell-value">Expert</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 92%"></div></div></td>
+                            <td class="cell-formula">=ROUND(92,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td class="cell-value">Node.js/Express</td>
+                            <td class="cell-value">Expert</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div></td>
+                            <td class="cell-formula">=ROUND(90,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="cell-value">Django/Flask</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 78%"></div></div></td>
+                            <td class="cell-formula">=ROUND(78,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td class="cell-value">Spring Boot</td>
+                            <td class="cell-value">Intermediate</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 65%"></div></div></td>
+                            <td class="cell-formula">=ROUND(65,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td class="cell-subheader">CLOUD & TOOLS</td>
+                            <td class="cell-subheader">Level</td>
+                            <td class="cell-subheader">Proficiency</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td class="cell-value">AWS (EC2, S3, Lambda)</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 85%"></div></div></td>
+                            <td class="cell-formula">=ROUND(85,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td class="cell-value">Docker/Kubernetes</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 82%"></div></div></td>
+                            <td class="cell-formula">=ROUND(82,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td class="cell-value">Git/GitHub Actions</td>
+                            <td class="cell-value">Expert</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 95%"></div></div></td>
+                            <td class="cell-formula">=ROUND(95,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td class="cell-value">PostgreSQL/MongoDB</td>
+                            <td class="cell-value">Advanced</td>
+                            <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 88%"></div></div></td>
+                            <td class="cell-formula">=ROUND(88,0)%</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Projects Sheet -->
+            <div class="sheet-content" id="sheet-projects">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-wide">A</th>
+                            <th class="col-extra-wide">B</th>
+                            <th class="col-wide">C</th>
+                            <th class="col-medium">D</th>
+                            <th>E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="5" class="cell-header cell-merged">FEATURED PROJECTS</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader">Project Name</td>
+                            <td class="cell-subheader">Description</td>
+                            <td class="cell-subheader">Tech Stack</td>
+                            <td class="cell-subheader">Status</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="cell-value cell-highlight">E-Commerce Platform</td>
+                            <td class="cell-value">Full-stack e-commerce solution with payment integration</td>
+                            <td class="cell-value">React, Node.js, PostgreSQL</td>
+                            <td class="cell-skill">Completed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td></td>
+                            <td class="cell-value">Features: Cart, Checkout, Admin Dashboard, Analytics</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="cell-value cell-highlight">Task Management API</td>
+                            <td class="cell-value">RESTful API with authentication and real-time updates</td>
+                            <td class="cell-value">Python, FastAPI, Redis</td>
+                            <td class="cell-skill">Completed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td></td>
+                            <td class="cell-value">Features: JWT Auth, WebSocket, Rate Limiting, Caching</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="cell-value cell-highlight">DevOps Dashboard</td>
+                            <td class="cell-value">Infrastructure monitoring and deployment automation</td>
+                            <td class="cell-value">Go, Docker, Kubernetes</td>
+                            <td class="cell-skill">Completed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td></td>
+                            <td class="cell-value">Features: Metrics, Alerts, Auto-scaling, CI/CD Integration</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="cell-value cell-highlight">AI Chat Application</td>
+                            <td class="cell-value">Real-time chat with AI-powered responses</td>
+                            <td class="cell-value">Next.js, OpenAI, MongoDB</td>
+                            <td class="cell-animated">In Progress</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td></td>
+                            <td class="cell-value">Features: Streaming, Context Memory, Multi-modal Input</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td class="cell-subheader" colspan="2">CONTRIBUTION SUMMARY</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td class="cell-label">Total Repositories:</td>
+                            <td class="cell-number">50+</td>
+                            <td class="cell-label">Stars Earned:</td>
+                            <td class="cell-number">200+</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td class="cell-label">Open Source Contributions:</td>
+                            <td class="cell-number">30+</td>
+                            <td class="cell-label">PRs Merged:</td>
+                            <td class="cell-number">150+</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Education Sheet -->
+            <div class="sheet-content" id="sheet-education">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-medium">A</th>
+                            <th class="col-wide">B</th>
+                            <th class="col-wide">C</th>
+                            <th class="col-medium">D</th>
+                            <th>E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="5" class="cell-header cell-merged">EDUCATION & CERTIFICATIONS</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader" colspan="4">EDUCATION</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="cell-label">Degree:</td>
+                            <td class="cell-value" colspan="2">Bachelor of Science in Computer Science</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="cell-label">Institution:</td>
+                            <td class="cell-value" colspan="2">University Name</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="cell-label">Year:</td>
+                            <td class="cell-date">2018</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="cell-label">GPA:</td>
+                            <td class="cell-number">3.8/4.0</td>
+                            <td class="cell-formula">=PERCENTRANK()</td>
+                            <td class="cell-value">Top 10%</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td class="cell-subheader" colspan="4">CERTIFICATIONS</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="cell-subheader">Certification</td>
+                            <td class="cell-subheader">Issuer</td>
+                            <td class="cell-subheader">Date</td>
+                            <td class="cell-subheader">Status</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td class="cell-value">AWS Solutions Architect</td>
+                            <td class="cell-value">Amazon Web Services</td>
+                            <td class="cell-date">2023</td>
+                            <td class="cell-skill">Active</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td class="cell-value">Kubernetes Administrator</td>
+                            <td class="cell-value">CNCF</td>
+                            <td class="cell-date">2022</td>
+                            <td class="cell-skill">Active</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="cell-value">Professional Scrum Master</td>
+                            <td class="cell-value">Scrum.org</td>
+                            <td class="cell-date">2021</td>
+                            <td class="cell-skill">Active</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td class="cell-subheader" colspan="4">CONTINUOUS LEARNING</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td class="cell-value">Machine Learning Specialization</td>
+                            <td class="cell-value">Coursera (Stanford)</td>
+                            <td class="cell-date">2024</td>
+                            <td class="cell-skill">Completed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td class="cell-value">System Design Course</td>
+                            <td class="cell-value">Educative.io</td>
+                            <td class="cell-date">2023</td>
+                            <td class="cell-skill">Completed</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Contact Sheet -->
+            <div class="sheet-content" id="sheet-contact">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-medium">A</th>
+                            <th class="col-wide">B</th>
+                            <th class="col-wide">C</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td colspan="4" class="cell-header cell-merged">CONTACT INFORMATION</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="cell-subheader" colspan="3">GET IN TOUCH</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="cell-label">LinkedIn:</td>
+                            <td class="cell-link" onclick="window.open('https://www.linkedin.com/in/geomj/', '_blank')">linkedin.com/in/geomj</td>
+                            <td class="cell-formula">=HYPERLINK()</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="cell-label">GitHub:</td>
+                            <td class="cell-link" onclick="window.open('https://github.com/geomj', '_blank')">github.com/geomj</td>
+                            <td class="cell-formula">=HYPERLINK()</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="cell-label">Email:</td>
+                            <td class="cell-link">contact@geomjoseph.com</td>
+                            <td class="cell-formula">=HYPERLINK()</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td class="cell-label">Portfolio:</td>
+                            <td class="cell-link">geomjoseph.com</td>
+                            <td class="cell-formula">=HYPERLINK()</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="cell-subheader" colspan="3">AVAILABILITY</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td class="cell-label">Status:</td>
+                            <td class="cell-value cell-animated">Open to Opportunities</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td class="cell-label">Preferred:</td>
+                            <td class="cell-value">Full-time / Contract</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="cell-label">Location:</td>
+                            <td class="cell-value">Remote / Hybrid</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td class="cell-label">Notice:</td>
+                            <td class="cell-value">2 Weeks</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td class="cell-subheader" colspan="3">RESPONSE TIME</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td class="cell-formula">=AVERAGE()</td>
+                            <td class="cell-highlight">Usually responds within 24 hours</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td colspan="3" class="cell-value">Feel free to reach out for collaborations, opportunities, or just to say hi!</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sheet Tabs -->
+        <div class="sheet-tabs">
+            <button class="sheet-tab active" data-sheet="about">About</button>
+            <button class="sheet-tab" data-sheet="experience">Experience</button>
+            <button class="sheet-tab" data-sheet="skills">Skills</button>
+            <button class="sheet-tab" data-sheet="projects">Projects</button>
+            <button class="sheet-tab" data-sheet="education">Education</button>
+            <button class="sheet-tab" id="contact-sheet" data-sheet="contact">Contact</button>
+            <button class="sheet-tab-add">+</button>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <span>Ready</span>
+        <span id="cell-count">Cells: 120 | Sheets: 6</span>
+    </div>
+
+    <script>
+        // Set today's date
+        document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Sheet tab switching
+        const sheetTabs = document.querySelectorAll('.sheet-tab');
+        const sheetContents = document.querySelectorAll('.sheet-content');
+
+        sheetTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const sheetName = tab.dataset.sheet;
+
+                // Update active tab
+                sheetTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update active content
+                sheetContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `sheet-${sheetName}`) {
+                        content.classList.add('active');
+                    }
+                });
+
+                // Update formula bar
+                const formulas = {
+                    'about': '=WELCOME("Geom Joseph\'s Portfolio")',
+                    'experience': '=VLOOKUP("Career",Experience,ALL)',
+                    'skills': '=SUMPRODUCT(Skills,Proficiency)',
+                    'projects': '=FILTER(Projects,Status="Featured")',
+                    'education': '=QUERY(Credentials,"SELECT *")',
+                    'contact': '=CONTACT("Geom Joseph")'
+                };
+                document.getElementById('formulaInput').value = formulas[sheetName] || '';
+            });
+        });
+
+        // Cell selection
+        const cells = document.querySelectorAll('td:not(:first-child)');
+        cells.forEach(cell => {
+            cell.addEventListener('click', (e) => {
+                // Remove previous selection
+                document.querySelectorAll('.selected').forEach(c => c.classList.remove('selected'));
+
+                // Add selection to clicked cell
+                cell.classList.add('selected');
+
+                // Update cell reference
+                const row = cell.parentElement;
+                const rowIndex = row.querySelector('td:first-child').textContent;
+                const colIndex = Array.from(row.children).indexOf(cell);
+                const colLetter = String.fromCharCode(64 + colIndex);
+                document.getElementById('cellRef').textContent = colLetter + rowIndex;
+
+                // Update formula bar with cell content
+                const cellText = cell.textContent || cell.innerText;
+                if (cell.classList.contains('cell-formula')) {
+                    document.getElementById('formulaInput').value = cellText;
+                } else {
+                    document.getElementById('formulaInput').value = cellText;
+                }
+            });
+        });
+
+        // Ribbon tab interaction
+        const ribbonTabs = document.querySelectorAll('.ribbon-tab');
+        ribbonTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                ribbonTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const selected = document.querySelector('.selected');
+            if (!selected) return;
+
+            const row = selected.parentElement;
+            const cells = Array.from(row.children);
+            const currentIndex = cells.indexOf(selected);
+
+            let newCell = null;
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    newCell = cells[currentIndex + 1];
+                    break;
+                case 'ArrowLeft':
+                    if (currentIndex > 1) newCell = cells[currentIndex - 1];
+                    break;
+                case 'ArrowDown':
+                    const nextRow = row.nextElementSibling;
+                    if (nextRow) newCell = nextRow.children[currentIndex];
+                    break;
+                case 'ArrowUp':
+                    const prevRow = row.previousElementSibling;
+                    if (prevRow && prevRow.parentElement.tagName !== 'THEAD') {
+                        newCell = prevRow.children[currentIndex];
+                    }
+                    break;
+            }
+
+            if (newCell && !newCell.matches('td:first-child')) {
+                e.preventDefault();
+                newCell.click();
+            }
+        });
+
+        // Console easter egg
+        console.log('%c Welcome to Geom Joseph\'s Portfolio! ', 'background: #217346; color: white; font-size: 16px; padding: 10px;');
+        console.log('%c Built with HTML, CSS, and JavaScript ', 'color: #217346;');
+        console.log('%c Check out the different sheets using the tabs below! ', 'color: #666;');
+    </script>
+</body>
+</html>
