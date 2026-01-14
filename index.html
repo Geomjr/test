@@ -8,6 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Import Maps for Solana Libraries -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@solana/web3.js": "https://esm.sh/@solana/web3.js@1.95.3",
+            "@solana/spl-token": "https://esm.sh/@solana/spl-token@0.4.8",
+            "buffer": "https://esm.sh/buffer@6.0.3"
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -80,7 +91,7 @@
                     <div class="slx-subtext">Governance & Rewards</div>
                 </div>
                 <div class="sidebar-links">
-                    <a href="#" class="footer-link">
+                    <a href="https://x.com/solsticefi" target="_blank" class="footer-link">
                         <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                         </svg>
@@ -90,14 +101,13 @@
                             <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
                         </svg>
                     </a>
-                    <a href="#" class="footer-link">
+                    <a href="https://docs.solstice.finance" target="_blank" class="footer-link">
                         <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="footer-link">
-                        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
                         </svg>
                     </a>
                 </div>
@@ -115,14 +125,14 @@
                         </svg>
                     </button>
                     <div class="network-badge">
-                        <div class="network-dot"></div>
-                        <span>Solana</span>
+                        <div class="network-dot" id="networkDot"></div>
+                        <span id="networkName">Solana Mainnet</span>
                     </div>
                 </div>
                 <div class="header-right">
                     <div class="tvl-display">
                         <span class="tvl-label">TVL</span>
-                        <span class="tvl-value">$302.85M</span>
+                        <span class="tvl-value" id="tvlValue">$302.85M</span>
                     </div>
                     <button class="connect-wallet-btn" id="connectWalletBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
@@ -130,7 +140,7 @@
                             <path d="M16 12H22V16H16V12Z"/>
                             <circle cx="18" cy="14" r="1"/>
                         </svg>
-                        <span>Connect Wallet</span>
+                        <span id="walletBtnText">Connect Wallet</span>
                     </button>
                 </div>
             </header>
@@ -151,7 +161,7 @@
                             <p class="hero-text">Access institutional-grade yield strategies through Solstice's transparent, on-chain protocol.</p>
                             <div class="hero-stats">
                                 <div class="hero-stat">
-                                    <span class="stat-value">$302.85M</span>
+                                    <span class="stat-value" id="heroTvl">$302.85M</span>
                                     <span class="stat-label">Total Value Locked</span>
                                 </div>
                                 <div class="hero-stat">
@@ -175,14 +185,14 @@
                                 <div class="stat-icon usx-icon">
                                     <span>USX</span>
                                 </div>
-                                <span class="stat-change positive">+0.02%</span>
+                                <span class="stat-change positive" id="usxChange">+0.02%</span>
                             </div>
                             <div class="stat-card-body">
-                                <div class="stat-main-value">$1.00</div>
+                                <div class="stat-main-value" id="usxPrice">$1.0000</div>
                                 <div class="stat-main-label">USX Price</div>
                             </div>
                             <div class="stat-card-footer">
-                                <span>Market Cap: $189.4M</span>
+                                <span id="usxMarketCap">Market Cap: $189.4M</span>
                             </div>
                         </div>
 
@@ -191,14 +201,14 @@
                                 <div class="stat-icon eusx-icon">
                                     <span>eUSX</span>
                                 </div>
-                                <span class="stat-change positive">+0.05%</span>
+                                <span class="stat-change positive" id="eusxChange">+0.05%</span>
                             </div>
                             <div class="stat-card-body">
-                                <div class="stat-main-value">$1.0421</div>
+                                <div class="stat-main-value" id="eusxPrice">$1.0421</div>
                                 <div class="stat-main-label">eUSX Price</div>
                             </div>
                             <div class="stat-card-footer">
-                                <span>YieldVault TVL: $113.5M</span>
+                                <span id="eusxTvl">YieldVault TVL: $113.5M</span>
                             </div>
                         </div>
 
@@ -213,7 +223,7 @@
                                 <span class="stat-change neutral">Stable</span>
                             </div>
                             <div class="stat-card-body">
-                                <div class="stat-main-value">100.70%</div>
+                                <div class="stat-main-value" id="collateralRatio">100.70%</div>
                                 <div class="stat-main-label">Collateral Ratio</div>
                             </div>
                             <div class="stat-card-footer">
@@ -223,19 +233,17 @@
 
                         <div class="stat-card">
                             <div class="stat-card-header">
-                                <div class="stat-icon flares-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                    </svg>
+                                <div class="stat-icon sol-icon">
+                                    <span>SOL</span>
                                 </div>
-                                <span class="stat-change positive">Active</span>
+                                <span class="stat-change positive" id="solChange">+2.3%</span>
                             </div>
                             <div class="stat-card-body">
-                                <div class="stat-main-value">0</div>
-                                <div class="stat-main-label">Your Flares</div>
+                                <div class="stat-main-value" id="solPrice">$185.42</div>
+                                <div class="stat-main-label">SOL Price</div>
                             </div>
                             <div class="stat-card-footer">
-                                <span>Connect wallet to earn</span>
+                                <span id="solBalance">Your Balance: -- SOL</span>
                             </div>
                         </div>
                     </div>
@@ -243,40 +251,95 @@
                     <div class="dashboard-grid">
                         <div class="info-card wallet-overview">
                             <div class="card-header">
-                                <h3>Wallet Overview</h3>
-                                <button class="refresh-btn">
+                                <h3>Your Wallet</h3>
+                                <button class="refresh-btn" id="refreshBalancesBtn" title="Refresh balances">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M23 4V10H17M1 20V14H7"/>
                                         <path d="M3.51 9A9 9 0 0 1 20.49 15M20.49 15L17 10M3.51 9L7 14"/>
                                     </svg>
                                 </button>
                             </div>
-                            <div class="card-body wallet-empty-state">
-                                <div class="empty-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                        <path d="M16 12H22V16H16V12Z"/>
-                                        <circle cx="18" cy="14" r="1"/>
-                                    </svg>
+                            <div class="card-body" id="walletOverviewContent">
+                                <div class="wallet-empty-state" id="walletEmptyState">
+                                    <div class="empty-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                            <path d="M16 12H22V16H16V12Z"/>
+                                            <circle cx="18" cy="14" r="1"/>
+                                        </svg>
+                                    </div>
+                                    <p>Connect your wallet to view your balances</p>
+                                    <button class="btn-primary" onclick="document.getElementById('connectWalletBtn').click()">Connect Wallet</button>
                                 </div>
-                                <p>Connect your wallet to view your balances</p>
-                                <button class="btn-primary" onclick="document.getElementById('connectWalletBtn').click()">Connect Wallet</button>
+                                <div class="wallet-balances hidden" id="walletBalances">
+                                    <div class="balance-item">
+                                        <div class="balance-token">
+                                            <div class="token-icon-small sol">SOL</div>
+                                            <span>SOL</span>
+                                        </div>
+                                        <div class="balance-amount">
+                                            <span class="amount" id="balanceSOL">0.00</span>
+                                            <span class="usd-value" id="balanceSOLUsd">$0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="balance-item">
+                                        <div class="balance-token">
+                                            <div class="token-icon-small usdc">USDC</div>
+                                            <span>USDC</span>
+                                        </div>
+                                        <div class="balance-amount">
+                                            <span class="amount" id="balanceUSDC">0.00</span>
+                                            <span class="usd-value" id="balanceUSDCUsd">$0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="balance-item">
+                                        <div class="balance-token">
+                                            <div class="token-icon-small usx">USX</div>
+                                            <span>USX</span>
+                                        </div>
+                                        <div class="balance-amount">
+                                            <span class="amount" id="balanceUSX">0.00</span>
+                                            <span class="usd-value" id="balanceUSXUsd">$0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="balance-item">
+                                        <div class="balance-token">
+                                            <div class="token-icon-small eusx">eUSX</div>
+                                            <span>eUSX</span>
+                                        </div>
+                                        <div class="balance-amount">
+                                            <span class="amount" id="balanceEUSX">0.00</span>
+                                            <span class="usd-value" id="balanceEUSXUsd">$0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="wallet-total">
+                                        <span>Total Value</span>
+                                        <span id="totalWalletValue">$0.00</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="info-card weekly-earnings">
                             <div class="card-header">
-                                <h3>Estimated Weekly Earnings</h3>
+                                <h3>Your Earnings</h3>
                             </div>
                             <div class="card-body">
                                 <div class="earnings-display">
-                                    <span class="earnings-value">$0.00</span>
-                                    <span class="earnings-label">USX per week</span>
+                                    <span class="earnings-value" id="weeklyEarnings">$0.00</span>
+                                    <span class="earnings-label">Estimated weekly yield</span>
                                 </div>
-                                <div class="earnings-note">
-                                    <p>Stake USX in the YieldVault to start earning institutional-grade yields.</p>
+                                <div class="earnings-breakdown" id="earningsBreakdown">
+                                    <div class="breakdown-row">
+                                        <span>eUSX Staked</span>
+                                        <span id="stakedEUSX">0.00 eUSX</span>
+                                    </div>
+                                    <div class="breakdown-row">
+                                        <span>Current APY</span>
+                                        <span class="apy-value">21.5%</span>
+                                    </div>
                                 </div>
-                                <button class="btn-secondary" data-page="lock">Start Earning</button>
+                                <button class="btn-secondary" data-page="lock">Stake More</button>
                             </div>
                         </div>
                     </div>
@@ -304,10 +367,10 @@
                         <div class="swap-card">
                             <div class="swap-header">
                                 <div class="swap-tabs">
-                                    <button class="swap-tab active">Swap</button>
-                                    <button class="swap-tab">Redeem</button>
+                                    <button class="swap-tab active" data-mode="swap">Swap</button>
+                                    <button class="swap-tab" data-mode="redeem">Redeem</button>
                                 </div>
-                                <button class="settings-btn">
+                                <button class="settings-btn" id="swapSettingsBtn">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="3"/>
                                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -319,24 +382,24 @@
                                 <div class="swap-input-group">
                                     <label>You Pay</label>
                                     <div class="swap-input">
-                                        <div class="token-select">
-                                            <div class="token-icon usdc">
-                                                <span>USDC</span>
+                                        <div class="token-select" id="fromTokenSelect">
+                                            <div class="token-icon usdc" id="fromTokenIcon">
+                                                <span id="fromTokenSymbol">USDC</span>
                                             </div>
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                                                 <polyline points="6 9 12 15 18 9"/>
                                             </svg>
                                         </div>
-                                        <input type="number" placeholder="0.00" class="amount-input">
+                                        <input type="number" placeholder="0.00" class="amount-input" id="fromAmountInput" step="any">
                                         <div class="balance-info">
-                                            <span>Balance: 0.00</span>
-                                            <button class="max-btn">MAX</button>
+                                            <span id="fromBalanceDisplay">Balance: 0.00</span>
+                                            <button class="max-btn" id="fromMaxBtn">MAX</button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="swap-arrow">
-                                    <button class="swap-direction-btn">
+                                    <button class="swap-direction-btn" id="swapDirectionBtn">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M7 16V4M7 4L3 8M7 4L11 8"/>
                                             <path d="M17 8V20M17 20L21 16M17 20L13 16"/>
@@ -347,37 +410,52 @@
                                 <div class="swap-input-group">
                                     <label>You Receive</label>
                                     <div class="swap-input">
-                                        <div class="token-select">
-                                            <div class="token-icon usx">
-                                                <span>USX</span>
+                                        <div class="token-select" id="toTokenSelect">
+                                            <div class="token-icon usx" id="toTokenIcon">
+                                                <span id="toTokenSymbol">USX</span>
                                             </div>
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                                                 <polyline points="6 9 12 15 18 9"/>
                                             </svg>
                                         </div>
-                                        <input type="number" placeholder="0.00" class="amount-input" readonly>
+                                        <input type="number" placeholder="0.00" class="amount-input" id="toAmountInput" readonly>
                                         <div class="balance-info">
-                                            <span>Balance: 0.00</span>
+                                            <span id="toBalanceDisplay">Balance: 0.00</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="swap-details">
+                                <div class="swap-details" id="swapDetails">
                                     <div class="detail-row">
                                         <span>Rate</span>
-                                        <span>1 USDC = 1.0000 USX</span>
+                                        <span id="swapRate">1 USDC = 1.0000 USX</span>
                                     </div>
                                     <div class="detail-row">
-                                        <span>Fee</span>
-                                        <span>0.00%</span>
+                                        <span>Price Impact</span>
+                                        <span id="priceImpact">< 0.01%</span>
                                     </div>
                                     <div class="detail-row">
-                                        <span>Slippage</span>
-                                        <span>0.1%</span>
+                                        <span>Network Fee</span>
+                                        <span id="networkFee">~0.00005 SOL</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Route</span>
+                                        <span id="swapRoute">Jupiter Aggregator</span>
                                     </div>
                                 </div>
 
-                                <button class="btn-primary swap-btn" disabled>Connect Wallet</button>
+                                <div class="swap-warning hidden" id="swapWarning">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="12"/>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                    </svg>
+                                    <span id="swapWarningText"></span>
+                                </div>
+
+                                <button class="btn-primary swap-btn" id="swapExecuteBtn" disabled>
+                                    <span id="swapBtnText">Connect Wallet</span>
+                                </button>
                             </div>
                         </div>
 
@@ -392,6 +470,29 @@
                                 <div class="info-stat">
                                     <span class="info-stat-value">100.70%</span>
                                     <span class="info-stat-label">Collateral Ratio</span>
+                                </div>
+                            </div>
+                            <div class="token-addresses">
+                                <h4>Token Addresses</h4>
+                                <div class="address-row">
+                                    <span>USX:</span>
+                                    <code id="usxAddress">6Frrz...3tgG</code>
+                                    <button class="copy-mini-btn" data-copy="6FrrzDk5mQARGc1TDYoyVnSyRdds1t4PbtohCD6p3tgG">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="address-row">
+                                    <span>eUSX:</span>
+                                    <code id="eusxAddress">3ThdF...p1WC</code>
+                                    <button class="copy-mini-btn" data-copy="3ThdFvVxp7bSzzGbSH9EBNm7sQP7VFvWoUNdp1WC">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -433,6 +534,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Lock Form -->
                                 <div class="lock-form" id="lock-form">
                                     <div class="lock-input-group">
                                         <label>Amount to Lock</label>
@@ -442,10 +544,10 @@
                                                     <span>USX</span>
                                                 </div>
                                             </div>
-                                            <input type="number" placeholder="0.00" class="amount-input">
+                                            <input type="number" placeholder="0.00" class="amount-input" id="lockAmountInput" step="any">
                                             <div class="balance-info">
-                                                <span>Balance: 0.00 USX</span>
-                                                <button class="max-btn">MAX</button>
+                                                <span id="lockBalanceDisplay">Balance: 0.00 USX</span>
+                                                <button class="max-btn" id="lockMaxBtn">MAX</button>
                                             </div>
                                         </div>
                                     </div>
@@ -453,7 +555,7 @@
                                     <div class="receive-preview">
                                         <span>You will receive</span>
                                         <div class="receive-amount">
-                                            <span class="amount">~0.00</span>
+                                            <span class="amount" id="lockReceiveAmount">~0.00</span>
                                             <span class="token">eUSX</span>
                                         </div>
                                     </div>
@@ -461,17 +563,24 @@
                                     <div class="lock-details">
                                         <div class="detail-row">
                                             <span>Current eUSX Price</span>
-                                            <span>$1.0421</span>
+                                            <span id="lockEusxPrice">$1.0421</span>
                                         </div>
                                         <div class="detail-row">
                                             <span>Exchange Rate</span>
-                                            <span>1 USX = 0.9596 eUSX</span>
+                                            <span id="lockExchangeRate">1 USX = 0.9596 eUSX</span>
+                                        </div>
+                                        <div class="detail-row">
+                                            <span>Expected Weekly Yield</span>
+                                            <span id="lockExpectedYield">$0.00</span>
                                         </div>
                                     </div>
 
-                                    <button class="btn-primary lock-btn" disabled>Connect Wallet</button>
+                                    <button class="btn-primary lock-btn" id="lockExecuteBtn" disabled>
+                                        <span id="lockBtnText">Connect Wallet</span>
+                                    </button>
                                 </div>
 
+                                <!-- Unlock Form -->
                                 <div class="lock-form hidden" id="unlock-form">
                                     <div class="lock-input-group">
                                         <label>Amount to Unlock</label>
@@ -481,10 +590,10 @@
                                                     <span>eUSX</span>
                                                 </div>
                                             </div>
-                                            <input type="number" placeholder="0.00" class="amount-input">
+                                            <input type="number" placeholder="0.00" class="amount-input" id="unlockAmountInput" step="any">
                                             <div class="balance-info">
-                                                <span>Balance: 0.00 eUSX</span>
-                                                <button class="max-btn">MAX</button>
+                                                <span id="unlockBalanceDisplay">Balance: 0.00 eUSX</span>
+                                                <button class="max-btn" id="unlockMaxBtn">MAX</button>
                                             </div>
                                         </div>
                                     </div>
@@ -492,7 +601,7 @@
                                     <div class="receive-preview">
                                         <span>You will receive</span>
                                         <div class="receive-amount">
-                                            <span class="amount">~0.00</span>
+                                            <span class="amount" id="unlockReceiveAmount">~0.00</span>
                                             <span class="token">USX</span>
                                         </div>
                                     </div>
@@ -512,7 +621,9 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn-primary lock-btn" disabled>Connect Wallet</button>
+                                    <button class="btn-primary lock-btn" id="unlockExecuteBtn" disabled>
+                                        <span id="unlockBtnText">Connect Wallet</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -549,6 +660,13 @@
                                         <span>Instant unlock, no lock-up period</span>
                                     </li>
                                 </ul>
+                                <div class="vault-audit">
+                                    <h4>Audited By</h4>
+                                    <div class="audit-badges">
+                                        <span class="audit-badge">Chainlink</span>
+                                        <span class="audit-badge">OtterSec</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -581,7 +699,7 @@
 
                         <h3 class="section-title">Partner Protocols</h3>
                         <div class="partners-cards">
-                            <div class="partner-card">
+                            <div class="partner-card" data-protocol="raydium">
                                 <div class="partner-header">
                                     <div class="partner-logo-icon raydium">RAY</div>
                                     <div class="partner-info">
@@ -595,12 +713,12 @@
                                 </div>
                                 <p class="partner-description">Provide liquidity to USX/USDC pools on Raydium to earn trading fees and additional Flares.</p>
                                 <div class="partner-actions">
-                                    <button class="btn-secondary">Add Liquidity</button>
+                                    <a href="https://raydium.io/liquidity-pools/" target="_blank" class="btn-secondary">Add Liquidity</a>
                                     <span class="flares-bonus">+2x Flares</span>
                                 </div>
                             </div>
 
-                            <div class="partner-card">
+                            <div class="partner-card" data-protocol="orca">
                                 <div class="partner-header">
                                     <div class="partner-logo-icon orca">ORCA</div>
                                     <div class="partner-info">
@@ -614,12 +732,12 @@
                                 </div>
                                 <p class="partner-description">Deposit into Orca Whirlpools with concentrated liquidity for enhanced capital efficiency.</p>
                                 <div class="partner-actions">
-                                    <button class="btn-secondary">Add Liquidity</button>
+                                    <a href="https://www.orca.so/pools" target="_blank" class="btn-secondary">Add Liquidity</a>
                                     <span class="flares-bonus">+2x Flares</span>
                                 </div>
                             </div>
 
-                            <div class="partner-card">
+                            <div class="partner-card" data-protocol="jupiter">
                                 <div class="partner-header">
                                     <div class="partner-logo-icon jupiter">JUP</div>
                                     <div class="partner-info">
@@ -633,12 +751,12 @@
                                 </div>
                                 <p class="partner-description">Get the best rates for swapping USX across Solana through Jupiter's aggregation.</p>
                                 <div class="partner-actions">
-                                    <button class="btn-secondary">Swap Now</button>
+                                    <a href="https://jup.ag/swap/USDC-USX" target="_blank" class="btn-secondary">Swap Now</a>
                                     <span class="flares-bonus">+1x Flares</span>
                                 </div>
                             </div>
 
-                            <div class="partner-card">
+                            <div class="partner-card" data-protocol="kamino">
                                 <div class="partner-header">
                                     <div class="partner-logo-icon kamino">KMN</div>
                                     <div class="partner-info">
@@ -652,12 +770,12 @@
                                 </div>
                                 <p class="partner-description">Supply USX to Kamino's lending markets and earn yield from borrowers.</p>
                                 <div class="partner-actions">
-                                    <button class="btn-secondary">Supply</button>
+                                    <a href="https://app.kamino.finance/" target="_blank" class="btn-secondary">Supply</a>
                                     <span class="flares-bonus">+1.5x Flares</span>
                                 </div>
                             </div>
 
-                            <div class="partner-card">
+                            <div class="partner-card" data-protocol="marginfi">
                                 <div class="partner-header">
                                     <div class="partner-logo-icon marginfi">MRG</div>
                                     <div class="partner-info">
@@ -671,7 +789,7 @@
                                 </div>
                                 <p class="partner-description">Lend USX on marginfi to earn yield while maintaining full liquidity.</p>
                                 <div class="partner-actions">
-                                    <button class="btn-secondary">Lend</button>
+                                    <a href="https://app.marginfi.com/" target="_blank" class="btn-secondary">Lend</a>
                                     <span class="flares-bonus">+1.5x Flares</span>
                                 </div>
                             </div>
@@ -709,15 +827,15 @@
                             </div>
                             <div class="flares-stats-card">
                                 <div class="flares-stat">
-                                    <span class="flares-stat-value">0</span>
+                                    <span class="flares-stat-value" id="userFlares">0</span>
                                     <span class="flares-stat-label">Your Flares</span>
                                 </div>
                                 <div class="flares-stat">
-                                    <span class="flares-stat-value">1x</span>
+                                    <span class="flares-stat-value" id="userMultiplier">1x</span>
                                     <span class="flares-stat-label">Your Multiplier</span>
                                 </div>
                                 <div class="flares-stat">
-                                    <span class="flares-stat-value">-</span>
+                                    <span class="flares-stat-value" id="userRank">-</span>
                                     <span class="flares-stat-label">Your Rank</span>
                                 </div>
                             </div>
@@ -738,7 +856,7 @@
                                 </div>
                                 <h4>Connect Wallet</h4>
                                 <p>Connect your Solana wallet and sign the welcome message.</p>
-                                <button class="btn-primary action-btn" onclick="document.getElementById('connectWalletBtn').click()">Connect</button>
+                                <button class="btn-primary action-btn" id="flaresConnectBtn">Connect</button>
                             </div>
 
                             <div class="action-card">
@@ -752,9 +870,9 @@
                                         <span>+500 Flares</span>
                                     </div>
                                 </div>
-                                <h4>Connect X (Twitter)</h4>
-                                <p>Link your X account to verify social engagement.</p>
-                                <button class="btn-secondary action-btn">Connect X</button>
+                                <h4>Follow on X</h4>
+                                <p>Follow @solsticefi on X to stay updated.</p>
+                                <a href="https://x.com/solsticefi" target="_blank" class="btn-secondary action-btn">Follow</a>
                             </div>
 
                             <div class="action-card">
@@ -771,8 +889,8 @@
                                 <h4>Enter Partner Code</h4>
                                 <p>Enter a partner code like ORCA or RAYDIUM for bonus rewards.</p>
                                 <div class="code-input-group">
-                                    <input type="text" placeholder="Enter code" class="code-input">
-                                    <button class="btn-secondary">Apply</button>
+                                    <input type="text" placeholder="Enter code" class="code-input" id="partnerCodeInput">
+                                    <button class="btn-secondary" id="applyPartnerCode">Apply</button>
                                 </div>
                             </div>
 
@@ -836,10 +954,10 @@
                                     <p>Get 10% of your referrals' Flares as bonus rewards.</p>
                                 </div>
                                 <div class="referral-code-area">
-                                    <label>Your Referral Code</label>
+                                    <label>Your Referral Link</label>
                                     <div class="referral-code-display">
-                                        <span class="code-placeholder">Connect wallet to get code</span>
-                                        <button class="copy-btn" disabled>
+                                        <span class="code-placeholder" id="referralLink">Connect wallet to get link</span>
+                                        <button class="copy-btn" id="copyReferralBtn" disabled>
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <rect x="9" y="9" width="13" height="13" rx="2"/>
                                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -860,7 +978,7 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>Connect Wallet</h3>
-                <button class="modal-close" onclick="closeWalletModal()">
+                <button class="modal-close" id="closeWalletModal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 6L6 18M6 6L18 18"/>
                     </svg>
@@ -868,29 +986,65 @@
             </div>
             <div class="modal-body">
                 <div class="wallet-options">
-                    <button class="wallet-option">
+                    <button class="wallet-option" data-wallet="phantom">
                         <div class="wallet-icon phantom"></div>
                         <span>Phantom</span>
-                        <span class="wallet-badge">Popular</span>
+                        <span class="wallet-badge" id="phantomStatus">Detecting...</span>
                     </button>
-                    <button class="wallet-option">
+                    <button class="wallet-option" data-wallet="solflare">
                         <div class="wallet-icon solflare"></div>
                         <span>Solflare</span>
+                        <span class="wallet-badge" id="solflareStatus">Detecting...</span>
                     </button>
-                    <button class="wallet-option">
+                    <button class="wallet-option" data-wallet="backpack">
                         <div class="wallet-icon backpack"></div>
                         <span>Backpack</span>
-                    </button>
-                    <button class="wallet-option">
-                        <div class="wallet-icon walletconnect"></div>
-                        <span>WalletConnect</span>
+                        <span class="wallet-badge" id="backpackStatus">Detecting...</span>
                     </button>
                 </div>
-                <p class="modal-footer-text">By connecting, you agree to the <a href="#">Terms of Service</a></p>
+                <p class="modal-footer-text">By connecting, you agree to the <a href="https://docs.solstice.finance/legal-documents" target="_blank">Terms of Service</a></p>
             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Token Select Modal -->
+    <div class="modal-overlay hidden" id="tokenModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Select Token</h3>
+                <button class="modal-close" id="closeTokenModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6L18 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="token-search">
+                    <input type="text" placeholder="Search token name or address" id="tokenSearchInput">
+                </div>
+                <div class="token-list" id="tokenList">
+                    <!-- Tokens populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div class="modal-overlay hidden" id="txModal">
+        <div class="modal tx-modal">
+            <div class="tx-content">
+                <div class="tx-icon" id="txIcon">
+                    <div class="spinner"></div>
+                </div>
+                <h3 id="txTitle">Processing Transaction</h3>
+                <p id="txMessage">Please confirm in your wallet...</p>
+                <a href="#" target="_blank" id="txLink" class="tx-link hidden">View on Solscan</a>
+                <button class="btn-secondary" id="txCloseBtn" style="display: none;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the main application -->
+    <script type="module" src="solana-app.js"></script>
 </body>
 </html>

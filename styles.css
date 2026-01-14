@@ -1832,6 +1832,271 @@ input {
 }
 
 /* ========================================
+   Wallet Balances
+   ======================================== */
+
+.wallet-balances {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.balance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+.balance-token {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.token-icon-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    font-weight: 700;
+}
+
+.token-icon-small.sol {
+    background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+    color: white;
+}
+
+.token-icon-small.usdc {
+    background: linear-gradient(135deg, #2775ca 0%, #1e5bb8 100%);
+    color: white;
+}
+
+.token-icon-small.usx {
+    background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+    color: var(--bg-primary);
+}
+
+.token-icon-small.eusx {
+    background: linear-gradient(135deg, #7b61ff 0%, #5a4fcf 100%);
+    color: white;
+}
+
+.balance-amount {
+    text-align: right;
+}
+
+.balance-amount .amount {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.balance-amount .usd-value {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+.wallet-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   SOL Icon
+   ======================================== */
+
+.stat-icon.sol-icon {
+    background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+    color: white;
+}
+
+/* ========================================
+   Earnings Breakdown
+   ======================================== */
+
+.earnings-breakdown {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+.breakdown-row:not(:last-child) {
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.breakdown-row span:first-child {
+    color: var(--text-tertiary);
+}
+
+.breakdown-row .apy-value {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* ========================================
+   Token Addresses
+   ======================================== */
+
+.token-addresses {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-primary);
+}
+
+.token-addresses h4 {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.address-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.address-row span {
+    color: var(--text-tertiary);
+}
+
+.address-row code {
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.copy-mini-btn {
+    padding: 4px;
+    color: var(--text-tertiary);
+    transition: color var(--transition-fast);
+}
+
+.copy-mini-btn:hover {
+    color: var(--accent-primary);
+}
+
+/* ========================================
+   Vault Audit Section
+   ======================================== */
+
+.vault-audit {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-primary);
+}
+
+.vault-audit h4 {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.audit-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.audit-badge {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Token Search
+   ======================================== */
+
+.token-search {
+    margin-bottom: 16px;
+}
+
+.token-search input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.token-search input:focus {
+    border-color: var(--accent-primary);
+}
+
+.token-search input::placeholder {
+    color: var(--text-muted);
+}
+
+.token-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.token-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.token-list-item:hover {
+    background: var(--bg-tertiary);
+}
+
+/* ========================================
+   Swap Warning
+   ======================================== */
+
+.swap-warning {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 184, 77, 0.1);
+    border: 1px solid rgba(255, 184, 77, 0.3);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    color: var(--warning);
+    font-size: 0.875rem;
+}
+
+.swap-warning svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
+
+/* ========================================
    Responsive Design
    ======================================== */
 
