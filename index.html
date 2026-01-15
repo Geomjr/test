@@ -9,16 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Import Maps for Solana Libraries -->
-    <script type="importmap">
-    {
-        "imports": {
-            "@solana/web3.js": "https://esm.sh/@solana/web3.js@1.95.3",
-            "@solana/spl-token": "https://esm.sh/@solana/spl-token@0.4.8",
-            "buffer": "https://esm.sh/buffer@6.0.3"
-        }
-    }
-    </script>
+    <!-- Load Solana libraries via UMD builds for browser compatibility -->
+    <script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/buffer@6.0.3/index.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -1045,6 +1038,6 @@
     </div>
 
     <!-- Load the main application -->
-    <script type="module" src="solana-app.js"></script>
+    <script src="solana-app.js"></script>
 </body>
 </html>

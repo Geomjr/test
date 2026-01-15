@@ -1,10 +1,35 @@
 // ========================================
 // Solstice Finance - Solana Integration
 // Real wallet connection, balance fetching, swapping, and staking
+// Fixed for browser compatibility with VersionedTransaction support
 // ========================================
 
-import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { getAssociatedTokenAddress, getAccount, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+// Setup Buffer polyfill for browser
+if (typeof window !== 'undefined' && typeof window.Buffer === 'undefined') {
+    window.Buffer = window.buffer?.Buffer || {
+        from: (data, encoding) => {
+            if (encoding === 'base64') {
+                const binaryString = atob(data);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes;
+            }
+            return new Uint8Array(data);
+        }
+    };
+}
+
+// Get Solana web3 from global scope (loaded via IIFE)
+const {
+    Connection,
+    PublicKey,
+    Transaction,
+    VersionedTransaction,
+    SystemProgram,
+    LAMPORTS_PER_SOL
+} = window.solanaWeb3;
 
 // ========================================
 // Configuration
@@ -14,8 +39,8 @@ const CONFIG = {
     // Solana RPC endpoints
     RPC_ENDPOINT: 'https://api.mainnet-beta.solana.com',
     RPC_ENDPOINTS_BACKUP: [
-        'https://solana-mainnet.g.alchemy.com/v2/demo',
-        'https://rpc.ankr.com/solana'
+        'https://rpc.ankr.com/solana',
+        'https://solana-mainnet.rpc.extrnode.com'
     ],
 
     // Token Mint Addresses (Solana Mainnet)
@@ -98,6 +123,7 @@ const state = {
     currentPage: 'dashboard',
     swapFromToken: 'USDC',
     swapToToken: 'USX',
+    currentQuote: null,
     flares: 0,
     multiplier: 1
 };
@@ -109,21 +135,38 @@ const state = {
 async function initConnection() {
     try {
         state.connection = new Connection(CONFIG.RPC_ENDPOINT, 'confirmed');
+        // Test the connection
+        await state.connection.getLatestBlockhash();
         console.log('Connected to Solana mainnet');
+        updateNetworkStatus(true);
         return true;
     } catch (error) {
-        console.error('Failed to connect to Solana:', error);
+        console.error('Failed to connect to primary RPC:', error);
         // Try backup endpoints
         for (const endpoint of CONFIG.RPC_ENDPOINTS_BACKUP) {
             try {
                 state.connection = new Connection(endpoint, 'confirmed');
+                await state.connection.getLatestBlockhash();
                 console.log('Connected to backup endpoint:', endpoint);
+                updateNetworkStatus(true);
                 return true;
             } catch (e) {
                 continue;
             }
         }
+        updateNetworkStatus(false);
         return false;
+    }
+}
+
+function updateNetworkStatus(connected) {
+    const dot = document.getElementById('networkDot');
+    const name = document.getElementById('networkName');
+    if (dot) {
+        dot.style.background = connected ? 'var(--success)' : 'var(--error)';
+    }
+    if (name) {
+        name.textContent = connected ? 'Solana Mainnet' : 'Disconnected';
     }
 }
 
@@ -272,17 +315,19 @@ async function fetchTokenBalance(mintAddress) {
 
     try {
         const mint = new PublicKey(mintAddress);
-        const tokenAccount = await getAssociatedTokenAddress(mint, state.publicKey);
+        const ownerPublicKey = state.publicKey;
 
-        try {
-            const account = await getAccount(state.connection, tokenAccount);
-            const tokenInfo = Object.values(CONFIG.TOKENS).find(t => t.mint === mintAddress);
-            const decimals = tokenInfo?.decimals || 6;
-            return Number(account.amount) / Math.pow(10, decimals);
-        } catch (e) {
-            // Token account doesn't exist (no balance)
-            return 0;
+        // Get all token accounts for the owner
+        const tokenAccounts = await state.connection.getParsedTokenAccountsByOwner(
+            ownerPublicKey,
+            { mint: mint }
+        );
+
+        if (tokenAccounts.value.length > 0) {
+            const balance = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
+            return balance || 0;
         }
+        return 0;
     } catch (error) {
         console.error('Error fetching token balance:', error);
         return 0;
@@ -316,7 +361,7 @@ async function fetchAllBalances() {
 }
 
 // ========================================
-// Jupiter Swap Integration
+// Jupiter Swap Integration (Fixed for v6)
 // ========================================
 
 async function getSwapQuote(inputMint, outputMint, amount, slippage = 50) {
@@ -329,16 +374,59 @@ async function getSwapQuote(inputMint, outputMint, amount, slippage = 50) {
         });
 
         const response = await fetch(`${CONFIG.JUPITER_API}/quote?${params}`);
+
+        if (!response.ok) {
+            throw new Error(`Quote API error: ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data.error) {
             throw new Error(data.error);
         }
 
+        // Store quote for later use
+        state.currentQuote = data;
+
+        // Update UI with quote details
+        updateSwapQuoteUI(data);
+
         return data;
     } catch (error) {
         console.error('Error getting swap quote:', error);
+        showNotification('Unable to get swap quote. Try again.', 'error');
         return null;
+    }
+}
+
+function updateSwapQuoteUI(quote) {
+    if (!quote) return;
+
+    const inputToken = state.swapFromToken;
+    const outputToken = state.swapToToken;
+    const inputDecimals = CONFIG.TOKENS[inputToken]?.decimals || 6;
+    const outputDecimals = CONFIG.TOKENS[outputToken]?.decimals || 6;
+
+    const inAmount = parseInt(quote.inAmount) / Math.pow(10, inputDecimals);
+    const outAmount = parseInt(quote.outAmount) / Math.pow(10, outputDecimals);
+
+    // Update output amount
+    document.getElementById('toAmountInput').value = outAmount.toFixed(6);
+
+    // Calculate and show rate
+    const rate = outAmount / inAmount;
+    document.getElementById('swapRate').textContent = `1 ${inputToken} = ${rate.toFixed(4)} ${outputToken}`;
+
+    // Show price impact
+    const priceImpact = parseFloat(quote.priceImpactPct) || 0;
+    const priceImpactEl = document.getElementById('priceImpact');
+    priceImpactEl.textContent = `${(priceImpact * 100).toFixed(2)}%`;
+    priceImpactEl.style.color = priceImpact > 0.01 ? 'var(--warning)' : 'var(--text-secondary)';
+
+    // Show route
+    if (quote.routePlan && quote.routePlan.length > 0) {
+        const routeLabels = quote.routePlan.map(r => r.swapInfo?.label || 'Unknown').join(' > ');
+        document.getElementById('swapRoute').textContent = routeLabels || 'Jupiter Aggregator';
     }
 }
 
@@ -349,7 +437,7 @@ async function executeSwap(quoteResponse) {
     }
 
     try {
-        showTxModal('Preparing Swap', 'Getting transaction data...');
+        showTxModal('Preparing Swap', 'Getting transaction data from Jupiter...');
 
         // Get serialized transaction from Jupiter
         const swapResponse = await fetch(`${CONFIG.JUPITER_API}/swap`, {
@@ -358,9 +446,16 @@ async function executeSwap(quoteResponse) {
             body: JSON.stringify({
                 quoteResponse,
                 userPublicKey: state.publicKey.toString(),
-                wrapAndUnwrapSol: true
+                wrapAndUnwrapSol: true,
+                dynamicComputeUnitLimit: true,
+                prioritizationFeeLamports: 'auto'
             })
         });
+
+        if (!swapResponse.ok) {
+            const errorText = await swapResponse.text();
+            throw new Error(`Swap API error: ${errorText}`);
+        }
 
         const swapData = await swapResponse.json();
 
@@ -370,30 +465,44 @@ async function executeSwap(quoteResponse) {
 
         updateTxModal('Confirm Transaction', 'Please approve the transaction in your wallet...');
 
-        // Deserialize and sign transaction
-        const swapTransactionBuf = Buffer.from(swapData.swapTransaction, 'base64');
-        const transaction = Transaction.from(swapTransactionBuf);
+        // Jupiter v6 returns base64 encoded VersionedTransaction
+        const swapTransactionBuf = Uint8Array.from(atob(swapData.swapTransaction), c => c.charCodeAt(0));
 
-        // Sign and send transaction
+        // Deserialize as VersionedTransaction (Jupiter v6 uses versioned transactions)
+        const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+
+        // Sign the transaction with wallet
         const signedTx = await state.wallet.signTransaction(transaction);
 
-        updateTxModal('Sending Transaction', 'Broadcasting to the network...');
+        updateTxModal('Sending Transaction', 'Broadcasting to the Solana network...');
 
-        const txid = await state.connection.sendRawTransaction(signedTx.serialize());
+        // Send the signed transaction
+        const txid = await state.connection.sendRawTransaction(signedTx.serialize(), {
+            skipPreflight: false,
+            maxRetries: 3,
+            preflightCommitment: 'confirmed'
+        });
 
-        updateTxModal('Confirming', 'Waiting for confirmation...', txid);
+        updateTxModal('Confirming', 'Waiting for blockchain confirmation...', txid);
 
-        // Wait for confirmation
-        const confirmation = await state.connection.confirmTransaction(txid, 'confirmed');
+        // Wait for confirmation with timeout
+        const confirmation = await state.connection.confirmTransaction(
+            {
+                signature: txid,
+                blockhash: (await state.connection.getLatestBlockhash()).blockhash,
+                lastValidBlockHeight: (await state.connection.getLatestBlockhash()).lastValidBlockHeight
+            },
+            'confirmed'
+        );
 
         if (confirmation.value.err) {
-            throw new Error('Transaction failed');
+            throw new Error('Transaction failed on chain');
         }
 
         showTxSuccess('Swap Successful!', txid);
 
-        // Refresh balances
-        await fetchAllBalances();
+        // Refresh balances after swap
+        setTimeout(() => fetchAllBalances(), 2000);
 
         // Award flares for swapping
         state.flares += 100;
@@ -402,7 +511,7 @@ async function executeSwap(quoteResponse) {
         return txid;
     } catch (error) {
         console.error('Swap error:', error);
-        showTxError(error.message || 'Swap failed');
+        showTxError(error.message || 'Swap failed. Please try again.');
         return null;
     }
 }
@@ -426,21 +535,19 @@ async function lockUSX(amount) {
         showTxModal('Locking USX', 'Preparing transaction...');
 
         // In a real implementation, this would interact with the Solstice YieldVault contract
-        // For demonstration, we'll simulate the staking process
+        // For demonstration, we'll simulate the staking process with a real transaction
 
         updateTxModal('Confirm Lock', 'Please approve the transaction in your wallet...');
 
         // Create a simple transaction to demonstrate signing
-        // In production, this would be a program instruction to the Solstice vault
-        const recentBlockhash = await state.connection.getLatestBlockhash();
+        const { blockhash, lastValidBlockHeight } = await state.connection.getLatestBlockhash();
 
         const transaction = new Transaction({
-            recentBlockhash: recentBlockhash.blockhash,
+            recentBlockhash: blockhash,
             feePayer: state.publicKey
         });
 
-        // Add memo or actual vault instruction here
-        // For now, simulate with a self-transfer of minimal SOL
+        // Add a minimal self-transfer as a placeholder for the actual vault instruction
         transaction.add(
             SystemProgram.transfer({
                 fromPubkey: state.publicKey,
@@ -457,7 +564,11 @@ async function lockUSX(amount) {
 
         updateTxModal('Confirming', 'Waiting for confirmation...', txid);
 
-        await state.connection.confirmTransaction(txid, 'confirmed');
+        await state.connection.confirmTransaction({
+            signature: txid,
+            blockhash,
+            lastValidBlockHeight
+        }, 'confirmed');
 
         // Simulate the lock effect locally (in production, fetch from chain)
         const eUSXReceived = amount * CONFIG.EUSX_EXCHANGE_RATE;
@@ -497,10 +608,10 @@ async function unlockEUSX(amount) {
 
         updateTxModal('Confirm Unlock', 'Please approve the transaction in your wallet...');
 
-        const recentBlockhash = await state.connection.getLatestBlockhash();
+        const { blockhash, lastValidBlockHeight } = await state.connection.getLatestBlockhash();
 
         const transaction = new Transaction({
-            recentBlockhash: recentBlockhash.blockhash,
+            recentBlockhash: blockhash,
             feePayer: state.publicKey
         });
 
@@ -520,7 +631,11 @@ async function unlockEUSX(amount) {
 
         updateTxModal('Confirming', 'Waiting for confirmation...', txid);
 
-        await state.connection.confirmTransaction(txid, 'confirmed');
+        await state.connection.confirmTransaction({
+            signature: txid,
+            blockhash,
+            lastValidBlockHeight
+        }, 'confirmed');
 
         // Simulate the unlock effect
         const usxReceived = amount * (1 / CONFIG.EUSX_EXCHANGE_RATE);
@@ -908,30 +1023,54 @@ function setupSwapListeners() {
     const fromMaxBtn = document.getElementById('fromMaxBtn');
     const swapExecuteBtn = document.getElementById('swapExecuteBtn');
 
-    // Amount input change
+    let quoteTimeout = null;
+
+    // Amount input change - debounced quote fetching
     fromAmountInput?.addEventListener('input', (e) => {
         const value = parseFloat(e.target.value) || 0;
-        // Simple 1:1 rate for stablecoins
-        document.getElementById('toAmountInput').value = value.toFixed(2);
 
-        // Update rate display
-        document.getElementById('swapRate').textContent = `1 ${state.swapFromToken} = 1.0000 ${state.swapToToken}`;
+        // Clear previous timeout
+        if (quoteTimeout) clearTimeout(quoteTimeout);
 
-        // Enable/disable swap button
-        if (state.connected && value > 0 && value <= state.balances[state.swapFromToken]) {
-            swapExecuteBtn.disabled = false;
-            document.getElementById('swapBtnText').textContent = 'Swap';
-        } else if (state.connected && value > state.balances[state.swapFromToken]) {
-            swapExecuteBtn.disabled = true;
-            document.getElementById('swapBtnText').textContent = 'Insufficient Balance';
+        // Show loading state
+        document.getElementById('toAmountInput').value = '...';
+
+        if (value <= 0) {
+            document.getElementById('toAmountInput').value = '';
+            return;
         }
+
+        // Debounce quote requests
+        quoteTimeout = setTimeout(async () => {
+            const fromMint = CONFIG.TOKENS[state.swapFromToken]?.mint;
+            const toMint = CONFIG.TOKENS[state.swapToToken]?.mint;
+
+            if (fromMint && toMint) {
+                const decimals = CONFIG.TOKENS[state.swapFromToken].decimals;
+                const amountInSmallestUnit = Math.floor(value * Math.pow(10, decimals));
+
+                await getSwapQuote(fromMint, toMint, amountInSmallestUnit);
+
+                // Enable/disable swap button
+                if (state.connected && value > 0 && value <= state.balances[state.swapFromToken] && state.currentQuote) {
+                    swapExecuteBtn.disabled = false;
+                    document.getElementById('swapBtnText').textContent = 'Swap';
+                } else if (state.connected && value > state.balances[state.swapFromToken]) {
+                    swapExecuteBtn.disabled = true;
+                    document.getElementById('swapBtnText').textContent = 'Insufficient Balance';
+                }
+            } else {
+                // Fallback for tokens without Jupiter support
+                document.getElementById('toAmountInput').value = value.toFixed(2);
+            }
+        }, 500);
     });
 
     // Max button
     fromMaxBtn?.addEventListener('click', () => {
         if (state.connected) {
             const maxBalance = state.balances[state.swapFromToken] || 0;
-            fromAmountInput.value = maxBalance.toFixed(2);
+            fromAmountInput.value = maxBalance.toFixed(6);
             fromAmountInput.dispatchEvent(new Event('input'));
         }
     });
@@ -954,9 +1093,16 @@ function setupSwapListeners() {
 
         updateSwapBalances();
 
-        // Clear inputs
+        // Clear inputs and re-fetch quote if there's a value
+        const currentValue = fromAmountInput.value;
         fromAmountInput.value = '';
         document.getElementById('toAmountInput').value = '';
+        state.currentQuote = null;
+
+        if (currentValue) {
+            fromAmountInput.value = currentValue;
+            fromAmountInput.dispatchEvent(new Event('input'));
+        }
     });
 
     // Execute swap
@@ -967,20 +1113,19 @@ function setupSwapListeners() {
             return;
         }
 
-        // For USDC to USX swap, use Jupiter
-        const fromMint = CONFIG.TOKENS[state.swapFromToken]?.mint;
-        const toMint = CONFIG.TOKENS[state.swapToToken]?.mint;
+        if (!state.currentQuote) {
+            showNotification('Please wait for quote', 'warning');
+            return;
+        }
 
-        if (fromMint && toMint) {
-            const decimals = CONFIG.TOKENS[state.swapFromToken].decimals;
-            const amountInSmallestUnit = Math.floor(amount * Math.pow(10, decimals));
+        // Execute the swap with the stored quote
+        const result = await executeSwap(state.currentQuote);
 
-            const quote = await getSwapQuote(fromMint, toMint, amountInSmallestUnit);
-            if (quote) {
-                await executeSwap(quote);
-            } else {
-                showNotification('Unable to get swap quote', 'error');
-            }
+        if (result) {
+            // Clear inputs on success
+            fromAmountInput.value = '';
+            document.getElementById('toAmountInput').value = '';
+            state.currentQuote = null;
         }
     });
 }
@@ -1115,7 +1260,7 @@ function setupCopyButtons() {
 
 async function fetchPrices() {
     try {
-        // Fetch SOL price from CoinGecko or similar
+        // Fetch SOL price from CoinGecko
         const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
         const data = await response.json();
         if (data.solana?.usd) {
@@ -1220,11 +1365,11 @@ async function init() {
     // Update prices periodically
     setInterval(fetchPrices, 60000); // Every minute
 
-    console.log('Solstice Finance initialized');
+    console.log('Solstice Finance initialized successfully');
 }
 
-// Start the application
+// Start the application when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
 
 // Export for debugging
-window.solstice = { state, fetchAllBalances, connectWallet, disconnectWallet };
+window.solstice = { state, fetchAllBalances, connectWallet, disconnectWallet, getSwapQuote, executeSwap };
