@@ -583,8 +583,13 @@ write_sheet(ws, SALES_HDR, sales)
 ws2 = out.create_sheet("Purchases Expenses Capex")
 write_sheet(ws2, PURCH_HDR, purchases)
 
+# Legs recorded in Main vs legs recovered from the removed tabs are shown separately
+agency_main = [r for r in agency if r[10] == "Main - Cash"]
+agency_removed = [r for r in agency if r[10] != "Main - Cash"]
 wsA = out.create_sheet("Agency - DNWE Workings")
-write_sheet(wsA, AGENCY_HDR, agency)
+write_sheet(wsA, AGENCY_HDR, agency_main)
+wsR = out.create_sheet("Agency - From Removed Tabs")
+write_sheet(wsR, AGENCY_HDR, agency_removed)
 
 # One revenue entry per domain: DMDC's revenue = sale receipts less payout to the domain owner
 net_by_domain = {}
@@ -740,7 +745,10 @@ notes = [
     "two legs. The 'Agency Revenue Entries' tab pairs the legs by domain and creates ONE REVENUE LINE PER",
     "DOMAIN (net commission) - these lines are the agency revenue for the VAT return; the workings tab shows",
     "how each is made up, with all Wise/Paypal TxnIDs. Agency legs are identified across ALL tabs by their",
-    "'DNWE (Marketplace)' ledger marking (Main + removed tabs). Where a domain's pair straddles 1 Jun 25 (buyer",
+    "'DNWE (Marketplace)' ledger marking: legs recorded in Main are on 'Agency - DNWE Workings'; legs recovered",
+    "from the 'Removed - Adj' / 'Removed - Different Period' tabs are on 'Agency - From Removed Tabs' (these had",
+    "been removed from the P&L detail but are marketplace legs by their ledger marking). The 'Agency Revenue",
+    "Entries' tab nets across BOTH workings tabs. Where a domain's pair straddles 1 Jun 25 (buyer",
     "paid late May, owner paid early June: KeepAchieving.com, Syncthetic.com, zabux.com) the pre-period leg is",
     "included and flagged so the pair completes. 'Sale refunded to buyer' entries had the sale reversed - no",
     "owner payout was due and the small negative net is payment fees lost. VAT treatment of the commission",
