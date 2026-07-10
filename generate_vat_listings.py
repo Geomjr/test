@@ -239,6 +239,74 @@ def add_excluded(date, name, desc, currency, amount, wtx, ptx, bank, src_sheet, 
 
 wb = openpyxl.load_workbook(SRC, data_only=True)
 
+# ---------------- Agency (DNWE marketplace) pre-pass ----------------
+# Agency legs live in several tabs: Main ('Revenue - Domain Name Agency') and rows
+# marked 'DNWE (Marketplace)' on the removed tabs. Collected first, across ALL dates,
+# so that pairs straddling the 1 Jun 25 cutoff (buyer paid late May, owner paid out
+# early June) can be completed instead of showing as one-sided.
+
+
+def leg_side(desc, amount):
+    d = str(desc or "")
+    if "Sale" in d:
+        return "sale"
+    if "Purchase" in d:
+        return "payout"
+    return "sale" if amount >= 0 else "payout"
+
+
+agency_candidates = []
+for r in wb["Main - Cash"].iter_rows(min_row=2, values_only=True):
+    if not any(v is not None for v in r):
+        continue
+    if r[0] == "Revenue - Domain Name Agency" and isinstance(r[2], datetime.datetime) and isinstance(r[3], (int, float)):
+        agency_candidates.append((r[2], r[6] or "", r[7] or "", r[4], r[3], wise_id(r[10]),
+                                  fmt_paypal(r[15]), r[1], "Main - Cash", ""))
+DOMAIN_TXN_CATS = {"Domain Name Sale", "Domain Name Sale Refund", "Domain Name Purchase",
+                   "Domain Purchase", "Domain Sale", "Bulk Domain name Sale"}
+
+
+def is_dnwe_marked(r):
+    # NB: on 'Removed - Different Period' the marker column also carries junk
+    # 'DNWE (Marketplace)' values on hosting/salary rows - the category filter guards that.
+    return (r[0] in DOMAIN_TXN_CATS and r[16] and "DNWE" in str(r[16]))
+
+
+for sheet in ("Removed - Adj", "Removed - Different Period"):
+    for r in wb[sheet].iter_rows(min_row=3, values_only=True):
+        if not any(v is not None for v in r):
+            continue
+        if is_dnwe_marked(r) and isinstance(r[2], datetime.datetime) and isinstance(r[3], (int, float)):
+            agency_candidates.append((r[2], r[6] or "", r[7] or "", r[4], r[3], wise_id(r[10]),
+                                      fmt_paypal(r[15]), r[1], sheet,
+                                      "Ledger-marked '" + str(r[16]) + "'"))
+
+in_period_legs = [c for c in agency_candidates if in_period(c[0])]
+pre_period_legs = [c for c in agency_candidates if c[0] < PERIOD_START]
+
+# domains one-sided within the period -> pull the missing opposite leg from pre-period
+sides_in_period = {}
+for c in in_period_legs:
+    d = extract_domain(c[2]).lower()
+    if d != "(unspecified)":
+        sides_in_period.setdefault(d, set()).add(leg_side(c[2], c[4]))
+completion_legs = []
+for c in pre_period_legs:
+    d = extract_domain(c[2]).lower()
+    if d in sides_in_period and len(sides_in_period[d]) == 1 and leg_side(c[2], c[4]) not in sides_in_period[d]:
+        completion_legs.append(c)
+
+for c in in_period_legs + completion_legs:
+    date, name, desc, ccy, amount, wtx, ptx, bank, src_sheet, note = c
+    if wtx in CONTRA_TXNIDS or ptx in CONTRA_TXNIDS:
+        add_excluded(date, name, desc, ccy, amount, wtx, ptx, bank, src_sheet,
+                     "DNWE agency", "Contra pair - nets to nil")
+        continue
+    if date < PERIOD_START:
+        note = (note + "; " if note else "") + \
+            "Dated pre-01/06/2025 - included to complete this domain's pair (matching leg is in period)"
+    add_agency(date, name, desc, ccy, amount, wtx, ptx, bank, src_sheet, note)
+
 # ---------------- Main - Cash ----------------
 for r in wb["Main - Cash"].iter_rows(min_row=2, values_only=True):
     if not any(v is not None for v in r):
@@ -266,10 +334,7 @@ for r in wb["Main - Cash"].iter_rows(min_row=2, values_only=True):
         continue
 
     if cat == "Revenue - Domain Name Agency":
-        # Agency model: buyer pays DMDC, DMDC pays the domain owner; DMDC's revenue
-        # is the NET of the two legs. Listed on their own tab, not in Sales/Purchases.
-        add_agency(date, name, desc, ccy, amount, wtx, ptx, bank, src)
-        continue
+        continue  # handled by the agency pre-pass above
 
     if cat == "Revenue - Domain Portfolio Management - DC004":
         if "Repayment" in str(desc) and "Loan" in str(desc):
@@ -335,6 +400,8 @@ for r in wb["Removed - Adj"].iter_rows(min_row=3, values_only=True):
     cat, bank, date, amount, ccy, ttype, name, desc = r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]
     if not in_period(date) or not isinstance(amount, (int, float)):
         continue
+    if is_dnwe_marked(r):
+        continue  # marketplace agency leg - handled by the agency pre-pass
     wtx, ptx = wise_id(r[10]), fmt_paypal(r[15])
     note = "From 'Removed - Adj' tab: removed from P&L detail and substituted by 31 Jan 26 adjustment lines"
     if wtx in CONTRA_TXNIDS or ptx in CONTRA_TXNIDS:
@@ -355,6 +422,8 @@ for r in wb["Removed - Different Period"].iter_rows(min_row=3, values_only=True)
     cat, bank, date, amount, ccy, ttype, name, desc = r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]
     if not in_period(date) or not isinstance(amount, (int, float)):
         continue
+    if is_dnwe_marked(r):
+        continue  # marketplace agency leg - handled by the agency pre-pass
     wtx, ptx = wise_id(r[10]), fmt_paypal(r[15])
     reason_removed = str(r[16]) if r[16] else ""
     src = "Removed - Different Period"
@@ -525,8 +594,14 @@ for row in agency:
     e = net_by_domain.setdefault(k, {"domain": domain, "ccy": ccy, "recv": 0.0, "paid": 0.0,
                                      "n": 0, "recv_date": None, "last": date,
                                      "buyers": [], "owners": [], "ids": [], "flags": []})
+    e.setdefault("sale_pos", 0.0)
+    e.setdefault("sale_neg", 0.0)
     if leg.startswith("Sale"):
         e["recv"] += amt
+        if amt >= 0:
+            e["sale_pos"] += amt
+        else:
+            e["sale_neg"] += amt
         if cpty and cpty not in e["buyers"]:
             e["buyers"].append(cpty)
         if e["recv_date"] is None or date > e["recv_date"]:
@@ -548,9 +623,12 @@ net_rows = []
 for e in sorted(net_by_domain.values(), key=lambda x: x["domain"].lower()):
     flags = list(e["flags"])
     if e["recv"] and not e["paid"]:
-        flags.append("Receipt only - owner payout may be outside period or not yet made")
+        if e.get("sale_pos") and e.get("sale_neg"):
+            flags.append("Sale refunded to buyer - no owner payout due (net = payment fees lost)")
+        else:
+            flags.append("Receipt only - owner payout may be outside period or not yet made")
     elif e["paid"] and not e["recv"]:
-        flags.append("Payout only - sale receipt outside period (pre-Jun 25) or via other channel")
+        flags.append("Payout only - matching sale receipt outside the period or settled via another channel")
     net_rows.append([e["recv_date"] or e["last"], "", e["domain"],
                      "; ".join(e["buyers"]), "; ".join(e["owners"]),
                      f"Agency sale of {e['domain']} - net commission (buyer receipts less owner payout)",
@@ -661,9 +739,12 @@ notes = [
     "remits the price less its commission to the domain owner (payout leg). DMDC's revenue is the NET of the",
     "two legs. The 'Agency Revenue Entries' tab pairs the legs by domain and creates ONE REVENUE LINE PER",
     "DOMAIN (net commission) - these lines are the agency revenue for the VAT return; the workings tab shows",
-    "how each is made up, with all Wise/Paypal TxnIDs. Domains flagged 'receipt only'/'payout only' have their",
-    "matching leg outside the period, still pending, or settled via another channel. VAT treatment of the",
-    "commission (agent basis) to be confirmed by the accountant.",
+    "how each is made up, with all Wise/Paypal TxnIDs. Agency legs are identified across ALL tabs by their",
+    "'DNWE (Marketplace)' ledger marking (Main + removed tabs). Where a domain's pair straddles 1 Jun 25 (buyer",
+    "paid late May, owner paid early June: KeepAchieving.com, Syncthetic.com, zabux.com) the pre-period leg is",
+    "included and flagged so the pair completes. 'Sale refunded to buyer' entries had the sale reversed - no",
+    "owner payout was due and the small negative net is payment fees lost. VAT treatment of the commission",
+    "(agent basis) to be confirmed by the accountant.",
     "",
     "FLAGGED ITEMS: (1) Synagogue.com sale USD 40,000 (21/11/2025) received via EW3N Ltd - removed from accounts",
     "as intercompany but appears to be a genuine DMDC domain sale; (2) domain purchases funded via EW3N Ltd",
