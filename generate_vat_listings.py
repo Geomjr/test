@@ -135,7 +135,7 @@ EXCLUDE_REASON = {
     "Expense Recoveries": "Expense recovery - review separately",
 }
 
-sales, purchases, excluded = [], [], []
+sales, purchases, excluded, agency = [], [], [], []
 seen_txnids = set()
 
 
@@ -205,6 +205,33 @@ def add_purchase(date, supplier, desc, currency, amount, bucket, wtx, ptx, bank,
                       cost, net, vat, vat_t, wtx, ptx, bank, src_sheet, src_cat, note])
 
 
+def extract_domain(desc):
+    import re
+    m = re.search(r"\(([^)]*)", str(desc or ""))
+    if m and m.group(1).strip():
+        return m.group(1).strip()
+    return "(unspecified)"
+
+
+def add_agency(date, name, desc, currency, amount, wtx, ptx, bank, src_sheet, note=""):
+    desc = str(desc or "")
+    is_sale_leg = "Sale" in desc
+    is_payout_leg = "Purchase" in desc
+    if is_sale_leg:
+        leg = "Sale receipt (from buyer)" if amount >= 0 else "Sale refund (to buyer)"
+    elif is_payout_leg:
+        leg = "Payout to domain owner" if amount < 0 else "Payout returned/refunded"
+    else:
+        leg = "Sale receipt (from buyer)" if amount >= 0 else "Payout to domain owner"
+    key = dedupe_key(wtx, ptx, date, amount, currency)
+    if key:
+        if key in seen_txnids:
+            return
+        seen_txnids.add(key)
+    agency.append([date, extract_domain(desc), leg, name, desc, currency, round(amount, 2),
+                   wtx, ptx, bank, src_sheet, note])
+
+
 def add_excluded(date, name, desc, currency, amount, wtx, ptx, bank, src_sheet, src_cat, reason):
     excluded.append([date, name, desc, currency, round(amount, 2) if isinstance(amount, (int, float)) else amount,
                      wtx, ptx, bank, src_sheet, src_cat, reason])
@@ -239,11 +266,9 @@ for r in wb["Main - Cash"].iter_rows(min_row=2, values_only=True):
         continue
 
     if cat == "Revenue - Domain Name Agency":
-        if amount >= 0:
-            add_sale(date, name, desc, ccy, amount, "Marketplace domain sale (DNWE)", wtx, ptx, bank, src, cat)
-        else:
-            add_purchase(date, name, desc, ccy, amount, "Domain purchases", wtx, ptx, bank, src, cat,
-                         "Marketplace payout - domain acquired from seller")
+        # Agency model: buyer pays DMDC, DMDC pays the domain owner; DMDC's revenue
+        # is the NET of the two legs. Listed on their own tab, not in Sales/Purchases.
+        add_agency(date, name, desc, ccy, amount, wtx, ptx, bank, src)
         continue
 
     if cat == "Revenue - Domain Portfolio Management - DC004":
@@ -425,6 +450,12 @@ for row in sales:
 for row in purchases:
     if row[13] or row[14]:
         _ids[(row[13], row[14], row[9], row[8])] += 1
+for row in agency:
+    if row[7] or row[8]:
+        _ids[(row[7], row[8], row[6], row[5])] += 1
+for row in agency:
+    if (row[7] or row[8]) and _ids[(row[7], row[8], row[6], row[5])] > 1:
+        row[11] = (row[11] + "; " if row[11] else "") + "DUPLICATE TxnID+amount in ledger - possible double entry, VERIFY"
 for row in sales:
     if (row[12] or row[13]) and _ids[(row[12], row[13], row[8], row[7])] > 1:
         row[17] = (row[17] + "; " if row[17] else "") + "DUPLICATE TxnID+amount in ledger - possible double entry, VERIFY"
@@ -436,6 +467,7 @@ for row in purchases:
 sales.sort(key=lambda x: x[0])
 purchases.sort(key=lambda x: x[0])
 excluded.sort(key=lambda x: (x[0] is None, x[0]))
+agency.sort(key=lambda x: (x[1].lower(), x[0]))  # by domain, then date
 
 out = openpyxl.Workbook()
 
@@ -468,11 +500,76 @@ def write_sheet(ws, header, rows, date_col=1):
     ws.freeze_panes = "A2"
 
 
+AGENCY_HDR = ["Date", "Domain", "Leg", "Counterparty", "Description", "Currency",
+              "Amount (receipts +, payouts -)", "Wise TxnID", "Paypal TxnID", "Bank Account",
+              "Source Sheet", "Notes / Flags"]
+AGENCY_REV_HDR = ["Invoice Date", "Invoice Number", "Domain", "Buyer (paid DMDC)", "Domain Owner (paid out)",
+                  "Description", "Currency", "Sale Receipts (net of refunds)", "Payouts to Owner (net of returns)",
+                  "NET AGENCY REVENUE", "VAT Amount", "VAT Treatment", "Wise/Paypal TxnIDs (all legs)",
+                  "# Legs", "Notes / Flags"]
+
 ws = out.active
 ws.title = "Sales"
 write_sheet(ws, SALES_HDR, sales)
 ws2 = out.create_sheet("Purchases Expenses Capex")
 write_sheet(ws2, PURCH_HDR, purchases)
+
+wsA = out.create_sheet("Agency - DNWE Workings")
+write_sheet(wsA, AGENCY_HDR, agency)
+
+# One revenue entry per domain: DMDC's revenue = sale receipts less payout to the domain owner
+net_by_domain = {}
+for row in agency:
+    date, domain, leg, cpty, ccy, amt, wtx, ptx, note = row[0], row[1], row[2], row[3], row[5], row[6], row[7], row[8], row[11]
+    k = (domain.lower(), ccy)
+    e = net_by_domain.setdefault(k, {"domain": domain, "ccy": ccy, "recv": 0.0, "paid": 0.0,
+                                     "n": 0, "recv_date": None, "last": date,
+                                     "buyers": [], "owners": [], "ids": [], "flags": []})
+    if leg.startswith("Sale"):
+        e["recv"] += amt
+        if cpty and cpty not in e["buyers"]:
+            e["buyers"].append(cpty)
+        if e["recv_date"] is None or date > e["recv_date"]:
+            e["recv_date"] = date
+    else:
+        e["paid"] += amt
+        if cpty and cpty not in e["owners"]:
+            e["owners"].append(cpty)
+    e["n"] += 1
+    e["last"] = max(e["last"], date)
+    tid = wtx or ptx
+    if tid and tid not in e["ids"]:
+        e["ids"].append(tid)
+    if "DUPLICATE" in str(note) and "Duplicate leg in ledger - VERIFY" not in e["flags"]:
+        e["flags"].append("Duplicate leg in ledger - VERIFY")
+
+wsN = out.create_sheet("Agency Revenue Entries")
+net_rows = []
+for e in sorted(net_by_domain.values(), key=lambda x: x["domain"].lower()):
+    flags = list(e["flags"])
+    if e["recv"] and not e["paid"]:
+        flags.append("Receipt only - owner payout may be outside period or not yet made")
+    elif e["paid"] and not e["recv"]:
+        flags.append("Payout only - sale receipt outside period (pre-Jun 25) or via other channel")
+    net_rows.append([e["recv_date"] or e["last"], "", e["domain"],
+                     "; ".join(e["buyers"]), "; ".join(e["owners"]),
+                     f"Agency sale of {e['domain']} - net commission (buyer receipts less owner payout)",
+                     e["ccy"], round(e["recv"], 2), round(e["paid"], 2),
+                     round(e["recv"] + e["paid"], 2), "", "TBC - agency commission",
+                     "; ".join(e["ids"]), e["n"], "; ".join(flags)])
+net_rows.sort(key=lambda x: x[0])
+write_sheet(wsN, AGENCY_REV_HDR, net_rows)
+tot_recv, tot_paid = {}, {}
+for row in net_rows:
+    tot_recv[row[6]] = tot_recv.get(row[6], 0) + row[7]
+    tot_paid[row[6]] = tot_paid.get(row[6], 0) + row[8]
+for ccy in sorted(tot_recv):
+    wsN.append(["", "", "TOTAL", "", "", "", ccy, round(tot_recv[ccy], 2), round(tot_paid[ccy], 2),
+                round(tot_recv[ccy] + tot_paid[ccy], 2), "", "", "", "", ""])
+wsN.column_dimensions["C"].width = 30
+wsN.column_dimensions["F"].width = 55
+wsN.column_dimensions["M"].width = 45
+
 ws3 = out.create_sheet("Excluded - Out of Scope")
 write_sheet(ws3, EXCL_HDR, excluded)
 
@@ -492,7 +589,21 @@ tot_by_ccy = {}
 for row in sales:
     tot_by_ccy[row[7]] = tot_by_ccy.get(row[7], 0) + row[8]
 for ccy, tot in sorted(tot_by_ccy.items()):
-    ws4.append(["TOTAL SALES", ccy, "", round(tot, 2)])
+    ws4.append(["TOTAL SALES (excl. agency)", ccy, "", round(tot, 2)])
+ws4.append([])
+ws4.append(["AGENCY - DNWE MARKETPLACE (net = DMDC revenue)", "Currency", "Count", "Total"])
+a_recv, a_paid, a_n = {}, {}, {}
+for row in agency:
+    ccy, amt = row[5], row[6]
+    a_n[ccy] = a_n.get(ccy, 0) + 1
+    if row[2].startswith("Sale"):
+        a_recv[ccy] = a_recv.get(ccy, 0) + amt
+    else:
+        a_paid[ccy] = a_paid.get(ccy, 0) + amt
+for ccy in sorted(a_n):
+    ws4.append(["Agency sale receipts (net of refunds)", ccy, "", round(a_recv.get(ccy, 0), 2)])
+    ws4.append(["Agency payouts to domain owners (net of returns)", ccy, "", round(a_paid.get(ccy, 0), 2)])
+    ws4.append(["NET AGENCY REVENUE", ccy, a_n[ccy], round(a_recv.get(ccy, 0) + a_paid.get(ccy, 0), 2)])
 ws4.append([])
 ws4.append(["PURCHASES / EXPENSES / CAPEX", "Currency", "Count", "Gross Total"])
 agg = {}
@@ -544,8 +655,15 @@ notes = [
     "hard-coded in the accounts. Agent vs principal VAT treatment to be confirmed. DC004 renewal costs paid by",
     "DMDC are listed under Registrar & hosting fees.",
     "",
-    "MARKETPLACE (DNWE) model: buyer receipts are listed as sales; payouts to domain sellers are listed as",
-    "purchases (Domain purchases). Commission/margin basis for VAT to be confirmed by the accountant.",
+    "AGENCY (DNWE MARKETPLACE): all 'Revenue - Domain Name Agency' transactions are on the",
+    "'Agency - DNWE Workings' tab, NOT in Sales/Purchases. Although the ledger descriptions read 'Sale' and",
+    "'Purchase', DMDC does not acquire these domains: the buyer pays DMDC (sale receipt leg) and DMDC then",
+    "remits the price less its commission to the domain owner (payout leg). DMDC's revenue is the NET of the",
+    "two legs. The 'Agency Revenue Entries' tab pairs the legs by domain and creates ONE REVENUE LINE PER",
+    "DOMAIN (net commission) - these lines are the agency revenue for the VAT return; the workings tab shows",
+    "how each is made up, with all Wise/Paypal TxnIDs. Domains flagged 'receipt only'/'payout only' have their",
+    "matching leg outside the period, still pending, or settled via another channel. VAT treatment of the",
+    "commission (agent basis) to be confirmed by the accountant.",
     "",
     "FLAGGED ITEMS: (1) Synagogue.com sale USD 40,000 (21/11/2025) received via EW3N Ltd - removed from accounts",
     "as intercompany but appears to be a genuine DMDC domain sale; (2) domain purchases funded via EW3N Ltd",
