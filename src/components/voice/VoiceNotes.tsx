@@ -88,6 +88,10 @@ export function VoiceNotes({
   const speechRef = useRef<SpeechRecognitionLike | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const secondsRef = useRef(0);
+  // Refs (not state) so unmount cleanup and late recorder callbacks never
+  // read stale closure values.
+  const previewUrlRef = useRef<string | null>(null);
+  const recorderOpenRef = useRef(false);
 
   useEffect(() => () => cleanup(), []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -106,7 +110,10 @@ export function VoiceNotes({
     recorderRef.current = null;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
   }
 
   async function beginRecording() {
@@ -133,13 +140,14 @@ export function VoiceNotes({
       if (e.data.size > 0) chunksRef.current.push(e.data);
     };
     recorder.onstop = () => {
+      // The sheet may already be closed (unmount/dismiss mid-recording).
+      if (!recorderOpenRef.current) return;
       const type = recorder.mimeType || mimeType || "audio/mp4";
       const blob = new Blob(chunksRef.current, { type });
       blobRef.current = blob;
-      setPreviewUrl((old) => {
-        if (old) URL.revokeObjectURL(old);
-        return URL.createObjectURL(blob);
-      });
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = URL.createObjectURL(blob);
+      setPreviewUrl(previewUrlRef.current);
       setPhase("preview");
     };
     recorder.start(1000);
@@ -209,11 +217,13 @@ export function VoiceNotes({
       toast("Voice note saved");
       router.refresh();
     } catch {
+      toast("Couldn't save the recording — try again");
       setBusy(false);
     }
   }
 
   function closeRecorder() {
+    recorderOpenRef.current = false;
     cleanup();
     setPreviewUrl(null);
     setRecorderOpen(false);
@@ -228,6 +238,7 @@ export function VoiceNotes({
         <button
           type="button"
           onClick={() => {
+            recorderOpenRef.current = true;
             setRecorderOpen(true);
             setPhase("idle");
           }}
@@ -284,9 +295,9 @@ export function VoiceNotes({
             destructive: true,
             onSelect: () => {
               if (!menuFor) return;
-              void api(`/api/voice-notes/${menuFor.id}`, { method: "DELETE" }).then(() =>
-                router.refresh(),
-              );
+              void api(`/api/voice-notes/${menuFor.id}`, { method: "DELETE" })
+                .then(() => router.refresh())
+                .catch(() => toast("Couldn't delete — try again"));
             },
           },
         ]}
@@ -306,10 +317,12 @@ export function VoiceNotes({
               void api(`/api/voice-notes/${editFor.id}`, {
                 method: "PATCH",
                 json: { transcript: editText || null },
-              }).then(() => {
-                setEditFor(null);
-                router.refresh();
-              });
+              })
+                .then(() => {
+                  setEditFor(null);
+                  router.refresh();
+                })
+                .catch(() => toast("Couldn't save the transcript — try again"));
             }}
           >
             Save

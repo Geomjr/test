@@ -48,10 +48,14 @@ export function TasksScreen({
   ].filter((section) => section.items.length > 0);
 
   async function toggle(task: TaskItem) {
-    await api(`/api/tasks/${task.id}`, {
-      method: "PATCH",
-      json: { completed: !task.completedAt },
-    });
+    try {
+      await api(`/api/tasks/${task.id}`, {
+        method: "PATCH",
+        json: { completed: !task.completedAt },
+      });
+    } catch {
+      // Offline / failed — refresh below restores the true state either way.
+    }
     router.refresh();
   }
 

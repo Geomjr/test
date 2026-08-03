@@ -25,15 +25,19 @@ export function Screen({
   largeTitle?: boolean;
 }) {
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const collapsed = !largeTitle || scrolled;
 
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
+    // Measure the real header height (includes safe-area inset in an
+    // installed PWA) instead of hardcoding it.
+    const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 48;
     const observer = new IntersectionObserver(
       ([entry]) => setScrolled(!(entry?.isIntersecting ?? true)),
-      { rootMargin: "-44px 0px 0px 0px" },
+      { rootMargin: `${-Math.max(Math.round(headerHeight) - 4, 0)}px 0px 0px 0px` },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -42,6 +46,7 @@ export function Screen({
   return (
     <>
       <header
+        ref={headerRef}
         className={`sticky top-0 z-30 material-bar transition-shadow ${
           collapsed ? "hairline-b" : ""
         }`}

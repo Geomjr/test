@@ -16,7 +16,8 @@ export type ContactRow = {
   company: string | null;
   role: string | null;
   tier: Tier;
-  hasPhoto: boolean;
+  /** updatedAt when a photo exists (cache-buster), null otherwise */
+  photoVersion: number | null;
   tags: string[];
   lastInteractionDate: string | null;
 };
@@ -97,7 +98,11 @@ export function ContactsList({ contacts }: { contacts: ContactRow[] }) {
                   leading={
                     <Avatar
                       name={contact.name}
-                      photoUrl={contact.hasPhoto ? `/api/contacts/${contact.id}/photo` : null}
+                      photoUrl={
+                        contact.photoVersion !== null
+                          ? `/api/contacts/${contact.id}/photo?v=${contact.photoVersion}`
+                          : null
+                      }
                       size={40}
                     />
                   }

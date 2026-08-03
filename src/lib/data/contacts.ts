@@ -1,6 +1,6 @@
 import "server-only";
 import { and, desc, eq, inArray, max, sql } from "drizzle-orm";
-import { db, tables } from "@/lib/db";
+import { db, rawDb, tables } from "@/lib/db";
 import { newId } from "@/lib/ids";
 import type { Contact, ImportantDate, Interaction, PipelineItem, Task, VoiceNote } from "@/lib/db/schema";
 import type { ContactInput } from "@/lib/validation";
@@ -203,6 +203,11 @@ function setContactTags(userId: string, contactId: string, tagNames: string[]): 
   `);
 }
 
+/** Runs multi-statement writes atomically (nested calls become savepoints). */
+function atomically<T>(fn: () => T): T {
+  return rawDb().transaction(fn)();
+}
+
 export function createContact(userId: string, input: ContactInput): Contact {
   const now = Date.now();
   const contact: Contact = {
@@ -225,8 +230,10 @@ export function createContact(userId: string, input: ContactInput): Contact {
     createdAt: now,
     updatedAt: now,
   };
-  db().insert(tables.contacts).values(contact).run();
-  setContactTags(userId, contact.id, input.tags);
+  atomically(() => {
+    db().insert(tables.contacts).values(contact).run();
+    setContactTags(userId, contact.id, input.tags);
+  });
   return contact;
 }
 
@@ -238,10 +245,11 @@ export function updateContact(
   const existing = getContact(userId, id);
   if (!existing) return null;
 
-  db()
-    .update(tables.contacts)
-    .set({
-      name: input.name,
+  atomically(() => {
+    db()
+      .update(tables.contacts)
+      .set({
+        name: input.name,
       company: input.company,
       role: input.role,
       industry: input.industry,
@@ -253,13 +261,14 @@ export function updateContact(
       tier: input.tier,
       cadenceDays: input.cadenceDays,
       birthday: input.birthday,
-      notes: input.notes,
-      updatedAt: Date.now(),
-    })
-    .where(and(eq(tables.contacts.id, id), eq(tables.contacts.userId, userId)))
-    .run();
+        notes: input.notes,
+        updatedAt: Date.now(),
+      })
+      .where(and(eq(tables.contacts.id, id), eq(tables.contacts.userId, userId)))
+      .run();
 
-  setContactTags(userId, id, input.tags);
+    setContactTags(userId, id, input.tags);
+  });
   return getContact(userId, id);
 }
 
@@ -277,19 +286,21 @@ export function deleteContact(userId: string, id: string): string[] | null {
     .all();
   files.push(...voiceRows.map((v) => v.filePath));
 
-  // FK cascades don't reliably fire child-table triggers in SQLite, so scrub
-  // the search index for this contact's children explicitly before deleting.
-  db().run(sql`
-    DELETE FROM search_index WHERE
-      (entity_type = 'interaction' AND entity_id IN (SELECT id FROM interactions WHERE contact_id = ${id}))
-      OR (entity_type = 'voice_note' AND entity_id IN (SELECT id FROM voice_notes WHERE contact_id = ${id}))
-      OR (entity_type = 'task' AND entity_id IN (SELECT id FROM tasks WHERE contact_id = ${id}))
-  `);
+  atomically(() => {
+    // FK cascades don't reliably fire child-table triggers in SQLite, so scrub
+    // the search index for this contact's children explicitly before deleting.
+    db().run(sql`
+      DELETE FROM search_index WHERE
+        (entity_type = 'interaction' AND entity_id IN (SELECT id FROM interactions WHERE contact_id = ${id}))
+        OR (entity_type = 'voice_note' AND entity_id IN (SELECT id FROM voice_notes WHERE contact_id = ${id}))
+        OR (entity_type = 'task' AND entity_id IN (SELECT id FROM tasks WHERE contact_id = ${id}))
+    `);
 
-  db()
-    .delete(tables.contacts)
-    .where(and(eq(tables.contacts.id, id), eq(tables.contacts.userId, userId)))
-    .run();
+    db()
+      .delete(tables.contacts)
+      .where(and(eq(tables.contacts.id, id), eq(tables.contacts.userId, userId)))
+      .run();
+  });
 
   return files;
 }

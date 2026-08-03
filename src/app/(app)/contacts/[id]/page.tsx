@@ -4,6 +4,7 @@ import { getContactDetail, listContacts } from "@/lib/data/contacts";
 import { userToday } from "@/lib/today";
 import { aiEnabled } from "@/lib/ai/client";
 import { daysBetween } from "@/lib/dates";
+import { sanitizeHttpUrl } from "@/lib/urls";
 import { Screen } from "@/components/ui/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { TagChip, TierBadge } from "@/components/ui/badges";
@@ -47,6 +48,8 @@ export default async function ContactPage({
 
   const subtitle = [contact.role, contact.company].filter(Boolean).join(" · ");
   const location = [contact.industry, contact.city].filter(Boolean).join(" · ");
+  // Defense in depth for rows written before URL sanitization existed.
+  const safeLinkedinUrl = sanitizeHttpUrl(contact.linkedinUrl);
 
   return (
     <Screen
@@ -59,7 +62,11 @@ export default async function ContactPage({
       <div className="flex flex-col items-center gap-2 pb-2 pt-4 text-center">
         <Avatar
           name={contact.name}
-          photoUrl={contact.photoPath ? `/api/contacts/${contact.id}/photo` : null}
+          photoUrl={
+            contact.photoPath
+              ? `/api/contacts/${contact.id}/photo?v=${contact.updatedAt}`
+              : null
+          }
           size={92}
         />
         <div>
@@ -169,12 +176,12 @@ export default async function ContactPage({
               title={<a href={`tel:${contact.phone}`} className="text-tint">{contact.phone}</a>}
             />
           ) : null}
-          {contact.linkedinUrl ? (
+          {safeLinkedinUrl ? (
             <ListRow
               leading={<LinkIcon size={20} />}
               title={
                 <a
-                  href={contact.linkedinUrl}
+                  href={safeLinkedinUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="text-tint"

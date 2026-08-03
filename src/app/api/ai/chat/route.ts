@@ -29,7 +29,11 @@ export async function POST(request: Request) {
 
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return badRequest();
-  if (parsed.data.messages[parsed.data.messages.length - 1]?.role !== "user") {
+  // The Messages API requires the conversation to start with a user turn and
+  // end with one — auto-trim rather than erroring on client windowing slips.
+  const messages = [...parsed.data.messages];
+  while (messages[0]?.role === "assistant") messages.shift();
+  if (messages.length === 0 || messages[messages.length - 1]?.role !== "user") {
     return badRequest("The last message must be from the user.");
   }
 
@@ -47,6 +51,6 @@ export async function POST(request: Request) {
       },
       { type: "text", text: `The user's name is ${user.name}. Today is ${today}.` },
     ],
-    messages: parsed.data.messages,
+    messages,
   });
 }

@@ -18,7 +18,7 @@ export default async function ContactsPage() {
     company: c.company,
     role: c.role,
     tier: c.tier,
-    hasPhoto: Boolean(c.photoPath),
+    photoVersion: c.photoPath ? c.updatedAt : null,
     tags: c.tags,
     lastInteractionDate: c.lastInteractionDate,
   }));

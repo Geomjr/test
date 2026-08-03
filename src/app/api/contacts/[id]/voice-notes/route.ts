@@ -1,7 +1,7 @@
 import { getUser } from "@/lib/auth/session";
 import { badRequest, json, notFound, unauthorized } from "@/lib/http";
 import { contactOwned, createVoiceNote, newVoiceNoteId } from "@/lib/data/voice";
-import { putFile } from "@/lib/storage";
+import { deleteFile, putFile } from "@/lib/storage";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -50,16 +50,22 @@ export async function POST(request: Request, context: Ctx) {
     Buffer.from(await file.arrayBuffer()),
   );
 
-  const note = createVoiceNote({
-    id: noteId,
-    userId: user.id,
-    contactId,
-    filePath: relPath,
-    mimeType: mime,
-    durationSec: Number.isFinite(durationRaw) && durationRaw > 0 ? durationRaw : null,
-    transcript,
-    createdAt: Date.now(),
-  });
+  let note;
+  try {
+    note = createVoiceNote({
+      id: noteId,
+      userId: user.id,
+      contactId,
+      filePath: relPath,
+      mimeType: mime,
+      durationSec: Number.isFinite(durationRaw) && durationRaw > 0 ? durationRaw : null,
+      transcript,
+      createdAt: Date.now(),
+    });
+  } catch (error) {
+    await deleteFile(relPath); // don't orphan the upload
+    throw error;
+  }
 
   return json({ voiceNote: note }, 201);
 }

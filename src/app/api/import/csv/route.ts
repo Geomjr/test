@@ -45,10 +45,12 @@ export async function POST(request: Request) {
     .all();
   const statuses = dedupeRows(existing, rows);
 
+  // Return every row (up to the commit endpoint's 2000-row cap) so large
+  // LinkedIn exports are fully importable; the client caps only the display.
   return json({
     headers: parsed.headers,
     skippedPreamble: parsed.skippedPreamble,
     total: rows.length,
-    rows: rows.slice(0, 500).map((row, i) => ({ ...row, ...statuses[i] })),
+    rows: rows.slice(0, 2000).map((row, i) => ({ ...row, ...statuses[i] })),
   });
 }

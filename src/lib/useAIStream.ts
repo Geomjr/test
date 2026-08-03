@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type AIStreamState = {
   text: string;
@@ -16,6 +16,10 @@ export function useAIStream() {
     error: null,
   });
   const abortRef = useRef<AbortController | null>(null);
+
+  // Don't leave a stream (and its server-side generation) running after the
+  // component unmounts.
+  useEffect(() => () => abortRef.current?.abort(), []);
 
   const stop = useCallback(() => {
     abortRef.current?.abort();

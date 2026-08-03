@@ -143,7 +143,7 @@ export function ImportWizard() {
         <p className="text-[13px] text-label-2">
           {newCount} new · {dupCount} already in Orbit
           {preview.total > preview.rows.length
-            ? ` · showing first ${preview.rows.length}`
+            ? ` · first ${preview.rows.length} importable in one batch`
             : ""}
         </p>
         <div className="flex gap-2 pt-3">
@@ -170,8 +170,15 @@ export function ImportWizard() {
         </div>
       </div>
 
-      <ListSection title="Rows">
-        {preview.rows.map((row, i) => (
+      <ListSection
+        title="Rows"
+        footer={
+          preview.rows.length > 500
+            ? `Showing the first 500 of ${preview.rows.length} rows — the selection above still covers all of them.`
+            : undefined
+        }
+      >
+        {preview.rows.slice(0, 500).map((row, i) => (
           <button
             key={i}
             type="button"

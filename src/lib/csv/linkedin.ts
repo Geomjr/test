@@ -170,13 +170,24 @@ export function dedupeRows(
     byName.set(normalizeName(contact.name), contact.id);
   }
 
+  const seenEmails = new Set<string>();
+  const seenNames = new Set<string>();
+
   return rows.map((row) => {
-    if (row.email) {
-      const matchId = byEmail.get(row.email.toLowerCase());
+    const email = row.email?.toLowerCase();
+    const name = normalizeName(row.name);
+
+    if (email) {
+      const matchId = byEmail.get(email);
       if (matchId) return { status: "duplicate", matchId };
+      if (seenEmails.has(email)) return { status: "duplicate", matchId: "earlier-row" };
     }
-    const matchId = byName.get(normalizeName(row.name));
+    const matchId = byName.get(name);
     if (matchId) return { status: "duplicate", matchId };
+    if (seenNames.has(name)) return { status: "duplicate", matchId: "earlier-row" };
+
+    if (email) seenEmails.add(email);
+    seenNames.add(name);
     return { status: "new" };
   });
 }

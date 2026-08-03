@@ -1,7 +1,7 @@
 import "server-only";
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
-import { eq } from "drizzle-orm";
+import { eq, lt } from "drizzle-orm";
 import { db, tables } from "@/lib/db";
 import { SESSION_COOKIE } from "./cookie";
 import type { User } from "@/lib/db/schema";
@@ -18,6 +18,8 @@ function hashToken(token: string): string {
 export function createSession(userId: string): string {
   const token = crypto.randomBytes(32).toString("base64url");
   const now = Date.now();
+  // Opportunistic purge so abandoned sessions don't accumulate forever.
+  db().delete(tables.sessions).where(lt(tables.sessions.expiresAt, now)).run();
   db()
     .insert(tables.sessions)
     .values({

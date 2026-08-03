@@ -8,5 +8,13 @@ import { todayISO } from "@/lib/dates";
  */
 export async function userToday(): Promise<string> {
   const tz = (await cookies()).get("tz")?.value;
-  return todayISO(tz ? decodeURIComponent(tz) : null);
+  let decoded: string | null = null;
+  if (tz) {
+    try {
+      decoded = decodeURIComponent(tz);
+    } catch {
+      decoded = null; // malformed cookie — fall back to UTC rather than 500
+    }
+  }
+  return todayISO(decoded);
 }

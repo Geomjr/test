@@ -66,6 +66,7 @@ export function patchTask(
   if (patch.completed !== undefined) {
     updates.completedAt = patch.completed ? Date.now() : null;
   }
+  if (Object.keys(updates).length === 0) return existing; // empty PATCH body
 
   db()
     .update(tables.tasks)

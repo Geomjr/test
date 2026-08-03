@@ -23,7 +23,7 @@ export type BoardCard = {
     name: string;
     company: string | null;
     role: string | null;
-    hasPhoto: boolean;
+    photoVersion: number | null;
   };
 };
 
@@ -138,8 +138,8 @@ export function PipelineBoard({
                       <Avatar
                         name={card.contact.name}
                         photoUrl={
-                          card.contact.hasPhoto
-                            ? `/api/contacts/${card.contact.id}/photo`
+                          card.contact.photoVersion !== null
+                            ? `/api/contacts/${card.contact.id}/photo?v=${card.contact.photoVersion}`
                             : null
                         }
                         size={32}

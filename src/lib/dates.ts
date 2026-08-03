@@ -37,8 +37,12 @@ const MONTHS = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-/** "2026-03-12" → "Mar 12, 2026" (or "Mar 12" when the year is omitted). */
+/** "2026-03-12" → "Mar 12, 2026"; "--03-12" (year unknown) → "Mar 12". */
 export function formatDate(iso: string, opts?: { year?: boolean }): string {
+  if (iso.startsWith("--")) {
+    const md = monthDay(iso);
+    return md ? `${MONTHS[md.month - 1]} ${md.day}` : iso;
+  }
   const [y, m, d] = iso.split("-").map(Number);
   if (!m || !d) return iso;
   const base = `${MONTHS[m - 1]} ${d}`;

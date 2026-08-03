@@ -51,10 +51,14 @@ export function AssistantScreen({
     abortRef.current = controller;
 
     try {
+      // Trim to a window that starts with a user turn — the Messages API
+      // rejects conversations whose first message is from the assistant.
+      const window = history.slice(-20);
+      while (window[0]?.role === "assistant") window.shift();
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history.slice(-20) }),
+        body: JSON.stringify({ messages: window }),
         signal: controller.signal,
       });
       if (!res.ok || !res.body) {

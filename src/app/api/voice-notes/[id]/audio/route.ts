@@ -27,6 +27,7 @@ export async function GET(request: Request, context: Ctx) {
     "Content-Type": note.mimeType,
     "Accept-Ranges": "bytes",
     "Cache-Control": "private, max-age=3600",
+    "X-Content-Type-Options": "nosniff",
   };
 
   const rangeHeader = request.headers.get("range");

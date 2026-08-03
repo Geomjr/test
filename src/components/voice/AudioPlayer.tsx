@@ -36,13 +36,21 @@ export function AudioPlayer({
       setPlaying(false);
       setPosition(0);
     };
+    // Track play state from the element's own events so OS-level interruptions
+    // (calls, Siri, another player grabbing the session) stay in sync.
+    const onPlay = () => setPlaying(true);
+    const onPause = () => setPlaying(false);
     audio.addEventListener("timeupdate", onTime);
     audio.addEventListener("loadedmetadata", onMeta);
     audio.addEventListener("ended", onEnd);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
     return () => {
       audio.removeEventListener("timeupdate", onTime);
       audio.removeEventListener("loadedmetadata", onMeta);
       audio.removeEventListener("ended", onEnd);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
     };
   }, []);
 
@@ -57,12 +65,8 @@ export function AudioPlayer({
         onClick={() => {
           const audio = audioRef.current;
           if (!audio) return;
-          if (playing) {
-            audio.pause();
-            setPlaying(false);
-          } else {
-            void audio.play().then(() => setPlaying(true)).catch(() => {});
-          }
+          if (playing) audio.pause();
+          else void audio.play().catch(() => {});
         }}
         className="pressable flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tint-soft text-tint"
       >

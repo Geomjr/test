@@ -40,17 +40,20 @@ export function updateInteraction(
     .get();
   if (!existing) return null;
 
+  const updates = {
+    ...(patch.type !== undefined ? { type: patch.type } : {}),
+    ...(patch.date !== undefined ? { date: patch.date } : {}),
+    ...(patch.notes !== undefined ? { notes: patch.notes } : {}),
+  };
+  if (Object.keys(updates).length === 0) return existing; // empty PATCH body
+
   db()
     .update(tables.interactions)
-    .set({
-      ...(patch.type !== undefined ? { type: patch.type } : {}),
-      ...(patch.date !== undefined ? { date: patch.date } : {}),
-      ...(patch.notes !== undefined ? { notes: patch.notes } : {}),
-    })
+    .set(updates)
     .where(and(eq(tables.interactions.id, id), eq(tables.interactions.userId, userId)))
     .run();
 
-  return { ...existing, ...patch } as Interaction;
+  return { ...existing, ...updates };
 }
 
 export function deleteInteraction(userId: string, id: string): boolean {

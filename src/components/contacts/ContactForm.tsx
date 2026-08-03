@@ -61,7 +61,8 @@ export function ContactForm({
     howWeMet: initial?.howWeMet ?? "",
     tier: initial?.tier ?? "new",
     cadenceDays: initial?.cadenceDays ?? null,
-    birthday: initial?.birthday ?? "",
+    // date inputs can't represent "--MM-DD"; shown empty, preserved on save
+    birthday: initial?.birthday?.startsWith("--") ? "" : (initial?.birthday ?? ""),
     notes: initial?.notes ?? "",
     tags: initial?.tags ?? [],
   });
@@ -79,6 +80,12 @@ export function ContactForm({
     setTagDraft("");
   }
 
+  // A year-less "--MM-DD" birthday can't render in <input type="date">; if the
+  // user never touched the (empty-looking) field, preserve the stored value
+  // instead of silently erasing it on save.
+  const yearlessBirthday =
+    initial?.birthday?.startsWith("--") === true ? initial.birthday : null;
+
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -95,7 +102,7 @@ export function ContactForm({
       howWeMet: values.howWeMet,
       tier: values.tier,
       cadenceDays: values.cadenceDays,
-      birthday: values.birthday || null,
+      birthday: values.birthday || yearlessBirthday,
       notes: values.notes,
       tags: values.tags,
     };

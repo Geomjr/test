@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { INTERACTION_TYPES, PIPELINE_STAGES, TIERS } from "@/lib/db/schema";
+import { sanitizeHttpUrl } from "@/lib/urls";
 
 export const dateStr = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expected YYYY-MM-DD");
 
@@ -25,7 +26,7 @@ export const contactInput = z.object({
   city: optStr(120),
   email: optStr(254),
   phone: optStr(50),
-  linkedinUrl: optStr(500),
+  linkedinUrl: optStr(500).transform((v) => sanitizeHttpUrl(v)),
   howWeMet: optStr(1000),
   tier: z.enum(TIERS).default("new"),
   cadenceDays: z.number().int().min(1).max(730).nullish().transform((v) => v ?? null),

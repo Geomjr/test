@@ -21,7 +21,7 @@ export default async function PipelinePage() {
       name: item.contact.name,
       company: item.contact.company,
       role: item.contact.role,
-      hasPhoto: Boolean(item.contact.photoPath),
+      photoVersion: item.contact.photoPath ? item.updatedAt : null,
     },
   }));
 
