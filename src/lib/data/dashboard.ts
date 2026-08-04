@@ -1,16 +1,25 @@
 import "server-only";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, gte, isNull } from "drizzle-orm";
 import { db, tables } from "@/lib/db";
 import { listContacts } from "./contacts";
 import { computeOverdue, type CadenceContact, type OverdueEntry } from "@/lib/domain/overdue";
 import { expandUpcoming, type DateSource, type UpcomingEvent } from "@/lib/domain/upcoming";
 import { pickReconnects, type ReconnectSuggestion } from "@/lib/domain/reconnect";
+import { pickTodaysThree, type TodayMove } from "@/lib/domain/today";
 import type { PipelineCard } from "./pipeline";
 import { listPipeline } from "./pipeline";
 import type { TaskWithContact } from "./tasks";
 import { addDays } from "@/lib/dates";
 
+export type WeekPulse = {
+  total: number;
+  /** Interactions per day, trailing 7 days ending today. */
+  byDay: number[];
+};
+
 export type DashboardData = {
+  todaysThree: TodayMove[];
+  weekPulse: WeekPulse;
   overdue: OverdueEntry[];
   upcoming: UpcomingEvent[];
   reconnects: ReconnectSuggestion[];
@@ -93,7 +102,36 @@ export function getDashboardData(userId: string, todayIso: string): DashboardDat
     (item) => item.stage !== "keep_warm" && item.updatedAt < staleBefore,
   );
 
+  const weekStart = addDays(todayIso, -6);
+  const weekRows = db()
+    .select({ date: tables.interactions.date })
+    .from(tables.interactions)
+    .where(
+      and(eq(tables.interactions.userId, userId), gte(tables.interactions.date, weekStart)),
+    )
+    .all();
+  const byDay = Array.from({ length: 7 }, (_, i) => {
+    const day = addDays(todayIso, i - 6);
+    return weekRows.filter((r) => r.date === day).length;
+  });
+  const weekPulse: WeekPulse = { total: weekRows.length, byDay };
+
+  const todaysThree = pickTodaysThree({
+    overdue,
+    upcoming,
+    reconnects,
+    promiseTasks: dueTasks.map((t) => ({
+      id: t.id,
+      title: t.title,
+      contactId: t.contactId,
+      contactName: t.contactName,
+      dueDate: t.dueDate,
+    })),
+  });
+
   return {
+    todaysThree,
+    weekPulse,
     overdue,
     upcoming,
     reconnects,

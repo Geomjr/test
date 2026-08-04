@@ -12,15 +12,16 @@ import { Button } from "@/components/ui/Button";
 import {
   CakeIcon,
   CalendarIcon,
-  CheckCircleIcon,
   ChecklistIcon,
   ColumnsIcon,
   EllipsisCircleIcon,
+  MicIcon,
   PeopleIcon,
 } from "@/components/ui/icons";
 import { STAGE_META } from "@/lib/pipeline-meta";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
 
 function Medallion({
   children,
@@ -47,7 +48,24 @@ export default async function TodayPage() {
 
   const today = await userToday();
   const data = getDashboardData(user.id, today);
-  const weekday = WEEKDAYS[new Date(isoToUTC(today)).getUTCDay()];
+  const todayUTC = new Date(isoToUTC(today));
+  const weekday = WEEKDAYS[todayUTC.getUTCDay()];
+
+  const heroContactIds = new Set(data.todaysThree.map((m) => m.contactId));
+  const heroTaskIds = new Set(
+    data.todaysThree.flatMap((m) => (m.kind === "promise" && m.taskId ? [m.taskId] : [])),
+  );
+  const overdueRest = data.overdue.filter((e) => !heroContactIds.has(e.id));
+  const tasksRest = data.dueTasks.filter((t) => !heroTaskIds.has(t.id));
+  const upcomingRest = data.upcoming.filter(
+    (e) => !(e.label === "Birthday" && heroContactIds.has(e.contactId)),
+  );
+
+  const pulseMax = Math.max(...data.weekPulse.byDay, 1);
+  // Day letters for the trailing week, ending today.
+  const dayLetters = data.weekPulse.byDay.map(
+    (_, i) => DAY_LETTERS[(todayUTC.getUTCDay() - 6 + i + 7) % 7],
+  );
 
   return (
     <Screen
@@ -85,50 +103,85 @@ export default async function TodayPage() {
         </div>
       ) : (
         <>
-          {data.overdue.length > 0 ? (
-            <ListSection title="Reach out" count={data.overdue.length}>
-              {data.overdue.slice(0, 6).map((entry) => (
-                <ListRow
-                  key={entry.id}
-                  href={`/contacts/${entry.id}`}
-                  leading={<Avatar name={entry.name} size={42} />}
-                  title={<span className="font-medium">{entry.name}</span>}
-                  subtitle={`Every ${entry.cadenceDays}d · last touch ${entry.daysSince}d ago`}
-                  subtitleLines={2}
-                  value={
-                    entry.daysOverdue === 0 ? (
-                      <span className="rounded-full bg-orange-soft px-2.5 py-1 text-[12px] font-bold text-orange">
-                        Due today
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-red-soft px-2.5 py-1 text-[12px] font-bold text-red">
-                        {entry.daysOverdue}d late
-                      </span>
-                    )
-                  }
-                  chevron
-                />
-              ))}
-            </ListSection>
+          {/* Today's three — one small, clear ask. */}
+          {data.todaysThree.length > 0 ? (
+            <section className="mt-2">
+              <h2 className="px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em]">
+                {data.todaysThree.length === 1 ? "One for today" : "Today's three"}
+              </h2>
+              <div className="card overflow-hidden">
+                {data.todaysThree.map((move) => (
+                  <ListRow
+                    key={`${move.kind}-${move.contactId}`}
+                    href={`/contacts/${move.contactId}`}
+                    leading={<Avatar name={move.contactName} size={42} />}
+                    title={<span className="font-medium">{move.contactName}</span>}
+                    subtitle={move.reason}
+                    subtitleLines={2}
+                    value={
+                      move.kind === "birthday" ? (
+                        <CakeIcon size={18} className="text-pink" />
+                      ) : move.kind === "promise" ? (
+                        <ChecklistIcon size={18} className="text-label-3" />
+                      ) : undefined
+                    }
+                    chevron
+                  />
+                ))}
+              </div>
+            </section>
           ) : (
-            <ListSection title="Reach out">
+            <ListSection title="Today">
               <div className="flex items-center gap-3.5 px-4 py-4">
-                <Medallion bg="var(--green-soft)" color="var(--green)">
-                  <CheckCircleIcon size={22} />
+                <Medallion bg="var(--accent-soft)" color="var(--label)">
+                  ✓
                 </Medallion>
                 <div>
-                  <p className="text-[16px] font-medium">All caught up</p>
-                  <p className="text-[13.5px] text-label-2">
-                    Nobody is past their cadence right now.
-                  </p>
+                  <p className="text-[16px] font-medium">Nothing waiting on you</p>
+                  <p className="text-[13.5px] text-label-2">Your orbit is quiet today.</p>
                 </div>
               </div>
             </ListSection>
           )}
 
-          {data.upcoming.length > 0 ? (
+          {/* Week pulse — progress, framed as momentum, never as debt. */}
+          <section className="mt-5">
+            <div className="card flex items-center justify-between bg-surface-dark px-5 py-4 text-on-dark">
+              <div>
+                <p className="tnum text-[30px] font-bold leading-none tracking-[-0.02em]">
+                  {data.weekPulse.total}
+                </p>
+                <p className="pt-1.5 text-[13px] font-medium text-on-dark-2">
+                  {data.weekPulse.total === 0
+                    ? "touches this week — one hello starts it"
+                    : data.weekPulse.total === 1
+                      ? "touch this week"
+                      : "touches this week"}
+                </p>
+              </div>
+              <div className="flex items-end gap-[6px]">
+                {data.weekPulse.byDay.map((count, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <div
+                      className="w-[11px] rounded-[3px]"
+                      style={{
+                        height: `${6 + (count / pulseMax) * 30}px`,
+                        background:
+                          count > 0 ? "var(--accent)" : "rgba(246, 243, 234, 0.13)",
+                      }}
+                    />
+                    <span className="text-[9px] font-medium leading-none text-on-dark-2">
+                      {dayLetters[i]}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {upcomingRest.length > 0 ? (
             <ListSection title="Coming up">
-              {data.upcoming.map((event) => (
+              {upcomingRest.map((event) => (
                 <ListRow
                   key={`${event.contactId}-${event.label}-${event.occursOn}`}
                   href={`/contacts/${event.contactId}`}
@@ -156,16 +209,34 @@ export default async function TodayPage() {
             </ListSection>
           ) : null}
 
-          {data.dueTasks.length > 0 ? (
+          {overdueRest.length > 0 ? (
+            <ListSection title="More good moments">
+              {overdueRest.slice(0, 4).map((entry) => (
+                <ListRow
+                  key={entry.id}
+                  href={`/contacts/${entry.id}`}
+                  leading={<Avatar name={entry.name} size={42} />}
+                  title={<span className="font-medium">{entry.name}</span>}
+                  subtitle={`Every ${entry.cadenceDays}d rhythm`}
+                  value={
+                    <span className="tnum text-[15px] text-label-2">{entry.daysSince}d</span>
+                  }
+                  chevron
+                />
+              ))}
+            </ListSection>
+          ) : null}
+
+          {tasksRest.length > 0 ? (
             <ListSection
-              title="Tasks due"
+              title="Open loops"
               action={
                 <Link href="/tasks" className="pressable text-[15px] font-semibold text-tint">
                   All tasks
                 </Link>
               }
             >
-              {data.dueTasks.slice(0, 5).map((task) => (
+              {tasksRest.slice(0, 3).map((task) => (
                 <ListRow
                   key={task.id}
                   href={task.contactId ? `/contacts/${task.contactId}` : "/tasks"}
@@ -179,8 +250,8 @@ export default async function TodayPage() {
                   subtitleLines={2}
                   value={
                     task.dueDate && task.dueDate < today ? (
-                      <span className="rounded-full bg-red-soft px-2.5 py-1 text-[12px] font-bold text-red">
-                        Overdue
+                      <span className="text-[14px] text-label-2">
+                        {formatDate(task.dueDate, { year: false })}
                       </span>
                     ) : task.dueDate ? (
                       <span className="font-semibold text-label">
@@ -237,8 +308,29 @@ export default async function TodayPage() {
                   </Link>
                 ))}
               </div>
+              <p className="px-1.5 pt-2 text-[13px] text-label-2">
+                People are gladder to hear from you than you&apos;d expect.
+              </p>
             </section>
           ) : null}
+
+          {/* Post-chat capture cue — the habit anchor. */}
+          <section className="mt-8">
+            <Link
+              href="/capture"
+              className="card pressable flex items-center gap-3.5 px-4 py-4"
+            >
+              <Medallion bg="var(--accent)" color="var(--on-accent)">
+                <MicIcon size={19} />
+              </Medallion>
+              <div className="min-w-0 flex-1">
+                <p className="text-[16px] font-medium">Just talked to someone?</p>
+                <p className="text-[13.5px] text-label-2">
+                  Thirty seconds now saves the details for good.
+                </p>
+              </div>
+            </Link>
+          </section>
         </>
       )}
     </Screen>

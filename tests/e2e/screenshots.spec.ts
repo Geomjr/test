@@ -18,7 +18,7 @@ test("screenshot tour", async ({ page }, testInfo) => {
   await page.getByPlaceholder("Your password").fill("orbit-demo");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.waitForURL("**/");
-  await expect(page.getByRole("heading", { name: "Reach out" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Today's three" })).toBeVisible();
   await shot("02-today");
 
   await page.goto("/contacts");
