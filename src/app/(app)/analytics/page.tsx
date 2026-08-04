@@ -84,7 +84,7 @@ export default async function AnalyticsPage() {
       {data.neglected.length > 0 ? (
         <ListSection
           title="Drifting away"
-          footer="People you've marked as close — or set cadences for — with the longest silence."
+          footer="Longest time since last touch."
         >
           {data.neglected.map((row) => (
             <ListRow

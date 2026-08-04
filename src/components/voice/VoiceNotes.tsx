@@ -249,10 +249,7 @@ export function VoiceNotes({
       }
     >
       {notes.length === 0 ? (
-        <div className="px-4 py-4 text-[14px] text-label-2">
-          Capture a memo right after a chat — Orbit transcribes it where the
-          browser allows, and transcripts are searchable.
-        </div>
+        <div className="px-4 py-4 text-[14px] text-label-2">No voice notes.</div>
       ) : (
         notes.map((note) => (
           <div key={note.id} className="hairline-b last:after:hidden px-4 py-3">
@@ -404,10 +401,7 @@ export function VoiceNotes({
                 >
                   <MicIcon size={34} strokeWidth={2} />
                 </button>
-                <p className="max-w-[280px] text-center text-[13px] text-label-2">
-                  Tap to record. On supported browsers Orbit transcribes as you
-                  speak; you can always edit the text after.
-                </p>
+                <p className="text-center text-[13px] text-label-2">Tap to record</p>
               </>
             )}
           </div>

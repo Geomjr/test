@@ -33,9 +33,6 @@ export default async function PipelinePage() {
 
   return (
     <Screen title="Pipeline" contentClassName="pb-28 lg:pb-10 px-4">
-      <p className="-mt-2 pb-3 text-[15px] text-label-2">
-        Coffee chats and recruiting outreach, from first touch to thank-you.
-      </p>
       <PipelineBoard items={items} candidates={candidates} />
     </Screen>
   );

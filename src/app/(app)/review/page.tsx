@@ -8,7 +8,7 @@ import { Screen } from "@/components/ui/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { ListRow, ListSection } from "@/components/ui/List";
 import { WeeklySummary } from "@/components/review/WeeklySummary";
-import { CalendarIcon, ChecklistIcon, ColumnsIcon } from "@/components/ui/icons";
+import { CakeIcon, CalendarIcon, ChecklistIcon, ColumnsIcon } from "@/components/ui/icons";
 import { STAGE_META } from "@/lib/pipeline-meta";
 
 export const metadata = { title: "Weekly Review" };
@@ -22,19 +22,11 @@ export default async function ReviewPage() {
 
   return (
     <Screen title="Weekly Review" back={{ href: "/more", label: "More" }}>
-      <p className="-mt-2 pb-1 text-[15px] text-label-2">
-        A ten-minute Sunday ritual: clear the overdue list, prep the week, keep
-        the pipeline moving.
-      </p>
-
       <WeeklySummary aiOn={aiEnabled()} />
 
-      <ListSection
-        title="Overdue follow-ups" count={data.overdue.length}
-        footer={data.overdue.length === 0 ? "Nobody is past cadence. Enjoy it." : undefined}
-      >
+      <ListSection title="Overdue follow-ups" count={data.overdue.length}>
         {data.overdue.length === 0 ? (
-          <div className="px-4 py-3 text-[15px] text-label-2">All clear ✓</div>
+          <div className="px-4 py-3 text-[15px] text-label-2">All clear</div>
         ) : (
           data.overdue.map((entry) => (
             <ListRow
@@ -59,7 +51,7 @@ export default async function ReviewPage() {
               href={`/contacts/${event.contactId}`}
               leading={
                 event.label === "Birthday" ? (
-                  <span className="text-[18px]">🎂</span>
+                  <CakeIcon size={20} className="text-pink" />
                 ) : (
                   <CalendarIcon size={20} className="text-orange" />
                 )

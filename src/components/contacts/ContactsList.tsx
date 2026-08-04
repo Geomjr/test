@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
-import { TierBadge } from "@/components/ui/badges";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ListRow } from "@/components/ui/List";
@@ -108,7 +107,16 @@ export function ContactsList({ contacts }: { contacts: ContactRow[] }) {
                   }
                   title={<span className="font-medium">{contact.name}</span>}
                   subtitle={[contact.role, contact.company].filter(Boolean).join(" · ") || undefined}
-                  value={<TierBadge tier={contact.tier} />}
+                  value={
+                    contact.tier !== "new" ? (
+                      <span
+                        aria-label={TIER_META[contact.tier].label}
+                        title={TIER_META[contact.tier].label}
+                        className="inline-block h-[9px] w-[9px] rounded-full"
+                        style={{ background: TIER_META[contact.tier].color }}
+                      />
+                    ) : undefined
+                  }
                   chevron
                 />
               ))}

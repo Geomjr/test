@@ -10,6 +10,7 @@ import { ListRow, ListSection } from "@/components/ui/List";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import {
+  CakeIcon,
   CalendarIcon,
   CheckCircleIcon,
   ChecklistIcon,
@@ -72,11 +73,7 @@ export default async function TodayPage() {
       ) : (
         <>
           {data.overdue.length > 0 ? (
-            <ListSection
-              title="Reach out"
-              count={data.overdue.length}
-              footer="Past the keep-in-touch cadence you set for them."
-            >
+            <ListSection title="Reach out" count={data.overdue.length}>
               {data.overdue.slice(0, 6).map((entry) => (
                 <ListRow
                   key={entry.id}
@@ -124,7 +121,9 @@ export default async function TodayPage() {
                   href={`/contacts/${event.contactId}`}
                   leading={
                     event.label === "Birthday" ? (
-                      <Medallion bg="var(--pink-soft)">🎂</Medallion>
+                      <Medallion bg="var(--pink-soft)" color="var(--pink)">
+                        <CakeIcon size={20} />
+                      </Medallion>
                     ) : (
                       <Medallion bg="var(--orange-soft)" color="var(--orange)">
                         <CalendarIcon size={20} />
@@ -183,10 +182,7 @@ export default async function TodayPage() {
           ) : null}
 
           {data.stalePipeline.length > 0 ? (
-            <ListSection
-              title="Pipeline needs a push"
-              footer="Sitting in the same stage for over a week."
-            >
+            <ListSection title="Pipeline needs a push">
               {data.stalePipeline.slice(0, 4).map((item) => (
                 <ListRow
                   key={item.id}
@@ -220,17 +216,14 @@ export default async function TodayPage() {
                     <span className="line-clamp-1 text-[15px] font-semibold">
                       {suggestion.name}
                     </span>
-                    <span className="rounded-full bg-fill px-2.5 py-[3px] text-[12px] font-medium text-label-2">
+                    <span className="text-[13px] text-label-2">
                       {suggestion.daysSince >= 7
-                        ? `${Math.floor(suggestion.daysSince / 7)}w quiet`
-                        : `${suggestion.daysSince}d quiet`}
+                        ? `${Math.floor(suggestion.daysSince / 7)} weeks ago`
+                        : `${suggestion.daysSince} days ago`}
                     </span>
                   </Link>
                 ))}
               </div>
-              <p className="px-1.5 pt-2 text-[13px] text-label-2">
-                Gentle nudges beyond your cadences — a quick hello goes far.
-              </p>
             </section>
           ) : null}
         </>

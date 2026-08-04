@@ -63,20 +63,16 @@ export function QuickLog({ contactId, today }: { contactId: string; today: strin
 
   return (
     <>
-      <div className="no-scrollbar -mx-4 mt-4 flex gap-2.5 overflow-x-auto px-4">
+      <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4">
         {INTERACTION_TYPES.map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => openFor(t)}
-            className="pressable flex shrink-0 flex-col items-center gap-1.5"
+            className="card pressable flex w-[74px] shrink-0 flex-col items-center gap-1 py-2.5 text-tint"
           >
-            <span className="card flex h-[54px] w-[54px] items-center justify-center rounded-full text-tint">
-              {TYPE_ICONS[t]}
-            </span>
-            <span className="text-[11.5px] font-semibold text-label-2">
-              {INTERACTION_META[t].label}
-            </span>
+            {TYPE_ICONS[t]}
+            <span className="text-[11px] font-medium">{INTERACTION_META[t].label}</span>
           </button>
         ))}
       </div>

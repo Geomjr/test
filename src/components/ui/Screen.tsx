@@ -48,11 +48,6 @@ export function Screen({
 
   return (
     <div className="relative">
-      <div
-        aria-hidden
-        className="screen-wash pointer-events-none absolute inset-x-0 top-0 h-[340px]"
-      />
-
       <header
         ref={headerRef}
         className={`sticky top-0 z-30 material-bar ${

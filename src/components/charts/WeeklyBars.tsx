@@ -32,7 +32,6 @@ export function WeeklyBars({ buckets }: { buckets: WeekBucket[] }) {
               style={{
                 height: bucket.count > 0 ? `${(bucket.count / max) * 86}px` : "3px",
                 background: bucket.count > 0 ? "var(--tint)" : "var(--bg-fill)",
-                opacity: bucket.count > 0 ? 0.55 + 0.45 * (bucket.count / max) : 1,
               }}
             />
           </div>

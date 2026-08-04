@@ -7,7 +7,7 @@ import { ActionSheet } from "@/components/ui/ActionSheet";
 import { ListSection } from "@/components/ui/List";
 import { Sheet } from "@/components/ui/Sheet";
 import { FormCard, SelectField, TextField } from "@/components/ui/fields";
-import { CheckCircleIcon, CircleIcon, SwapIcon } from "@/components/ui/icons";
+import { CakeIcon, CheckCircleIcon, CircleIcon, SwapIcon } from "@/components/ui/icons";
 import { formatDate, relativeFuture } from "@/lib/dates";
 
 /* ------------------------------- Tasks ---------------------------------- */
@@ -60,9 +60,7 @@ export function ContactTasks({
       }
     >
       {tasks.length === 0 ? (
-        <div className="px-4 py-4 text-[14px] text-label-2">
-          Follow-ups you owe this person — “send the deck”, “make the intro”.
-        </div>
+        <div className="px-4 py-4 text-[14px] text-label-2">No tasks.</div>
       ) : (
         tasks.map((task) => {
           const overdue = !task.completedAt && task.dueDate !== null && task.dueDate < today;
@@ -209,15 +207,15 @@ export function ContactDates({
     >
       {birthday ? (
         <div className="hairline-b last:after:hidden flex min-h-[46px] items-center justify-between px-4 py-2">
-          <span className="text-[16px]">🎂 Birthday</span>
+          <span className="flex items-center gap-2.5 text-[16px]">
+            <CakeIcon size={18} className="text-pink" />
+            Birthday
+          </span>
           <span className="text-[15px] text-label-2">{formatDate(birthday)}</span>
         </div>
       ) : null}
       {dates.length === 0 && !birthday ? (
-        <div className="px-4 py-4 text-[14px] text-label-2">
-          Weddings, internship start dates, graduations — Orbit surfaces them
-          when they're coming up.
-        </div>
+        <div className="px-4 py-4 text-[14px] text-label-2">No dates.</div>
       ) : (
         dates.map((row) => (
           <button
@@ -343,7 +341,6 @@ export function ContactIntros({
   return (
     <ListSection
       title="Introductions"
-      footer="Track who opened doors for you — and the doors you've opened."
       action={
         <button
           type="button"

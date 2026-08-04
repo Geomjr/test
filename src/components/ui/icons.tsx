@@ -283,6 +283,16 @@ export const ArrowUpIcon = (p: IconProps) => (
   </svg>
 );
 
+export const CakeIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4.5 20.5h15" />
+    <path d="M5.5 20.5v-6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v6" />
+    <path d="M5.5 16.5c1.5 1.2 2.8 1.2 4.3 0 1.5 1.2 2.9 1.2 4.4 0 1.5 1.2 2.8 1.2 4.3 0" />
+    <path d="M12 12.5V9.5M8.5 12.5v-2M15.5 12.5v-2" />
+    <path d="M12 7.5c.8-.8.8-1.7 0-2.5-.8.8-.8 1.7 0 2.5Z" fill="currentColor" />
+  </svg>
+);
+
 export const BellIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M12 4a5.5 5.5 0 0 0-5.5 5.5c0 4.5-1.5 5.6-2.5 6.5h16c-1-.9-2.5-2-2.5-6.5A5.5 5.5 0 0 0 12 4Z" />

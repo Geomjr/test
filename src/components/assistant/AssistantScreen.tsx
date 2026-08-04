@@ -112,9 +112,9 @@ export function AssistantScreen({
         {messages.length === 0 ? (
           <div className="pt-4">
             <EmptyState
-              icon={<SparklesIcon size={44} className="text-purple" />}
+              icon={<SparklesIcon size={30} />}
               title="Ask about your network"
-              subtitle="The assistant reads only your own Orbit data — people, notes, transcripts, pipeline — and answers with names."
+              subtitle="Answers come only from your own people, notes, and transcripts."
             />
             <div className="mx-auto flex max-w-[420px] flex-col gap-2">
               {STARTERS.map((starter) => (
@@ -134,13 +134,13 @@ export function AssistantScreen({
             {messages.map((message, i) =>
               message.role === "user" ? (
                 <div key={i} className="flex justify-end">
-                  <div className="bg-brand max-w-[85%] rounded-[20px] rounded-br-[7px] px-4 py-2.5 text-[16px] text-white shadow-card-token">
+                  <div className="bg-tint max-w-[85%] rounded-[20px] rounded-br-[7px] px-4 py-2.5 text-[16px] text-white">
                     {message.content}
                   </div>
                 </div>
               ) : (
                 <div key={i} className="flex justify-start">
-                  <div className="card max-w-[92%] rounded-[20px] rounded-bl-[7px] px-4 py-2.5">
+                  <div className="max-w-[92%] rounded-[20px] rounded-bl-[7px] bg-fill px-4 py-2.5">
                     {message.content ? (
                       <StreamedText text={message.content} />
                     ) : (
@@ -182,7 +182,7 @@ export function AssistantScreen({
             type="submit"
             aria-label="Send"
             disabled={!draft.trim() || streaming}
-            className="bg-brand pressable flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-full text-white disabled:opacity-40"
+            className="bg-tint pressable flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-full text-white disabled:opacity-40"
           >
             <ArrowUpIcon size={18} strokeWidth={2.4} />
           </button>

@@ -8,7 +8,13 @@ import { ActionSheet } from "@/components/ui/ActionSheet";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Sheet } from "@/components/ui/Sheet";
 import { FormCard, SelectField, TextField } from "@/components/ui/fields";
-import { CheckCircleIcon, ChecklistIcon, CircleIcon, PlusIcon } from "@/components/ui/icons";
+import {
+  CheckCircleIcon,
+  ChecklistIcon,
+  ChevronRightIcon,
+  CircleIcon,
+  PlusIcon,
+} from "@/components/ui/icons";
 import { formatDate } from "@/lib/dates";
 
 export type TaskItem = {
@@ -62,11 +68,7 @@ export function TasksScreen({
   return (
     <div>
       {tasks.length === 0 ? (
-        <EmptyState
-          icon={<ChecklistIcon size={44} />}
-          title="No tasks"
-          subtitle="Capture follow-ups — “send the deck”, “intro Jenny to Daniel” — with due dates so they surface on Today."
-        />
+        <EmptyState icon={<ChecklistIcon size={44} />} title="No tasks" />
       ) : (
         <>
           {sections.map((section) => (
@@ -100,13 +102,16 @@ export function TasksScreen({
               <button
                 type="button"
                 onClick={() => setShowDone((v) => !v)}
-                className="pressable px-1.5 pb-2.5 text-[16px] font-semibold text-label-2"
+                className="pressable flex items-center px-1.5 pb-2.5 text-[16px] font-semibold text-label-2"
               >
                 Completed
                 <span className="tnum pl-2 text-[14px] font-medium text-label-3">
                   {done.length}
                 </span>
-                <span className="pl-1.5 text-[12px]">{showDone ? "▾" : "▸"}</span>
+                <ChevronRightIcon
+                  size={14}
+                  className={`ml-1 transition-transform ${showDone ? "rotate-90" : ""}`}
+                />
               </button>
               {showDone ? (
                 <div className="card overflow-hidden">
@@ -136,7 +141,7 @@ export function TasksScreen({
           setContactId("");
           setAddOpen(true);
         }}
-        className="bg-brand shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white lg:right-10"
+        className="bg-tint shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white lg:right-10"
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 66px)" }}
       >
         <PlusIcon size={26} strokeWidth={2.4} />
