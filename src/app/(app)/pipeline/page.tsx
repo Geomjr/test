@@ -32,7 +32,11 @@ export default async function PipelinePage() {
   }));
 
   return (
-    <Screen title="Pipeline" contentClassName="pb-28 lg:pb-10 px-4">
+    <Screen
+      title="Pipeline"
+      back={{ href: "/more", label: "More" }}
+      contentClassName="pb-28 lg:pb-10 px-4"
+    >
       <PipelineBoard items={items} candidates={candidates} />
     </Screen>
   );

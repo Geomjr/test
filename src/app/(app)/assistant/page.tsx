@@ -4,7 +4,7 @@ import { aiEnabled } from "@/lib/ai/client";
 import { Screen } from "@/components/ui/Screen";
 import { AssistantScreen } from "@/components/assistant/AssistantScreen";
 
-export const metadata = { title: "Assistant" };
+export const metadata = { title: "Ask" };
 
 export default async function AssistantPage({
   searchParams,
@@ -16,7 +16,7 @@ export default async function AssistantPage({
   const { q } = await searchParams;
 
   return (
-    <Screen title="Assistant" back={{ href: "/more", label: "More" }}>
+    <Screen title="Ask">
       <AssistantScreen aiOn={aiEnabled()} initialQuestion={q} />
     </Screen>
   );

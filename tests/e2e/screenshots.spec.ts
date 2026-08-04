@@ -53,6 +53,10 @@ test("screenshot tour", async ({ page }, testInfo) => {
   await page.goto("/assistant");
   await shot("10-assistant");
 
+  await page.goto("/capture");
+  await expect(page.getByRole("heading", { name: "Capture" })).toBeVisible();
+  await shot("13-capture");
+
   await page.goto("/import");
   await shot("11-import");
 

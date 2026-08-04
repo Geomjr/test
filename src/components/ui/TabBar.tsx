@@ -3,20 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  ColumnsIcon,
-  EllipsisIcon,
+  ChecklistIcon,
   HouseIcon,
+  MicIcon,
   PeopleIcon,
-  SearchIcon,
+  SparklesIcon,
 } from "./icons";
-import { isActive, MOBILE_TABS, MORE_ROUTES } from "./nav";
+import { isActive, MOBILE_TABS } from "./nav";
 
 const ICONS = {
   house: HouseIcon,
   people: PeopleIcon,
-  columns: ColumnsIcon,
-  search: SearchIcon,
-  ellipsis: EllipsisIcon,
+  mic: MicIcon,
+  sparkles: SparklesIcon,
+  checklist: ChecklistIcon,
 } as const;
 
 export function TabBar() {
@@ -35,10 +35,7 @@ export function TabBar() {
       <div className="grid grid-cols-5 h-[49px]">
         {MOBILE_TABS.map((tab) => {
           const Icon = ICONS[tab.icon];
-          const active =
-            tab.href === "/more"
-              ? MORE_ROUTES.some((r) => isActive(pathname, r))
-              : isActive(pathname, tab.href);
+          const active = isActive(pathname, tab.href);
           return (
             <Link
               key={tab.href}

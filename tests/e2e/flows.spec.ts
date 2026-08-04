@@ -51,6 +51,23 @@ test.describe("core flows", () => {
     ).toBeVisible();
     await page.getByPlaceholder("People, notes, transcripts…").fill("ski trips");
     await expect(page.getByText("Conversations")).toBeVisible();
+
+    // Capture a typed note — with AI off it asks who it was with, then files it
+    await page.goto("/capture");
+    await page
+      .getByPlaceholder(/Talked with Priya/)
+      .fill("Caught up over lunch about the internship search.");
+    await page.getByRole("button", { name: "Save", exact: true }).click();
+    await expect(page.getByText("Who was this with?")).toBeVisible();
+    await page.getByRole("button", { name: /Casey Chen/ }).click();
+    await expect(page.getByText("Saved to Casey Chen")).toBeVisible();
+
+    // The note landed on the contact's timeline
+    await page.goto("/contacts");
+    await page.getByRole("link", { name: /Casey Chen/ }).click();
+    await expect(
+      page.getByText("Caught up over lunch about the internship search."),
+    ).toBeVisible();
   });
 
   test("users cannot read each other's contacts", async ({ baseURL }) => {

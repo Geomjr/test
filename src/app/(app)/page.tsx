@@ -15,6 +15,7 @@ import {
   CheckCircleIcon,
   ChecklistIcon,
   ColumnsIcon,
+  EllipsisCircleIcon,
   PeopleIcon,
 } from "@/components/ui/icons";
 import { STAGE_META } from "@/lib/pipeline-meta";
@@ -49,7 +50,19 @@ export default async function TodayPage() {
   const weekday = WEEKDAYS[new Date(isoToUTC(today)).getUTCDay()];
 
   return (
-    <Screen title="Today" eyebrow={`${weekday}, ${formatDate(today, { year: false })}`}>
+    <Screen
+      title="Today"
+      eyebrow={`${weekday}, ${formatDate(today, { year: false })}`}
+      right={
+        <Link
+          href="/more"
+          aria-label="More"
+          className="pressable flex h-[44px] w-[38px] items-center justify-center text-tint lg:hidden"
+        >
+          <EllipsisCircleIcon size={24} />
+        </Link>
+      }
+    >
       {data.contactCount === 0 ? (
         <div className="card mt-4">
           <EmptyState

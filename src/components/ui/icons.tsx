@@ -55,6 +55,15 @@ export const EllipsisIcon = (p: IconProps) => (
   </svg>
 );
 
+export const EllipsisCircleIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="8.6" />
+    <circle cx="7.8" cy="12" r="1" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    <circle cx="16.2" cy="12" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export const PlusIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M12 5v14M5 12h14" />

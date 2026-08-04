@@ -11,7 +11,7 @@ export default async function SearchPage() {
   if (!user) redirect("/sign-in");
 
   return (
-    <Screen title="Search">
+    <Screen title="Search" back={{ href: "/more", label: "More" }}>
       <SearchScreen aiOn={aiEnabled()} />
     </Screen>
   );

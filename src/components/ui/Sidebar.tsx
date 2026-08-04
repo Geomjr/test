@@ -11,6 +11,7 @@ import {
   HouseIcon,
   ImportIcon,
   BookIcon,
+  MicIcon,
   PeopleIcon,
   SearchIcon,
   SparklesIcon,
@@ -22,14 +23,15 @@ const SECTIONS: { items: { href: string; label: string; icon: ReactNode }[] }[] 
     items: [
       { href: "/", label: "Today", icon: <HouseIcon size={20} /> },
       { href: "/contacts", label: "People", icon: <PeopleIcon size={20} /> },
-      { href: "/pipeline", label: "Pipeline", icon: <ColumnsIcon size={20} /> },
-      { href: "/search", label: "Search", icon: <SearchIcon size={20} /> },
+      { href: "/capture", label: "Capture", icon: <MicIcon size={20} /> },
+      { href: "/assistant", label: "Ask", icon: <SparklesIcon size={20} /> },
+      { href: "/tasks", label: "Tasks", icon: <ChecklistIcon size={20} /> },
     ],
   },
   {
     items: [
-      { href: "/assistant", label: "Assistant", icon: <SparklesIcon size={20} /> },
-      { href: "/tasks", label: "Tasks", icon: <ChecklistIcon size={20} /> },
+      { href: "/pipeline", label: "Pipeline", icon: <ColumnsIcon size={20} /> },
+      { href: "/search", label: "Search", icon: <SearchIcon size={20} /> },
       { href: "/analytics", label: "Analytics", icon: <ChartBarIcon size={20} /> },
       { href: "/review", label: "Weekly Review", icon: <BookIcon size={20} /> },
     ],

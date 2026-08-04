@@ -2,11 +2,11 @@ import { Screen } from "@/components/ui/Screen";
 import { ListRow, ListSection } from "@/components/ui/List";
 import {
   ChartBarIcon,
-  ChecklistIcon,
+  ColumnsIcon,
   GearIcon,
   ImportIcon,
   BookIcon,
-  SparklesIcon,
+  SearchIcon,
 } from "@/components/ui/icons";
 
 export default function MorePage() {
@@ -14,16 +14,17 @@ export default function MorePage() {
     <Screen title="More">
       <ListSection>
         <ListRow
-          href="/assistant"
-          leading={<SparklesIcon size={22} className="text-purple" />}
-          title="Assistant"
-          subtitle="Ask anything about your network"
+          href="/pipeline"
+          leading={<ColumnsIcon size={22} className="text-teal" />}
+          title="Pipeline"
+          subtitle="Recruiting conversations, stage by stage"
           chevron
         />
         <ListRow
-          href="/tasks"
-          leading={<ChecklistIcon size={22} className="text-tint" />}
-          title="Tasks"
+          href="/search"
+          leading={<SearchIcon size={22} className="text-tint" />}
+          title="Search"
+          subtitle="Notes, transcripts, and people"
           chevron
         />
         <ListRow

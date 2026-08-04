@@ -24,7 +24,7 @@ export default async function TasksPage() {
   const contacts = listContacts(user.id).map((c) => ({ id: c.id, name: c.name }));
 
   return (
-    <Screen title="Tasks" back={{ href: "/more", label: "More" }}>
+    <Screen title="Tasks">
       <TasksScreen tasks={tasks} today={today} contacts={contacts} />
     </Screen>
   );
