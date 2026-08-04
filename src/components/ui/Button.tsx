@@ -29,15 +29,21 @@ export function Button({
   block?: boolean;
   children: ReactNode;
 }) {
+  // A faded charcoal pill reads as a dead gray slab on ivory — disabled
+  // filled buttons go quiet instead. Loading keeps the confident fill.
+  const quietDisabled = disabled && !loading && variant === "filled";
+  const look = quietDisabled
+    ? "bg-fill text-label-3"
+    : `${STYLES[variant]}${loading ? "" : " disabled:opacity-40"}`;
   return (
     <button
       {...rest}
       disabled={disabled || loading}
-      className={`pressable inline-flex items-center justify-center gap-2 font-semibold tracking-[-0.01em] disabled:opacity-40 ${
+      className={`pressable inline-flex items-center justify-center gap-2 font-semibold tracking-[-0.01em] ${
         small
           ? "min-h-[36px] rounded-full px-4 text-[15px]"
           : "min-h-[50px] rounded-full px-7 text-[17px]"
-      } ${block ? "w-full" : ""} ${STYLES[variant]} ${className}`}
+      } ${block ? "w-full" : ""} ${look} ${className}`}
     >
       {loading ? <Spinner size={16} /> : null}
       {children}

@@ -148,17 +148,20 @@ export const SparklesIcon = (p: IconProps) => (
     <path
       d="M12 4.5c.5 2.9 1.7 4.1 4.6 4.6-2.9.5-4.1 1.7-4.6 4.6-.5-2.9-1.7-4.1-4.6-4.6 2.9-.5 4.1-1.7 4.6-4.6Z"
       fill="currentColor"
-      stroke="none"
+      strokeWidth="1.1"
+      strokeLinejoin="round"
     />
     <path
       d="M6 13.5c.3 1.9 1.1 2.7 3 3-1.9.3-2.7 1.1-3 3-.3-1.9-1.1-2.7-3-3 1.9-.3 2.7-1.1 3-3Z"
       fill="currentColor"
-      stroke="none"
+      strokeWidth="1"
+      strokeLinejoin="round"
     />
     <path
       d="M17.5 14.5c.25 1.5.9 2.15 2.4 2.4-1.5.25-2.15.9-2.4 2.4-.25-1.5-.9-2.15-2.4-2.4 1.5-.25 2.15-.9 2.4-2.4Z"
       fill="currentColor"
-      stroke="none"
+      strokeWidth="0.9"
+      strokeLinejoin="round"
     />
   </svg>
 );

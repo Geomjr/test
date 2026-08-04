@@ -212,7 +212,7 @@ export function ImportWizard() {
       {error ? <p className="px-2 pt-3 text-center text-[14px] text-red">{error}</p> : null}
 
       <div className="sticky bottom-0 -mx-4 px-4 pb-3 pt-3"
-        style={{ bottom: "calc(env(safe-area-inset-bottom) + 56px)" }}
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 88px)" }}
       >
         <Button block loading={busy} disabled={selectedCount === 0} onClick={() => void commit()}>
           {busy ? <Spinner size={16} /> : null}

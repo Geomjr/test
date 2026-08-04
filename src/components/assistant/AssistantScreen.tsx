@@ -163,7 +163,7 @@ export function AssistantScreen({
 
       <div
         className="sticky bottom-0 -mx-4 px-4 pb-2 pt-2"
-        style={{ bottom: "calc(env(safe-area-inset-bottom) + 56px)" }}
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 88px)" }}
       >
         <form
           className="material-sheet shadow-float flex items-end gap-2 rounded-[24px] p-1.5"

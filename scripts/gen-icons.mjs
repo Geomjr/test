@@ -14,10 +14,12 @@ const svg = (size, { rounded, safeZone }) => {
   ${safeZone ? `<rect width="${s}" height="${s}" fill="#f0c93f"/>` : ""}
   <g transform="translate(${pad},${pad})">
     <rect width="${inner}" height="${inner}" rx="${radius}" fill="#f0c93f"/>
-    <circle cx="${inner / 2}" cy="${inner / 2}" r="${inner * 0.109}" fill="#262218"/>
-    <ellipse cx="${inner / 2}" cy="${inner / 2}" rx="${inner * 0.3125}" ry="${inner * 0.3125}"
-      fill="none" stroke="rgba(38,34,24,0.45)" stroke-width="${inner * 0.039}"/>
-    <circle cx="${inner * 0.7266}" cy="${inner * 0.2891}" r="${inner * 0.0703}" fill="#262218"/>
+    <g transform="rotate(-18 ${inner / 2} ${inner / 2})">
+      <ellipse cx="${inner / 2}" cy="${inner / 2}" rx="${(inner * 21) / 64}" ry="${(inner * 14.5) / 64}"
+        fill="none" stroke="rgba(38,34,24,0.45)" stroke-width="${(inner * 2.5) / 64}"/>
+      <circle cx="${inner / 2}" cy="${inner / 2}" r="${(inner * 7.5) / 64}" fill="#262218"/>
+      <circle cx="${(inner * 52.6) / 64}" cy="${(inner * 27.6) / 64}" r="${(inner * 3.6) / 64}" fill="#262218"/>
+    </g>
   </g>
 </svg></body></html>`;
 };
