@@ -251,7 +251,7 @@ export function PipelineBoard({
           setAddQuery("");
           setAddOpen(true);
         }}
-        className="bg-tint shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white lg:right-10"
+        className="bg-tint shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-on-tint lg:right-10"
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 66px)" }}
       >
         <PlusIcon size={26} strokeWidth={2.4} />

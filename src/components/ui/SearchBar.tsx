@@ -12,7 +12,7 @@ export function SearchBar({
   onValueChange: (value: string) => void;
 }) {
   return (
-    <div className="search-field flex h-[42px] items-center gap-2 rounded-[13px] bg-fill px-3">
+    <div className="search-field flex h-[42px] items-center gap-2 rounded-full bg-fill px-3.5">
       <SearchIcon size={17} className="shrink-0 text-label-2" strokeWidth={2.2} />
       <input
         type="search"

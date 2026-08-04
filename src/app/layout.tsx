@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 import { SWRegister } from "@/components/SWRegister";
 import { TimezoneCookie } from "@/components/TimezoneCookie";
+
+const outfit = localFont({
+  src: "../fonts/outfit-latin.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   title: { default: "Orbit", template: "%s — Orbit" },
@@ -26,8 +34,8 @@ export const viewport: Viewport = {
   userScalable: false,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2f2f7" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#f0ede5" },
+    { media: "(prefers-color-scheme: dark)", color: "#14120d" },
   ],
 };
 
@@ -35,7 +43,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className={`h-full ${outfit.variable}`}>
       <body className="min-h-dvh">
         {children}
         <SWRegister />

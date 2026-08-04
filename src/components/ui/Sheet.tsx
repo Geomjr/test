@@ -48,7 +48,7 @@ export function Sheet({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="material-sheet shadow-float relative flex w-full flex-col overflow-hidden rounded-t-[24px] animate-sheet-up sm:w-[560px] sm:rounded-[24px] sm:animate-scale-in"
+        className="material-sheet shadow-float relative flex w-full flex-col overflow-hidden rounded-t-[28px] animate-sheet-up sm:w-[560px] sm:rounded-[28px] sm:animate-scale-in"
         style={{ maxHeight: "min(92dvh, 760px)" }}
       >
         <div className="mx-auto mt-2.5 h-[5px] w-10 shrink-0 rounded-full bg-label-4 sm:hidden" />

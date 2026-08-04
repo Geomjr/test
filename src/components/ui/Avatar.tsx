@@ -1,13 +1,13 @@
-/* Harmonized duotone gradients — vivid but soft, consistent saturation. */
+/* Harmonized earthy duotones — warm, muted, consistent depth. */
 const GRADIENTS = [
-  ["#6a7bff", "#9f6bff"],
-  ["#2f9bff", "#38c7d8"],
-  ["#ff7854", "#ff4f7c"],
-  ["#2fc06c", "#26b8b0"],
-  ["#ff5e8a", "#b667f2"],
-  ["#4a66f5", "#3aa0ff"],
-  ["#ffb340", "#ff7a4d"],
-  ["#25c2a8", "#4ea7ff"],
+  ["#dd8a5c", "#c05f36"],
+  ["#d97d85", "#b0525e"],
+  ["#a2a659", "#7d883b"],
+  ["#d9a944", "#b5831f"],
+  ["#79a99a", "#4f8878"],
+  ["#b287c2", "#8c5e9e"],
+  ["#7d97bf", "#54719c"],
+  ["#c78a70", "#a05f45"],
 ];
 
 function hashName(name: string): number {

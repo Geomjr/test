@@ -11,19 +11,13 @@ const svg = (size, { rounded, safeZone }) => {
   const radius = rounded ? inner * 0.2266 : 0;
   return `<!doctype html><html><body style="margin:0">
 <svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg">
-  ${safeZone ? `<rect width="${s}" height="${s}" fill="#0a1030"/>` : ""}
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0a84ff"/>
-      <stop offset="100%" stop-color="#5e5ce6"/>
-    </linearGradient>
-  </defs>
+  ${safeZone ? `<rect width="${s}" height="${s}" fill="#f0c93f"/>` : ""}
   <g transform="translate(${pad},${pad})">
-    <rect width="${inner}" height="${inner}" rx="${radius}" fill="url(#bg)"/>
-    <circle cx="${inner / 2}" cy="${inner / 2}" r="${inner * 0.109}" fill="#fff"/>
+    <rect width="${inner}" height="${inner}" rx="${radius}" fill="#f0c93f"/>
+    <circle cx="${inner / 2}" cy="${inner / 2}" r="${inner * 0.109}" fill="#262218"/>
     <ellipse cx="${inner / 2}" cy="${inner / 2}" rx="${inner * 0.3125}" ry="${inner * 0.3125}"
-      fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="${inner * 0.039}"/>
-    <circle cx="${inner * 0.7266}" cy="${inner * 0.2891}" r="${inner * 0.0703}" fill="#fff"/>
+      fill="none" stroke="rgba(38,34,24,0.45)" stroke-width="${inner * 0.039}"/>
+    <circle cx="${inner * 0.7266}" cy="${inner * 0.2891}" r="${inner * 0.0703}" fill="#262218"/>
   </g>
 </svg></body></html>`;
 };

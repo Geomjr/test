@@ -14,7 +14,7 @@ export function WeeklyBars({ buckets }: { buckets: WeekBucket[] }) {
   const first = buckets[0];
 
   return (
-    <div className="px-4 py-4">
+    <div className="bg-surface-dark px-4 py-5 text-on-dark">
       <div className="flex h-[116px] items-end gap-[6px]">
         {buckets.map((bucket, i) => (
           <div
@@ -23,7 +23,7 @@ export function WeeklyBars({ buckets }: { buckets: WeekBucket[] }) {
             title={`Week of ${formatDate(bucket.startsOn)}: ${bucket.count} interaction${bucket.count === 1 ? "" : "s"}`}
           >
             {i === peakIndex && bucket.count > 0 ? (
-              <span className="tnum text-[11px] font-bold leading-none text-tint">
+              <span className="tnum text-[11px] font-bold leading-none text-accent">
                 {bucket.count}
               </span>
             ) : null}
@@ -31,15 +31,15 @@ export function WeeklyBars({ buckets }: { buckets: WeekBucket[] }) {
               className="w-full rounded-t-[5px] transition-all"
               style={{
                 height: bucket.count > 0 ? `${(bucket.count / max) * 86}px` : "3px",
-                background: bucket.count > 0 ? "var(--tint)" : "var(--bg-fill)",
+                background: bucket.count > 0 ? "var(--accent)" : "rgba(246, 243, 234, 0.13)",
               }}
             />
           </div>
         ))}
       </div>
       <div
-        className="mt-0 flex justify-between pt-1.5 text-[11px] font-medium text-label-3"
-        style={{ borderTop: "1px solid var(--separator)" }}
+        className="mt-0 flex justify-between pt-1.5 text-[11px] font-medium text-on-dark-2"
+        style={{ borderTop: "1px solid rgba(246, 243, 234, 0.18)" }}
       >
         <span>{first ? formatDate(first.startsOn, { year: false }) : ""}</span>
         <span>This week</span>

@@ -144,7 +144,7 @@ function FilterChip({
       type="button"
       onClick={onClick}
       className={`pressable shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold ${
-        active ? "text-white" : "bg-fill text-label-2"
+        active ? (color ? "text-white" : "text-on-tint") : "bg-fill text-label-2"
       }`}
       style={active ? { background: color ?? "var(--tint)" } : undefined}
     >

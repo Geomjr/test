@@ -3,143 +3,157 @@
 /* ---------------------------------------------------------------------------
    Orbit design tokens.
 
-   Foundation: Apple HIG semantic palette (light = iOS system colors, dark =
-   their dark-mode pairs) plus an elevation system and a brand accent so the
-   product has depth and identity, not just structure.
+   Warm editorial system: ivory surfaces with a soft butter-yellow ambience,
+   charcoal as the action color, and dark charcoal panels as contrast blocks.
+   Dark mode keeps the same warmth — charcoal browns, yellow becomes the
+   action color.
 --------------------------------------------------------------------------- */
 
 :root {
   /* Backgrounds (grouped) */
-  --bg: #f2f2f7;
-  --bg-card: #ffffff;
-  --bg-tertiary: #f7f7f9;
-  --bg-elevated: #ffffff;
-  --bg-fill: rgba(120, 120, 128, 0.12);
-  --bg-fill-secondary: rgba(120, 120, 128, 0.07);
+  --bg: #f0ede5;
+  --bg-card: #fcfbf7;
+  --bg-tertiary: #f6f4ed;
+  --bg-elevated: #fcfbf7;
+  --bg-fill: rgba(84, 74, 48, 0.09);
+  --bg-fill-secondary: rgba(84, 74, 48, 0.055);
 
   /* Elevation — quiet. Cards separate by contrast, not decoration. */
-  --card-border: rgba(20, 22, 40, 0);
-  --shadow-card: 0 1px 2px rgba(16, 20, 40, 0.04);
-  --shadow-float: 0 2px 6px rgba(16, 20, 40, 0.07), 0 16px 40px rgba(16, 20, 40, 0.16);
-  --shadow-fab: 0 2px 6px rgba(0, 40, 120, 0.18), 0 10px 24px rgba(0, 40, 120, 0.22);
+  --card-border: rgba(60, 52, 30, 0);
+  --shadow-card: 0 1px 2px rgba(58, 48, 22, 0.05);
+  --shadow-float: 0 2px 6px rgba(58, 48, 22, 0.08), 0 16px 40px rgba(58, 48, 22, 0.18);
+  --shadow-fab: 0 2px 6px rgba(44, 36, 16, 0.2), 0 10px 24px rgba(44, 36, 16, 0.24);
 
   /* Materials (frosted) */
-  --material-bar: rgba(248, 248, 250, 0.88);
-  --material-sheet: rgba(255, 255, 255, 0.96);
-  --material-scrim: rgba(15, 16, 32, 0.36);
+  --material-bar: rgba(244, 241, 233, 0.88);
+  --material-sheet: rgba(252, 251, 247, 0.96);
+  --material-scrim: rgba(30, 25, 12, 0.38);
 
-  /* Ambient wash behind screen tops */
-  --wash: rgba(94, 92, 230, 0.06);
-  --wash-2: rgba(10, 132, 255, 0.05);
+  /* Ambient glow behind the top of the page */
+  --glow: rgba(240, 200, 60, 0.16);
 
   /* Labels */
-  --label: #0b0b0f;
-  --label-2: rgba(60, 60, 67, 0.62);
-  --label-3: rgba(60, 60, 67, 0.32);
-  --label-4: rgba(60, 60, 67, 0.16);
+  --label: #211e16;
+  --label-2: rgba(62, 55, 36, 0.64);
+  --label-3: rgba(62, 55, 36, 0.35);
+  --label-4: rgba(62, 55, 36, 0.16);
 
   /* Separators */
-  --separator: rgba(60, 60, 67, 0.24);
-  --separator-opaque: #c6c6c8;
+  --separator: rgba(66, 58, 36, 0.22);
+  --separator-opaque: #d1ccbd;
 
-  /* Brand */
-  --brand-a: #0a84ff;
-  --brand-b: #5e5ce6;
+  /* Actions (charcoal) + highlight (butter yellow) */
+  --tint: #262218;
+  --on-tint: #fbf9f2;
+  --tint-soft: rgba(38, 34, 24, 0.08);
+  --accent: #f0c93f;
+  --accent-soft: rgba(240, 201, 63, 0.3);
+  --on-accent: #262218;
 
-  /* Tints */
-  --tint: #007aff;
-  --tint-soft: rgba(0, 122, 255, 0.12);
-  --red: #ff3b30;
-  --red-soft: rgba(255, 59, 48, 0.12);
-  --green: #34c759;
-  --green-soft: rgba(52, 199, 89, 0.14);
-  --orange: #ff9500;
-  --orange-soft: rgba(255, 149, 0, 0.14);
-  --yellow: #ffcc00;
-  --teal: #30b0c7;
-  --teal-soft: rgba(48, 176, 199, 0.14);
-  --indigo: #5856d6;
-  --indigo-soft: rgba(88, 86, 214, 0.12);
-  --purple: #af52de;
-  --purple-soft: rgba(175, 82, 222, 0.12);
-  --pink: #ff2d55;
-  --pink-soft: rgba(255, 45, 85, 0.12);
-  --gray: #8e8e93;
+  /* Charcoal contrast panels (same in both modes) */
+  --surface-dark: #24211a;
+  --on-dark: #f6f3ea;
+  --on-dark-2: rgba(246, 243, 234, 0.62);
 
-  /* Relationship tiers (CVD-validated as a set; every use carries a label) */
+  /* Functional colors, warmed */
+  --red: #dd4a2b;
+  --red-soft: rgba(221, 74, 43, 0.13);
+  --green: #5f9e33;
+  --green-soft: rgba(95, 158, 51, 0.16);
+  --orange: #dd8a26;
+  --orange-soft: rgba(221, 138, 38, 0.16);
+  --yellow: #f0c93f;
+  --teal: #38a3b5;
+  --teal-soft: rgba(56, 163, 181, 0.15);
+  --indigo: #6a64c8;
+  --indigo-soft: rgba(106, 100, 200, 0.13);
+  --purple: #a459c8;
+  --purple-soft: rgba(164, 89, 200, 0.13);
+  --pink: #e04e63;
+  --pink-soft: rgba(224, 78, 99, 0.13);
+  --gray: #8d8778;
+
+  /* Relationship tiers — the four real tiers are CVD-validated as a set on
+     the card surface; "new" is a deliberate neutral (unclassified), always
+     paired with a label. */
   --tier-inner: #ff2d55;
   --tier-inner-soft: rgba(255, 45, 85, 0.12);
   --tier-close: #e040c6;
   --tier-close-soft: rgba(224, 64, 198, 0.12);
   --tier-active: #007aff;
   --tier-active-soft: rgba(0, 122, 255, 0.12);
-  --tier-warm: #ff9500;
-  --tier-warm-soft: rgba(255, 149, 0, 0.14);
-  --tier-new: #8e8e93;
-  --tier-new-soft: rgba(120, 120, 128, 0.12);
+  --tier-warm: #c9720a;
+  --tier-warm-soft: rgba(201, 114, 10, 0.14);
+  --tier-new: #8d8778;
+  --tier-new-soft: rgba(141, 135, 120, 0.14);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --bg-card: #1c1c1e;
-    --bg-tertiary: #2c2c2e;
-    --bg-elevated: #2c2c2e;
-    --bg-fill: rgba(120, 120, 128, 0.36);
-    --bg-fill-secondary: rgba(120, 120, 128, 0.2);
+    --bg: #14120d;
+    --bg-card: #1f1c15;
+    --bg-tertiary: #28241b;
+    --bg-elevated: #28241b;
+    --bg-fill: rgba(206, 192, 150, 0.13);
+    --bg-fill-secondary: rgba(206, 192, 150, 0.075);
 
-    --card-border: rgba(255, 255, 255, 0.045);
+    --card-border: rgba(246, 240, 220, 0.05);
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25);
     --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.55);
     --shadow-fab: 0 2px 8px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.45);
 
-    --material-bar: rgba(14, 14, 17, 0.86);
-    --material-sheet: rgba(26, 26, 30, 0.97);
+    --material-bar: rgba(16, 14, 10, 0.86);
+    --material-sheet: rgba(29, 26, 19, 0.97);
     --material-scrim: rgba(0, 0, 0, 0.6);
 
-    --wash: rgba(94, 92, 230, 0.14);
-    --wash-2: rgba(10, 132, 255, 0.09);
+    --glow: rgba(240, 200, 60, 0.07);
 
-    --label: #ffffff;
-    --label-2: rgba(235, 235, 245, 0.62);
-    --label-3: rgba(235, 235, 245, 0.32);
-    --label-4: rgba(235, 235, 245, 0.14);
+    --label: #f5f2e8;
+    --label-2: rgba(240, 234, 214, 0.62);
+    --label-3: rgba(240, 234, 214, 0.34);
+    --label-4: rgba(240, 234, 214, 0.14);
 
-    --separator: rgba(84, 84, 88, 0.56);
-    --separator-opaque: #38383a;
+    --separator: rgba(160, 148, 112, 0.38);
+    --separator-opaque: #3b3628;
 
-    --brand-a: #0a84ff;
-    --brand-b: #6e6cf6;
+    --tint: #efca45;
+    --on-tint: #221f15;
+    --tint-soft: rgba(239, 202, 69, 0.16);
+    --accent: #efca45;
+    --accent-soft: rgba(239, 202, 69, 0.2);
+    --on-accent: #221f15;
 
-    --tint: #0a84ff;
-    --tint-soft: rgba(10, 132, 255, 0.2);
-    --red: #ff453a;
-    --red-soft: rgba(255, 69, 58, 0.2);
-    --green: #30d158;
-    --green-soft: rgba(48, 209, 88, 0.2);
-    --orange: #ff9f0a;
-    --orange-soft: rgba(255, 159, 10, 0.2);
-    --yellow: #ffd60a;
-    --teal: #40c8e0;
-    --teal-soft: rgba(64, 200, 224, 0.2);
-    --indigo: #5e5ce6;
-    --indigo-soft: rgba(94, 92, 230, 0.22);
-    --purple: #bf5af2;
-    --purple-soft: rgba(191, 90, 242, 0.2);
-    --pink: #ff375f;
-    --pink-soft: rgba(255, 55, 95, 0.2);
-    --gray: #8e8e93;
+    --surface-dark: #24211a;
+    --on-dark: #f6f3ea;
+    --on-dark-2: rgba(246, 243, 234, 0.62);
+
+    --red: #f26a4b;
+    --red-soft: rgba(242, 106, 75, 0.2);
+    --green: #86bf52;
+    --green-soft: rgba(134, 191, 82, 0.2);
+    --orange: #efa34d;
+    --orange-soft: rgba(239, 163, 77, 0.2);
+    --yellow: #efca45;
+    --teal: #55bccd;
+    --teal-soft: rgba(85, 188, 205, 0.2);
+    --indigo: #8d87e8;
+    --indigo-soft: rgba(141, 135, 232, 0.22);
+    --purple: #c583de;
+    --purple-soft: rgba(197, 131, 222, 0.2);
+    --pink: #ef7488;
+    --pink-soft: rgba(239, 116, 136, 0.2);
+    --gray: #98917e;
 
     --tier-inner: #ff375f;
     --tier-inner-soft: rgba(255, 55, 95, 0.2);
-    --tier-close: #e455cf;
-    --tier-close-soft: rgba(228, 85, 207, 0.2);
+    --tier-close: #d63bbd;
+    --tier-close-soft: rgba(214, 59, 189, 0.2);
     --tier-active: #0a84ff;
     --tier-active-soft: rgba(10, 132, 255, 0.2);
-    --tier-warm: #ff9500;
-    --tier-warm-soft: rgba(255, 159, 10, 0.2);
-    --tier-new: #98989d;
-    --tier-new-soft: rgba(120, 120, 128, 0.26);
+    --tier-warm: #cd7c0a;
+    --tier-warm-soft: rgba(205, 124, 10, 0.22);
+    --tier-new: #98917e;
+    --tier-new-soft: rgba(152, 145, 126, 0.24);
   }
 }
 
@@ -158,6 +172,13 @@
   --color-separator-opaque: var(--separator-opaque);
   --color-tint: var(--tint);
   --color-tint-soft: var(--tint-soft);
+  --color-on-tint: var(--on-tint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-surface-dark: var(--surface-dark);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-2: var(--on-dark-2);
   --color-red: var(--red);
   --color-red-soft: var(--red-soft);
   --color-green: var(--green);
@@ -175,8 +196,8 @@
   --color-pink-soft: var(--pink-soft);
   --color-gray: var(--gray);
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
-    system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-outfit), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* ---------------------------------------------------------------------------
@@ -191,11 +212,14 @@
   }
 
   body {
-    background: var(--bg);
+    background-color: var(--bg);
+    /* Warm ambient glow bleeding down from the top, like light on paper. */
+    background-image: radial-gradient(120% 480px at 50% -120px, var(--glow), transparent 72%);
+    background-repeat: no-repeat;
     color: var(--label);
     font-family: var(--font-sans);
     font-size: 17px;
-    line-height: 1.35;
+    line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: none;
   }
@@ -217,7 +241,7 @@
 }
 
 ::selection {
-  background: var(--tint-soft);
+  background: var(--accent-soft);
 }
 
 /* ---------------------------------------------------------------------------
@@ -230,7 +254,7 @@
   .card {
     background: var(--bg-card);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
+    border-radius: 20px;
     box-shadow: var(--shadow-card);
   }
 }
@@ -307,13 +331,13 @@
 }
 .search-field:focus-within {
   background: var(--bg-card);
-  box-shadow: 0 0 0 3.5px var(--tint-soft), var(--shadow-card);
+  box-shadow: 0 0 0 3.5px var(--accent-soft), var(--shadow-card);
 }
 
 /* Primary button — flat, confident, no decoration. */
 .btn-primary {
   background: var(--tint);
-  color: #fff;
+  color: var(--on-tint);
 }
 
 /* ---------------------------------------------------------------------------

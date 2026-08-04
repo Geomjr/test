@@ -134,7 +134,7 @@ export function AssistantScreen({
             {messages.map((message, i) =>
               message.role === "user" ? (
                 <div key={i} className="flex justify-end">
-                  <div className="bg-tint max-w-[85%] rounded-[20px] rounded-br-[7px] px-4 py-2.5 text-[16px] text-white">
+                  <div className="bg-tint max-w-[85%] rounded-[20px] rounded-br-[7px] px-4 py-2.5 text-[16px] text-on-tint">
                     {message.content}
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export function AssistantScreen({
             type="submit"
             aria-label="Send"
             disabled={!draft.trim() || streaming}
-            className="bg-tint pressable flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-full text-white disabled:opacity-40"
+            className="bg-tint pressable flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-full text-on-tint disabled:opacity-40"
           >
             <ArrowUpIcon size={18} strokeWidth={2.4} />
           </button>
