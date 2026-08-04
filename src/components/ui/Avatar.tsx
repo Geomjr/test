@@ -1,12 +1,13 @@
+/* Harmonized duotone gradients — vivid but soft, consistent saturation. */
 const GRADIENTS = [
-  ["#5e5ce6", "#bf5af2"],
-  ["#007aff", "#30b0c7"],
-  ["#ff9500", "#ff2d55"],
-  ["#34c759", "#30b0c7"],
-  ["#ff2d55", "#af52de"],
-  ["#0a84ff", "#5e5ce6"],
-  ["#ff9f0a", "#ffcc00"],
-  ["#30d158", "#64d2ff"],
+  ["#6a7bff", "#9f6bff"],
+  ["#2f9bff", "#38c7d8"],
+  ["#ff7854", "#ff4f7c"],
+  ["#2fc06c", "#26b8b0"],
+  ["#ff5e8a", "#b667f2"],
+  ["#4a66f5", "#3aa0ff"],
+  ["#ffb340", "#ff7a4d"],
+  ["#25c2a8", "#4ea7ff"],
 ];
 
 function hashName(name: string): number {
@@ -31,10 +32,11 @@ export function Avatar({
   photoUrl?: string | null;
   size?: number;
 }) {
+  const ring = "inset 0 1px 1px rgba(255,255,255,0.34), inset 0 -2px 4px rgba(0,0,0,0.14)";
   const style: React.CSSProperties = {
     width: size,
     height: size,
-    fontSize: Math.round(size * 0.4),
+    fontSize: Math.round(size * 0.38),
   };
 
   if (photoUrl) {
@@ -53,8 +55,12 @@ export function Avatar({
   return (
     <div
       aria-hidden
-      style={{ ...style, backgroundImage: `linear-gradient(135deg, ${from}, ${to})` }}
-      className="rounded-full shrink-0 select-none flex items-center justify-center font-semibold text-white"
+      style={{
+        ...style,
+        backgroundImage: `linear-gradient(140deg, ${from}, ${to})`,
+        boxShadow: ring,
+      }}
+      className="rounded-full shrink-0 select-none flex items-center justify-center font-semibold tracking-[0.01em] text-white"
     >
       {initials(name)}
     </div>

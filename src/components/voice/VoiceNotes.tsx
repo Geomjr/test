@@ -351,7 +351,7 @@ export function VoiceNotes({
         ) : phase === "preview" ? (
           <div className="flex flex-col gap-4">
             {previewUrl ? (
-              <div className="rounded-[10px] bg-card px-4 py-3">
+              <div className="card px-4 py-3">
                 <AudioPlayer src={previewUrl} durationSec={secondsRef.current} />
               </div>
             ) : null}

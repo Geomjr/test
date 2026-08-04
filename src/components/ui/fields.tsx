@@ -10,8 +10,8 @@ import type {
 export function FormCard({ children, footer }: { children: ReactNode; footer?: string }) {
   return (
     <div className="mt-5 first:mt-0">
-      <div className="overflow-hidden rounded-[10px] bg-card">{children}</div>
-      {footer ? <p className="px-4 pt-1.5 text-[13px] text-label-2">{footer}</p> : null}
+      <div className="card overflow-hidden">{children}</div>
+      {footer ? <p className="px-1.5 pt-2 text-[13px] leading-snug text-label-2">{footer}</p> : null}
     </div>
   );
 }

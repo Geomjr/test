@@ -6,10 +6,11 @@ import { ChevronLeftIcon } from "./icons";
 
 /**
  * iOS-style screen chrome: a 34px large title that collapses into a frosted
- * inline navigation bar as the user scrolls.
+ * inline navigation bar as the user scrolls, over a soft ambient color wash.
  */
 export function Screen({
   title,
+  eyebrow,
   back,
   right,
   children,
@@ -17,6 +18,8 @@ export function Screen({
   largeTitle = true,
 }: {
   title: string;
+  /** Small caps line above the large title (e.g. the date on Today). */
+  eyebrow?: string;
   back?: { href: string; label?: string };
   right?: ReactNode;
   children: ReactNode;
@@ -44,11 +47,16 @@ export function Screen({
   }, []);
 
   return (
-    <>
+    <div className="relative">
+      <div
+        aria-hidden
+        className="screen-wash pointer-events-none absolute inset-x-0 top-0 h-[340px]"
+      />
+
       <header
         ref={headerRef}
-        className={`sticky top-0 z-30 material-bar transition-shadow ${
-          collapsed ? "hairline-b" : ""
+        className={`sticky top-0 z-30 material-bar ${
+          collapsed ? "hairline-b hairline-full" : ""
         }`}
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
@@ -59,7 +67,7 @@ export function Screen({
                 href={back.href}
                 className="pressable flex items-center gap-0.5 text-tint text-[17px] -ml-1 pr-2 min-h-[44px]"
               >
-                <ChevronLeftIcon size={24} strokeWidth={2.2} />
+                <ChevronLeftIcon size={24} strokeWidth={2.4} />
                 <span className="truncate max-w-[120px]">{back.label ?? "Back"}</span>
               </Link>
             ) : null}
@@ -76,15 +84,24 @@ export function Screen({
         </div>
       </header>
 
-      <div className="mx-auto w-full max-w-3xl">
+      <div className="relative mx-auto w-full max-w-3xl">
         {largeTitle ? (
           <>
             <div ref={sentinelRef} aria-hidden className="h-px" />
-            <h1 className="px-4 pt-1 pb-2 text-[34px] font-bold tracking-tight">{title}</h1>
+            <div className="px-4 pt-2 pb-3">
+              {eyebrow ? (
+                <p className="pb-0.5 text-[13px] font-semibold uppercase tracking-[0.08em] text-label-2">
+                  {eyebrow}
+                </p>
+              ) : null}
+              <h1 className="text-[34px] font-bold leading-[1.12] tracking-[-0.022em]">
+                {title}
+              </h1>
+            </div>
           </>
         ) : null}
         <div className={contentClassName ?? "px-4 pb-28 lg:pb-10"}>{children}</div>
       </div>
-    </>
+    </div>
   );
 }

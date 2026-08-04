@@ -122,7 +122,7 @@ export function AssistantScreen({
                   key={starter}
                   type="button"
                   onClick={() => void send(starter)}
-                  className="pressable rounded-[12px] bg-card px-4 py-3 text-left text-[15px] text-tint"
+                  className="card pressable px-4 py-3.5 text-left text-[15px] font-medium text-tint"
                 >
                   {starter}
                 </button>
@@ -134,13 +134,13 @@ export function AssistantScreen({
             {messages.map((message, i) =>
               message.role === "user" ? (
                 <div key={i} className="flex justify-end">
-                  <div className="max-w-[85%] rounded-[18px] rounded-br-[6px] bg-tint px-4 py-2.5 text-[16px] text-white">
+                  <div className="bg-brand max-w-[85%] rounded-[20px] rounded-br-[7px] px-4 py-2.5 text-[16px] text-white shadow-card-token">
                     {message.content}
                   </div>
                 </div>
               ) : (
                 <div key={i} className="flex justify-start">
-                  <div className="max-w-[92%] rounded-[18px] rounded-bl-[6px] bg-card px-4 py-2.5">
+                  <div className="card max-w-[92%] rounded-[20px] rounded-bl-[7px] px-4 py-2.5">
                     {message.content ? (
                       <StreamedText text={message.content} />
                     ) : (
@@ -166,7 +166,7 @@ export function AssistantScreen({
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 56px)" }}
       >
         <form
-          className="material-sheet flex items-end gap-2 rounded-[22px] p-1.5 shadow-lg"
+          className="material-sheet shadow-float flex items-end gap-2 rounded-[24px] p-1.5"
           onSubmit={(e) => {
             e.preventDefault();
             void send(draft);
@@ -182,7 +182,7 @@ export function AssistantScreen({
             type="submit"
             aria-label="Send"
             disabled={!draft.trim() || streaming}
-            className="pressable flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-tint text-white disabled:opacity-40"
+            className="bg-brand pressable flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-full text-white disabled:opacity-40"
           >
             <ArrowUpIcon size={18} strokeWidth={2.4} />
           </button>

@@ -30,7 +30,7 @@ export default async function ReviewPage() {
       <WeeklySummary aiOn={aiEnabled()} />
 
       <ListSection
-        title={`Overdue follow-ups · ${data.overdue.length}`}
+        title="Overdue follow-ups" count={data.overdue.length}
         footer={data.overdue.length === 0 ? "Nobody is past cadence. Enjoy it." : undefined}
       >
         {data.overdue.length === 0 ? (
@@ -49,7 +49,7 @@ export default async function ReviewPage() {
         )}
       </ListSection>
 
-      <ListSection title={`Coming up · ${data.upcoming.length}`}>
+      <ListSection title="Coming up" count={data.upcoming.length}>
         {data.upcoming.length === 0 ? (
           <div className="px-4 py-3 text-[15px] text-label-2">No dates in the next two weeks.</div>
         ) : (
@@ -73,7 +73,7 @@ export default async function ReviewPage() {
         )}
       </ListSection>
 
-      <ListSection title={`Pipeline needing action · ${data.stalePipeline.length}`}>
+      <ListSection title="Pipeline needing action" count={data.stalePipeline.length}>
         {data.stalePipeline.length === 0 ? (
           <div className="px-4 py-3 text-[15px] text-label-2">Nothing is stuck.</div>
         ) : (
@@ -90,7 +90,7 @@ export default async function ReviewPage() {
         )}
       </ListSection>
 
-      <ListSection title={`Open tasks due soon · ${data.dueTasks.length}`}>
+      <ListSection title="Open tasks due soon" count={data.dueTasks.length}>
         {data.dueTasks.length === 0 ? (
           <div className="px-4 py-3 text-[15px] text-label-2">No deadlines this week.</div>
         ) : (

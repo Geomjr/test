@@ -25,8 +25,8 @@ export function SegmentedControl<T extends string>({
             aria-selected={selected}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`min-h-[32px] flex-1 rounded-[7px] px-2 text-[13px] font-medium transition-all ${
-              selected ? "bg-card shadow-sm" : "text-label-2"
+            className={`min-h-[34px] flex-1 rounded-[8px] px-2 text-[13.5px] font-semibold transition-all ${
+              selected ? "bg-card shadow-card-token" : "text-label-2"
             }`}
           >
             {option.label}

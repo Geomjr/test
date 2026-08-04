@@ -70,8 +70,8 @@ export default async function ContactPage({
           size={92}
         />
         <div>
-          <h2 className="text-[26px] font-bold tracking-tight">{contact.name}</h2>
-          {subtitle ? <p className="text-[15px] text-label-2">{subtitle}</p> : null}
+          <h2 className="text-[27px] font-bold tracking-[-0.02em]">{contact.name}</h2>
+          {subtitle ? <p className="pt-0.5 text-[15px] font-medium text-label-2">{subtitle}</p> : null}
           {location ? <p className="text-[13px] text-label-3">{location}</p> : null}
         </div>
         <div className="flex flex-wrap items-center justify-center gap-1.5">

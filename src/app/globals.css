@@ -1,53 +1,82 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Orbit design tokens — Apple HIG semantic palette.
-   Light values are iOS system colors; dark values are their dark-mode pairs.
+   Orbit design tokens.
+
+   Foundation: Apple HIG semantic palette (light = iOS system colors, dark =
+   their dark-mode pairs) plus an elevation system and a brand accent so the
+   product has depth and identity, not just structure.
 --------------------------------------------------------------------------- */
 
 :root {
   /* Backgrounds (grouped) */
   --bg: #f2f2f7;
   --bg-card: #ffffff;
-  --bg-tertiary: #f2f2f7;
+  --bg-tertiary: #f7f7f9;
   --bg-elevated: #ffffff;
   --bg-fill: rgba(120, 120, 128, 0.12);
-  --bg-fill-secondary: rgba(120, 120, 128, 0.08);
+  --bg-fill-secondary: rgba(120, 120, 128, 0.07);
+
+  /* Elevation */
+  --card-border: rgba(20, 22, 40, 0.04);
+  --shadow-card: 0 1px 1px rgba(16, 20, 40, 0.03), 0 4px 16px rgba(16, 20, 40, 0.05);
+  --shadow-float: 0 2px 4px rgba(16, 20, 40, 0.08), 0 12px 32px rgba(16, 20, 40, 0.14);
+  --shadow-fab: 0 4px 10px rgba(37, 84, 255, 0.28), 0 12px 28px rgba(37, 84, 255, 0.22);
 
   /* Materials (frosted) */
-  --material-bar: rgba(249, 249, 249, 0.82);
-  --material-sheet: rgba(255, 255, 255, 0.94);
-  --material-scrim: rgba(0, 0, 0, 0.32);
+  --material-bar: rgba(248, 248, 250, 0.88);
+  --material-sheet: rgba(255, 255, 255, 0.96);
+  --material-scrim: rgba(15, 16, 32, 0.36);
+
+  /* Ambient wash behind screen tops */
+  --wash: rgba(94, 92, 230, 0.06);
+  --wash-2: rgba(10, 132, 255, 0.05);
 
   /* Labels */
-  --label: #000000;
-  --label-2: rgba(60, 60, 67, 0.6);
-  --label-3: rgba(60, 60, 67, 0.3);
-  --label-4: rgba(60, 60, 67, 0.18);
+  --label: #0b0b0f;
+  --label-2: rgba(60, 60, 67, 0.62);
+  --label-3: rgba(60, 60, 67, 0.32);
+  --label-4: rgba(60, 60, 67, 0.16);
 
   /* Separators */
-  --separator: rgba(60, 60, 67, 0.29);
+  --separator: rgba(60, 60, 67, 0.24);
   --separator-opaque: #c6c6c8;
+
+  /* Brand */
+  --brand-a: #0a84ff;
+  --brand-b: #5e5ce6;
 
   /* Tints */
   --tint: #007aff;
-  --tint-soft: rgba(0, 122, 255, 0.14);
+  --tint-soft: rgba(0, 122, 255, 0.12);
   --red: #ff3b30;
-  --red-soft: rgba(255, 59, 48, 0.14);
+  --red-soft: rgba(255, 59, 48, 0.12);
   --green: #34c759;
-  --green-soft: rgba(52, 199, 89, 0.16);
+  --green-soft: rgba(52, 199, 89, 0.14);
   --orange: #ff9500;
-  --orange-soft: rgba(255, 149, 0, 0.16);
+  --orange-soft: rgba(255, 149, 0, 0.14);
   --yellow: #ffcc00;
   --teal: #30b0c7;
-  --teal-soft: rgba(48, 176, 199, 0.16);
+  --teal-soft: rgba(48, 176, 199, 0.14);
   --indigo: #5856d6;
-  --indigo-soft: rgba(88, 86, 214, 0.15);
+  --indigo-soft: rgba(88, 86, 214, 0.12);
   --purple: #af52de;
-  --purple-soft: rgba(175, 82, 222, 0.15);
+  --purple-soft: rgba(175, 82, 222, 0.12);
   --pink: #ff2d55;
-  --pink-soft: rgba(255, 45, 85, 0.14);
+  --pink-soft: rgba(255, 45, 85, 0.12);
   --gray: #8e8e93;
+
+  /* Relationship tiers (CVD-validated as a set; every use carries a label) */
+  --tier-inner: #ff2d55;
+  --tier-inner-soft: rgba(255, 45, 85, 0.12);
+  --tier-close: #e040c6;
+  --tier-close-soft: rgba(224, 64, 198, 0.12);
+  --tier-active: #007aff;
+  --tier-active-soft: rgba(0, 122, 255, 0.12);
+  --tier-warm: #ff9500;
+  --tier-warm-soft: rgba(255, 149, 0, 0.14);
+  --tier-new: #8e8e93;
+  --tier-new-soft: rgba(120, 120, 128, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,38 +86,60 @@
     --bg-tertiary: #2c2c2e;
     --bg-elevated: #2c2c2e;
     --bg-fill: rgba(120, 120, 128, 0.36);
-    --bg-fill-secondary: rgba(120, 120, 128, 0.24);
+    --bg-fill-secondary: rgba(120, 120, 128, 0.2);
 
-    --material-bar: rgba(18, 18, 20, 0.82);
-    --material-sheet: rgba(28, 28, 30, 0.96);
-    --material-scrim: rgba(0, 0, 0, 0.55);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.35);
+    --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(0, 0, 0, 0.6);
+    --shadow-fab: 0 4px 12px rgba(10, 60, 255, 0.45), 0 12px 30px rgba(0, 0, 0, 0.5);
+
+    --material-bar: rgba(14, 14, 17, 0.86);
+    --material-sheet: rgba(26, 26, 30, 0.97);
+    --material-scrim: rgba(0, 0, 0, 0.6);
+
+    --wash: rgba(94, 92, 230, 0.14);
+    --wash-2: rgba(10, 132, 255, 0.09);
 
     --label: #ffffff;
-    --label-2: rgba(235, 235, 245, 0.6);
-    --label-3: rgba(235, 235, 245, 0.3);
-    --label-4: rgba(235, 235, 245, 0.16);
+    --label-2: rgba(235, 235, 245, 0.62);
+    --label-3: rgba(235, 235, 245, 0.32);
+    --label-4: rgba(235, 235, 245, 0.14);
 
-    --separator: rgba(84, 84, 88, 0.6);
+    --separator: rgba(84, 84, 88, 0.56);
     --separator-opaque: #38383a;
 
+    --brand-a: #0a84ff;
+    --brand-b: #6e6cf6;
+
     --tint: #0a84ff;
-    --tint-soft: rgba(10, 132, 255, 0.22);
+    --tint-soft: rgba(10, 132, 255, 0.2);
     --red: #ff453a;
-    --red-soft: rgba(255, 69, 58, 0.22);
+    --red-soft: rgba(255, 69, 58, 0.2);
     --green: #30d158;
-    --green-soft: rgba(48, 209, 88, 0.22);
+    --green-soft: rgba(48, 209, 88, 0.2);
     --orange: #ff9f0a;
-    --orange-soft: rgba(255, 159, 10, 0.22);
+    --orange-soft: rgba(255, 159, 10, 0.2);
     --yellow: #ffd60a;
     --teal: #40c8e0;
-    --teal-soft: rgba(64, 200, 224, 0.22);
+    --teal-soft: rgba(64, 200, 224, 0.2);
     --indigo: #5e5ce6;
-    --indigo-soft: rgba(94, 92, 230, 0.24);
+    --indigo-soft: rgba(94, 92, 230, 0.22);
     --purple: #bf5af2;
-    --purple-soft: rgba(191, 90, 242, 0.22);
+    --purple-soft: rgba(191, 90, 242, 0.2);
     --pink: #ff375f;
-    --pink-soft: rgba(255, 55, 95, 0.22);
+    --pink-soft: rgba(255, 55, 95, 0.2);
     --gray: #8e8e93;
+
+    --tier-inner: #ff375f;
+    --tier-inner-soft: rgba(255, 55, 95, 0.2);
+    --tier-close: #e455cf;
+    --tier-close-soft: rgba(228, 85, 207, 0.2);
+    --tier-active: #0a84ff;
+    --tier-active-soft: rgba(10, 132, 255, 0.2);
+    --tier-warm: #ff9500;
+    --tier-warm-soft: rgba(255, 159, 10, 0.2);
+    --tier-new: #98989d;
+    --tier-new-soft: rgba(120, 120, 128, 0.26);
   }
 }
 
@@ -126,47 +177,83 @@
 
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
     system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
-
-  --radius-card: 10px;
-  --radius-bubble: 18px;
 }
 
 /* ---------------------------------------------------------------------------
    Base
 --------------------------------------------------------------------------- */
 
-html {
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-}
+/* Base element rules live in the base layer so utilities always win. */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-body {
-  background: var(--bg);
-  color: var(--label);
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.35;
-  -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
-}
+  body {
+    background: var(--bg);
+    color: var(--label);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.35;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
 
-input,
-textarea,
-select,
-button {
-  font: inherit;
-  color: inherit;
-}
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
 
-/* iOS zooms the page when a focused input's font-size is under 16px. */
-input,
-textarea,
-select {
-  font-size: 16px;
+  /* iOS zooms the page when a focused input's font-size is under 16px. */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
 
 ::selection {
   background: var(--tint-soft);
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces & chrome
+--------------------------------------------------------------------------- */
+
+/* The elevated card every grouped section sits on. Lives in the components
+   layer so radius utilities (rounded-full, rounded-[20px]) can override it. */
+@layer components {
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+  }
+}
+
+/* Ambient color wash behind the top of each screen. */
+.screen-wash {
+  background:
+    radial-gradient(560px 300px at 12% -60px, var(--wash), transparent 70%),
+    radial-gradient(680px 340px at 95% -120px, var(--wash-2), transparent 70%);
+}
+
+/* Brand gradient (primary buttons, FAB, user chat bubble, active accents). */
+.bg-brand {
+  background-image: linear-gradient(135deg, var(--brand-a), var(--brand-b));
+}
+.shadow-fab {
+  box-shadow: var(--shadow-fab);
+}
+.shadow-card-token {
+  box-shadow: var(--shadow-card);
+}
+.shadow-float {
+  box-shadow: var(--shadow-float);
 }
 
 /* Hairline separators — true 0.5px on retina */
@@ -176,13 +263,16 @@ select {
 .hairline-b::after {
   content: "";
   position: absolute;
-  left: 0;
+  left: 16px;
   right: 0;
   bottom: 0;
   height: 1px;
   background: var(--separator);
   transform: scaleY(0.5);
   transform-origin: bottom;
+}
+.hairline-full::after {
+  left: 0;
 }
 
 .no-scrollbar {
@@ -195,30 +285,55 @@ select {
 /* Frosted materials */
 .material-bar {
   background: var(--material-bar);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
 }
 
 .material-sheet {
   background: var(--material-sheet);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
 }
 
-/* Pressed-state helper: mimic UIKit's highlight fade */
+/* Pressed states — UIKit-style highlight + a whisper of scale. */
 .pressable {
-  transition: opacity 0.12s ease, background-color 0.12s ease,
-    transform 0.12s ease;
+  transition: opacity 0.13s ease, background-color 0.13s ease,
+    transform 0.13s ease, box-shadow 0.13s ease;
 }
 .pressable:active {
-  opacity: 0.55;
+  opacity: 0.72;
+  transform: scale(0.98);
 }
 
+.pressable-bg {
+  transition: background-color 0.13s ease;
+}
 .pressable-bg:active {
   background-color: var(--bg-fill);
 }
 
-/* Animations */
+/* Search field focus morph */
+.search-field {
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.search-field:focus-within {
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3.5px var(--tint-soft), var(--shadow-card);
+}
+
+/* Primary button */
+.btn-primary {
+  background-image: linear-gradient(135deg, var(--brand-a), var(--brand-b));
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 4px 12px rgba(50, 80, 255, 0.3);
+}
+
+/* ---------------------------------------------------------------------------
+   Animation
+--------------------------------------------------------------------------- */
+
 @keyframes sheet-up {
   from {
     transform: translateY(100%);
@@ -263,13 +378,23 @@ select {
     transform: scaleX(1);
   }
 }
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @keyframes pulse-rec {
   0%,
   100% {
     box-shadow: 0 0 0 0 var(--red-soft);
   }
   50% {
-    box-shadow: 0 0 0 12px transparent;
+    box-shadow: 0 0 0 14px transparent;
   }
 }
 @keyframes shimmer {
@@ -294,8 +419,11 @@ select {
   animation: toast-in 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .animate-bar-grow {
-  animation: bar-grow 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: bar-grow 0.6s cubic-bezier(0.32, 0.72, 0, 1);
   transform-origin: left;
+}
+.animate-rise-in {
+  animation: rise-in 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .animate-pulse-rec {
   animation: pulse-rec 1.4s ease infinite;

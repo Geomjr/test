@@ -12,10 +12,10 @@ export function WeeklySummary({ aiOn }: { aiOn: boolean }) {
 
   return (
     <section className="mt-7">
-      <h2 className="px-4 pb-1.5 text-[13px] font-medium uppercase tracking-[0.04em] text-label-2">
-        AI Summary
+      <h2 className="px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em]">
+        AI summary
       </h2>
-      <div className="rounded-[10px] bg-card px-4 py-4">
+      <div className="card px-4 py-4">
         {stream.text ? (
           <>
             <StreamedText text={stream.text} />

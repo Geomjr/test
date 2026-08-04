@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Sheet } from "@/components/ui/Sheet";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { useToast } from "@/components/ui/Toast";
-import { ColumnsIcon } from "@/components/ui/icons";
+import { ColumnsIcon, PlusIcon } from "@/components/ui/icons";
 import { STAGE_META, STAGE_ORDER } from "@/lib/pipeline-meta";
 import type { PipelineStage } from "@/lib/db/schema";
 
@@ -93,7 +93,7 @@ export function PipelineBoard({
           return (
             <div
               key={stage}
-              className={`w-[272px] shrink-0 snap-start rounded-[14px] p-2 transition-colors ${
+              className={`w-[276px] shrink-0 snap-start rounded-[18px] p-2.5 transition-colors ${
                 dragOverStage === stage ? "bg-tint-soft" : "bg-fill-2"
               }`}
               onDragOver={(e) => {
@@ -109,13 +109,19 @@ export function PipelineBoard({
                 setDragId(null);
               }}
             >
-              <div className="flex items-center gap-2 px-2 pb-2 pt-1">
+              <div className="flex items-center gap-2 px-1.5 pb-2.5 pt-1">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full"
                   style={{ background: meta.color }}
                 />
-                <span className="text-[14px] font-semibold">{meta.label}</span>
-                <span className="tnum text-[13px] text-label-3">{columnCards.length}</span>
+                <span className="text-[14.5px] font-semibold tracking-[-0.01em]">
+                  {meta.label}
+                </span>
+                {columnCards.length > 0 ? (
+                  <span className="tnum ml-auto rounded-full bg-fill px-2 py-[1px] text-[12px] font-semibold text-label-2">
+                    {columnCards.length}
+                  </span>
+                ) : null}
               </div>
 
               <div className="flex min-h-[60px] flex-col gap-2">
@@ -130,7 +136,7 @@ export function PipelineBoard({
                       setDragOverStage(null);
                     }}
                     onClick={() => setMenuFor(card)}
-                    className={`pressable w-full rounded-[12px] bg-card p-3 text-left shadow-sm ${
+                    className={`card pressable w-full rounded-[14px] p-3 text-left ${
                       dragId === card.id ? "opacity-40" : ""
                     }`}
                   >
@@ -245,15 +251,15 @@ export function PipelineBoard({
           setAddQuery("");
           setAddOpen(true);
         }}
-        className="pressable fixed right-5 z-40 flex h-[54px] w-[54px] items-center justify-center rounded-full bg-tint text-white shadow-lg lg:right-10"
+        className="bg-brand shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white lg:right-10"
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 66px)" }}
       >
-        <span className="text-[28px] leading-none">＋</span>
+        <PlusIcon size={26} strokeWidth={2.4} />
       </button>
 
       <Sheet open={addOpen} onClose={() => setAddOpen(false)} title="Add to Pipeline">
         <SearchBar value={addQuery} onValueChange={setAddQuery} placeholder="Find a person" />
-        <div className="mt-3 overflow-hidden rounded-[10px] bg-card">
+        <div className="mt-3 card overflow-hidden">
           {addable.length === 0 ? (
             <p className="px-4 py-4 text-[14px] text-label-2">
               {candidates.length === onBoard.size

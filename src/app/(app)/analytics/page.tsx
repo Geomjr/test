@@ -8,6 +8,7 @@ import { ListRow, ListSection } from "@/components/ui/List";
 import { BarList } from "@/components/charts/BarList";
 import { WeeklyBars } from "@/components/charts/WeeklyBars";
 import { Breakdown } from "@/components/charts/Breakdown";
+import { BubbleIcon, PeopleIcon } from "@/components/ui/icons";
 import { TIER_META } from "@/lib/tiers";
 import type { Tier } from "@/lib/db/schema";
 
@@ -22,14 +23,28 @@ export default async function AnalyticsPage() {
 
   return (
     <Screen title="Analytics" back={{ href: "/more", label: "More" }}>
-      <div className="grid grid-cols-2 gap-2.5">
-        <div className="rounded-[14px] bg-card px-4 py-4">
-          <p className="tnum text-[30px] font-bold leading-none">{data.totalContacts}</p>
-          <p className="pt-1 text-[13px] text-label-2">people in your orbit</p>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="card flex items-start justify-between px-4 py-4">
+          <div>
+            <p className="tnum text-[32px] font-bold leading-none tracking-[-0.02em]">
+              {data.totalContacts}
+            </p>
+            <p className="pt-1.5 text-[13px] font-medium text-label-2">people in your orbit</p>
+          </div>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tint-soft text-tint">
+            <PeopleIcon size={19} />
+          </span>
         </div>
-        <div className="rounded-[14px] bg-card px-4 py-4">
-          <p className="tnum text-[30px] font-bold leading-none">{data.totalInteractions}</p>
-          <p className="pt-1 text-[13px] text-label-2">interactions logged</p>
+        <div className="card flex items-start justify-between px-4 py-4">
+          <div>
+            <p className="tnum text-[32px] font-bold leading-none tracking-[-0.02em]">
+              {data.totalInteractions}
+            </p>
+            <p className="pt-1.5 text-[13px] font-medium text-label-2">interactions logged</p>
+          </div>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-soft text-purple">
+            <BubbleIcon size={19} />
+          </span>
         </div>
       </div>
 

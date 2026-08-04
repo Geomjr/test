@@ -34,18 +34,18 @@ export function AIPanel({ contactId, aiOn }: { contactId: string; aiOn: boolean 
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-2 gap-2.5">
+      <div className="mt-4 grid grid-cols-2 gap-3">
         <button
           type="button"
           onClick={openBrief}
-          className="pressable flex items-center justify-center gap-1.5 rounded-[12px] bg-card py-3 text-[15px] font-semibold text-purple"
+          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[15px] font-semibold text-purple"
         >
           <SparklesIcon size={17} /> Brief Me
         </button>
         <button
           type="button"
           onClick={() => setDraftPicker(true)}
-          className="pressable flex items-center justify-center gap-1.5 rounded-[12px] bg-card py-3 text-[15px] font-semibold text-purple"
+          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[15px] font-semibold text-purple"
         >
           <SparklesIcon size={17} /> Draft Message
         </button>

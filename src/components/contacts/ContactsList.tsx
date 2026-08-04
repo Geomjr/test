@@ -89,8 +89,8 @@ export function ContactsList({ contacts }: { contacts: ContactRow[] }) {
       ) : (
         groups.map(([letter, rows]) => (
           <section key={letter} className="mt-4">
-            <p className="px-3 pb-1 text-[14px] font-semibold text-label-2">{letter}</p>
-            <div className="overflow-hidden rounded-[10px] bg-card">
+            <p className="px-1.5 pb-1.5 text-[15px] font-semibold text-label-2">{letter}</p>
+            <div className="card overflow-hidden">
               {rows.map((contact) => (
                 <ListRow
                   key={contact.id}

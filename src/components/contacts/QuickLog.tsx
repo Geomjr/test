@@ -69,12 +69,12 @@ export function QuickLog({ contactId, today }: { contactId: string; today: strin
             key={t}
             type="button"
             onClick={() => openFor(t)}
-            className="pressable flex shrink-0 flex-col items-center gap-1"
+            className="pressable flex shrink-0 flex-col items-center gap-1.5"
           >
-            <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-card text-tint">
+            <span className="card flex h-[54px] w-[54px] items-center justify-center rounded-full text-tint">
               {TYPE_ICONS[t]}
             </span>
-            <span className="text-[11px] font-medium text-label-2">
+            <span className="text-[11.5px] font-semibold text-label-2">
               {INTERACTION_META[t].label}
             </span>
           </button>

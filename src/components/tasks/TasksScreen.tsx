@@ -8,7 +8,7 @@ import { ActionSheet } from "@/components/ui/ActionSheet";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Sheet } from "@/components/ui/Sheet";
 import { FormCard, SelectField, TextField } from "@/components/ui/fields";
-import { CheckCircleIcon, ChecklistIcon, CircleIcon } from "@/components/ui/icons";
+import { CheckCircleIcon, ChecklistIcon, CircleIcon, PlusIcon } from "@/components/ui/icons";
 import { formatDate } from "@/lib/dates";
 
 export type TaskItem = {
@@ -70,15 +70,18 @@ export function TasksScreen({
       ) : (
         <>
           {sections.map((section) => (
-            <section key={section.label} className="mt-6 first:mt-1">
+            <section key={section.label} className="mt-7 first:mt-1">
               <h2
-                className={`px-4 pb-1.5 text-[13px] font-medium uppercase tracking-[0.04em] ${
-                  section.label === "Overdue" ? "text-red" : "text-label-2"
+                className={`px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em] ${
+                  section.label === "Overdue" ? "text-red" : ""
                 }`}
               >
                 {section.label}
+                <span className="tnum pl-2 text-[15px] font-medium text-label-3">
+                  {section.items.length}
+                </span>
               </h2>
-              <div className="overflow-hidden rounded-[10px] bg-card">
+              <div className="card overflow-hidden">
                 {section.items.map((task) => (
                   <TaskRowView
                     key={task.id}
@@ -97,12 +100,16 @@ export function TasksScreen({
               <button
                 type="button"
                 onClick={() => setShowDone((v) => !v)}
-                className="pressable px-4 pb-1.5 text-[13px] font-medium uppercase tracking-[0.04em] text-label-2"
+                className="pressable px-1.5 pb-2.5 text-[16px] font-semibold text-label-2"
               >
-                Completed · {done.length} {showDone ? "▾" : "▸"}
+                Completed
+                <span className="tnum pl-2 text-[14px] font-medium text-label-3">
+                  {done.length}
+                </span>
+                <span className="pl-1.5 text-[12px]">{showDone ? "▾" : "▸"}</span>
               </button>
               {showDone ? (
-                <div className="overflow-hidden rounded-[10px] bg-card">
+                <div className="card overflow-hidden">
                   {done.map((task) => (
                     <TaskRowView
                       key={task.id}
@@ -129,10 +136,10 @@ export function TasksScreen({
           setContactId("");
           setAddOpen(true);
         }}
-        className="pressable fixed right-5 z-40 flex h-[54px] w-[54px] items-center justify-center rounded-full bg-tint text-white shadow-lg lg:right-10"
+        className="bg-brand shadow-fab pressable fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white lg:right-10"
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 66px)" }}
       >
-        <span className="text-[28px] leading-none">＋</span>
+        <PlusIcon size={26} strokeWidth={2.4} />
       </button>
 
       <ActionSheet
@@ -234,7 +241,9 @@ function TaskRowView({
       </button>
       <button type="button" onClick={onMenu} className="min-w-0 flex-1 py-1 text-left">
         <span
-          className={`block text-[16px] ${task.completedAt ? "text-label-3 line-through" : ""}`}
+          className={`block text-[16px] leading-snug line-clamp-2 ${
+            task.completedAt ? "text-label-3 line-through" : ""
+          }`}
         >
           {task.title}
         </span>

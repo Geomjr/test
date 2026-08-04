@@ -85,7 +85,7 @@ export function SearchScreen({ aiOn }: { aiOn: boolean }) {
       {aiOn && query.trim() ? (
         <Link
           href={`/assistant?q=${encodeURIComponent(query.trim())}`}
-          className="pressable mt-3 flex items-center gap-3 rounded-[10px] bg-card px-4 py-3"
+          className="pressable mt-3 flex items-center gap-3 card px-4 py-3"
         >
           <SparklesIcon size={20} className="text-purple" />
           <span className="flex-1 text-[15px]">

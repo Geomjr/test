@@ -44,7 +44,7 @@ export function ActionSheet({
         className="relative w-full px-2 pb-2 animate-sheet-up sm:w-[320px] sm:animate-scale-in"
         style={{ paddingBottom: "max(env(safe-area-inset-bottom), 8px)" }}
       >
-        <div className="material-sheet overflow-hidden rounded-[14px]">
+        <div className="material-sheet shadow-float overflow-hidden rounded-[18px]">
           {title ? (
             <p className="hairline-b px-4 py-3 text-center text-[13px] text-label-2">{title}</p>
           ) : null}
@@ -67,7 +67,7 @@ export function ActionSheet({
         <button
           type="button"
           onClick={onClose}
-          className="material-sheet pressable mt-2 block w-full rounded-[14px] px-4 py-3.5 text-center text-[19px] font-semibold text-tint"
+          className="material-sheet shadow-float pressable mt-2 block w-full rounded-[18px] px-4 py-3.5 text-center text-[19px] font-semibold text-tint"
         >
           Cancel
         </button>

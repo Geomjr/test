@@ -6,22 +6,27 @@ import { ChevronRightIcon } from "./icons";
 
 export function ListSection({
   title,
+  count,
   footer,
   children,
   action,
 }: {
   title?: string;
+  count?: number;
   footer?: string;
   children: ReactNode;
   action?: ReactNode;
 }) {
   return (
-    <section className="mt-7 first:mt-1">
+    <section className="mt-8 first:mt-2">
       {title || action ? (
-        <div className="flex items-end justify-between px-4 pb-1.5">
+        <div className="flex items-baseline justify-between px-1.5 pb-2.5">
           {title ? (
-            <h2 className="text-[13px] font-medium uppercase tracking-[0.04em] text-label-2">
+            <h2 className="text-[19px] font-semibold tracking-[-0.015em]">
               {title}
+              {count !== undefined ? (
+                <span className="tnum pl-2 text-[15px] font-medium text-label-3">{count}</span>
+              ) : null}
             </h2>
           ) : (
             <span />
@@ -29,8 +34,8 @@ export function ListSection({
           {action}
         </div>
       ) : null}
-      <div className="overflow-hidden rounded-[10px] bg-card">{children}</div>
-      {footer ? <p className="px-4 pt-1.5 text-[13px] text-label-2">{footer}</p> : null}
+      <div className="card overflow-hidden">{children}</div>
+      {footer ? <p className="px-1.5 pt-2 text-[13px] leading-snug text-label-2">{footer}</p> : null}
     </section>
   );
 }
@@ -39,6 +44,8 @@ type RowProps = {
   leading?: ReactNode;
   title: ReactNode;
   subtitle?: ReactNode;
+  /** Directory rows truncate (1); status rows may wrap (2). */
+  subtitleLines?: 1 | 2;
   value?: ReactNode;
   chevron?: boolean;
   href?: string;
@@ -52,6 +59,7 @@ export function ListRow({
   leading,
   title,
   subtitle,
+  subtitleLines = 1,
   value,
   chevron,
   href,
@@ -67,24 +75,32 @@ export function ListRow({
       {leading ? <span className="shrink-0 text-label-2">{leading}</span> : null}
       <span className={`min-w-0 flex-1 py-[3px] ${centerTitle ? "text-center" : ""}`}>
         <span
-          className={`block truncate text-[17px] ${
+          className={`block truncate text-[17px] leading-snug ${
             destructive ? "text-red" : interactive && centerTitle ? "text-tint" : ""
           }`}
         >
           {title}
         </span>
         {subtitle ? (
-          <span className="block truncate text-[14px] text-label-2">{subtitle}</span>
+          <span
+            className={`mt-[1px] block text-[13.5px] leading-snug text-label-2 ${
+              subtitleLines === 2 ? "line-clamp-2" : "truncate"
+            }`}
+          >
+            {subtitle}
+          </span>
         ) : null}
       </span>
-      {value ? <span className="shrink-0 text-[16px] text-label-2">{value}</span> : null}
+      {value ? (
+        <span className="shrink-0 text-[15px] text-label-2 text-right">{value}</span>
+      ) : null}
       {chevron ? (
-        <ChevronRightIcon size={18} className="shrink-0 text-label-3" strokeWidth={2.4} />
+        <ChevronRightIcon size={17} className="shrink-0 text-label-3" strokeWidth={2.6} />
       ) : null}
     </>
   );
 
-  const className = `hairline-b last:after:hidden flex w-full items-center gap-3 px-4 min-h-[46px] py-1.5 text-left ${
+  const className = `hairline-b last:after:hidden flex w-full items-center gap-3.5 px-4 min-h-[52px] py-2 text-left ${
     interactive ? "pressable-bg" : ""
   }`;
 

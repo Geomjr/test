@@ -41,11 +41,13 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex flex-col items-center gap-3 pb-8 text-center">
-        <OrbitLogo size={72} />
+      <div className="flex flex-col items-center gap-4 pb-9 text-center">
+        <div style={{ filter: "drop-shadow(0 12px 28px rgba(80, 90, 240, 0.38))" }}>
+          <OrbitLogo size={76} />
+        </div>
         <div>
-          <h1 className="text-[28px] font-bold tracking-tight">Orbit</h1>
-          <p className="text-[15px] text-label-2">Your people, in orbit.</p>
+          <h1 className="text-[30px] font-bold tracking-[-0.02em]">Orbit</h1>
+          <p className="pt-0.5 text-[15px] text-label-2">Your people, in orbit.</p>
         </div>
       </div>
 
