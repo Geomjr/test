@@ -2,8 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/data/dashboard";
-import { userToday } from "@/lib/today";
+import { aiEnabled } from "@/lib/ai/client";
+import { userGreeting, userToday } from "@/lib/today";
 import { formatDate, isoToUTC, relativeFuture } from "@/lib/dates";
+import { TodaysThree } from "@/components/home/TodaysThree";
 import { Screen } from "@/components/ui/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { ListRow, ListSection } from "@/components/ui/List";
@@ -47,6 +49,7 @@ export default async function TodayPage() {
   if (!user) redirect("/sign-in");
 
   const today = await userToday();
+  const greeting = await userGreeting(user.name.split(" ")[0]);
   const data = getDashboardData(user.id, today);
   const todayUTC = new Date(isoToUTC(today));
   const weekday = WEEKDAYS[todayUTC.getUTCDay()];
@@ -69,7 +72,7 @@ export default async function TodayPage() {
 
   return (
     <Screen
-      title="Today"
+      title={greeting}
       eyebrow={`${weekday}, ${formatDate(today, { year: false })}`}
       right={
         <Link
@@ -103,32 +106,13 @@ export default async function TodayPage() {
         </div>
       ) : (
         <>
-          {/* Today's three — one small, clear ask. */}
+          {/* Today's three — the hero: one small ask, completable in place. */}
           {data.todaysThree.length > 0 ? (
             <section className="mt-2">
               <h2 className="px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em]">
                 {data.todaysThree.length === 1 ? "One for today" : "Today's three"}
               </h2>
-              <div className="card overflow-hidden">
-                {data.todaysThree.map((move) => (
-                  <ListRow
-                    key={`${move.kind}-${move.contactId}`}
-                    href={`/contacts/${move.contactId}`}
-                    leading={<Avatar name={move.contactName} size={42} />}
-                    title={<span className="font-medium">{move.contactName}</span>}
-                    subtitle={move.reason}
-                    subtitleLines={2}
-                    value={
-                      move.kind === "birthday" ? (
-                        <CakeIcon size={18} className="text-pink" />
-                      ) : move.kind === "promise" ? (
-                        <ChecklistIcon size={18} className="text-label-3" />
-                      ) : undefined
-                    }
-                    chevron
-                  />
-                ))}
-              </div>
+              <TodaysThree moves={data.todaysThree} aiOn={aiEnabled()} />
             </section>
           ) : (
             <ListSection title="Today">
@@ -144,33 +128,31 @@ export default async function TodayPage() {
             </ListSection>
           )}
 
-          {/* Week pulse — progress, framed as momentum, never as debt. */}
-          <section className="mt-5">
-            <div className="card flex items-center justify-between bg-surface-dark px-5 py-4 text-on-dark">
-              <div>
-                <p className="tnum text-[30px] font-bold leading-none tracking-[-0.02em]">
+          {/* Week pulse — a compact strip, deliberately quieter than the hero. */}
+          <section className="mt-4">
+            <div className="card flex items-center justify-between bg-surface-dark px-4 py-3 text-on-dark">
+              <p className="text-[14px] font-medium text-on-dark-2">
+                <span className="tnum pr-1.5 text-[20px] font-bold tracking-[-0.02em] text-on-dark">
                   {data.weekPulse.total}
-                </p>
-                <p className="pt-1.5 text-[13px] font-medium text-on-dark-2">
-                  {data.weekPulse.total === 0
-                    ? "touches this week — one hello starts it"
-                    : data.weekPulse.total === 1
-                      ? "touch this week"
-                      : "touches this week"}
-                </p>
-              </div>
-              <div className="flex items-end gap-[6px]">
+                </span>
+                {data.weekPulse.total === 0
+                  ? "touches this week — one hello starts it"
+                  : data.weekPulse.total === 1
+                    ? "touch this week"
+                    : "touches this week"}
+              </p>
+              <div className="flex items-end gap-[5px]">
                 {data.weekPulse.byDay.map((count, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1">
+                  <div key={i} className="flex flex-col items-center gap-[3px]">
                     <div
-                      className="w-[11px] rounded-[3px]"
+                      className="w-[9px] rounded-[2.5px]"
                       style={{
-                        height: `${6 + (count / pulseMax) * 30}px`,
+                        height: `${4 + (count / pulseMax) * 18}px`,
                         background:
                           count > 0 ? "var(--accent)" : "rgba(246, 243, 234, 0.13)",
                       }}
                     />
-                    <span className="text-[9px] font-medium leading-none text-on-dark-2">
+                    <span className="text-[8px] font-medium leading-none text-on-dark-2">
                       {dayLetters[i]}
                     </span>
                   </div>
@@ -284,34 +266,30 @@ export default async function TodayPage() {
             </ListSection>
           ) : null}
 
-          {data.reconnects.length > 0 ? (
-            <section className="mt-8">
-              <h2 className="px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em]">
-                Worth a hello
-              </h2>
-              <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
-                {data.reconnects.map((suggestion) => (
-                  <Link
+          {data.reconnects.filter((s) => !heroContactIds.has(s.id)).length > 0 ? (
+            <ListSection
+              title="Worth a hello"
+              footer="People are gladder to hear from you than you'd expect."
+            >
+              {data.reconnects
+                .filter((s) => !heroContactIds.has(s.id))
+                .map((suggestion) => (
+                  <ListRow
                     key={suggestion.id}
                     href={`/contacts/${suggestion.id}`}
-                    className="card pressable flex w-[148px] shrink-0 flex-col items-center gap-2.5 px-3 py-5 text-center"
-                  >
-                    <Avatar name={suggestion.name} size={56} />
-                    <span className="line-clamp-1 text-[15px] font-semibold">
-                      {suggestion.name}
-                    </span>
-                    <span className="text-[13px] text-label-2">
-                      {suggestion.daysSince >= 7
-                        ? `${Math.floor(suggestion.daysSince / 7)} weeks ago`
-                        : `${suggestion.daysSince} days ago`}
-                    </span>
-                  </Link>
+                    leading={<Avatar name={suggestion.name} size={42} />}
+                    title={<span className="font-medium">{suggestion.name}</span>}
+                    value={
+                      <span className="text-[15px] text-label-2">
+                        {suggestion.daysSince >= 7
+                          ? `${Math.floor(suggestion.daysSince / 7)} weeks ago`
+                          : `${suggestion.daysSince} days ago`}
+                      </span>
+                    }
+                    chevron
+                  />
                 ))}
-              </div>
-              <p className="px-1.5 pt-2 text-[13px] text-label-2">
-                People are gladder to hear from you than you&apos;d expect.
-              </p>
-            </section>
+            </ListSection>
           ) : null}
 
           {/* Post-chat capture cue — the habit anchor. */}
