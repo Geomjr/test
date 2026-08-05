@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useAIStream } from "@/lib/useAIStream";
 import { ActionSheet } from "@/components/ui/ActionSheet";
@@ -7,7 +8,7 @@ import { Sheet } from "@/components/ui/Sheet";
 import { Spinner } from "@/components/ui/Spinner";
 import { StreamedText } from "@/components/ui/StreamedText";
 import { useToast } from "@/components/ui/Toast";
-import { SparklesIcon } from "@/components/ui/icons";
+import { BubbleIcon, PencilIcon, SparklesIcon } from "@/components/ui/icons";
 
 export function AIPanel({ contactId, aiOn }: { contactId: string; aiOn: boolean }) {
   const toast = useToast();
@@ -34,20 +35,26 @@ export function AIPanel({ contactId, aiOn }: { contactId: string; aiOn: boolean 
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="mt-4 grid grid-cols-3 gap-2.5">
         <button
           type="button"
           onClick={openBrief}
-          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[15px] font-semibold text-purple"
+          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[14px] font-semibold text-tint"
         >
-          <SparklesIcon size={17} /> Brief Me
+          <SparklesIcon size={16} /> Brief
         </button>
+        <Link
+          href={`/contacts/${contactId}/debrief`}
+          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[14px] font-semibold text-tint"
+        >
+          <BubbleIcon size={16} /> Debrief
+        </Link>
         <button
           type="button"
           onClick={() => setDraftPicker(true)}
-          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[15px] font-semibold text-purple"
+          className="card pressable flex items-center justify-center gap-1.5 py-3.5 text-[14px] font-semibold text-tint"
         >
-          <SparklesIcon size={17} /> Draft Message
+          <PencilIcon size={16} /> Draft
         </button>
       </div>
 

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth/session";
 import { listContacts } from "@/lib/data/contacts";
+import { aiEnabled } from "@/lib/ai/client";
 import { userToday } from "@/lib/today";
 import { Screen } from "@/components/ui/Screen";
 import { CaptureScreen } from "@/components/capture/CaptureScreen";
@@ -20,7 +21,7 @@ export default async function CapturePage() {
 
   return (
     <Screen title="Capture">
-      <CaptureScreen contacts={contacts} today={today} />
+      <CaptureScreen contacts={contacts} today={today} aiOn={aiEnabled()} />
     </Screen>
   );
 }

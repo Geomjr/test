@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/client-api";
@@ -77,9 +78,11 @@ const fmtTimer = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart
 export function CaptureScreen({
   contacts,
   today,
+  aiOn,
 }: {
   contacts: PickerContact[];
   today: string;
+  aiOn?: boolean;
 }) {
   const router = useRouter();
   const toast = useToast();
@@ -421,6 +424,17 @@ export function CaptureScreen({
           {busy ? "Saving…" : "Save"}
         </Button>
       </div>
+
+      {aiOn && person ? (
+        <p className="pt-3 text-center">
+          <Link
+            href={`/contacts/${person.id}/debrief`}
+            className="pressable text-[14px] font-semibold text-tint"
+          >
+            Or let the coach debrief you
+          </Link>
+        </p>
+      ) : null}
 
       {/* AI confirmation: who is this about + extracted follow-ups */}
       <Sheet
