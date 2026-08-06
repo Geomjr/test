@@ -204,7 +204,7 @@ const CONTACTS: SeedContact[] = [
     tags: ["Consulting Club", "Mentor", "Second-Year"],
     notes: "Interned at BCG, returning full-time. Has the full case-prep vault and shares generously.",
     interactions: [
-      { type: "coffee", daysAgo: 44, notes: "First mentor coffee — she shared the club case vault and her interview timeline." },
+      { type: "coffee", daysAgo: 44, notes: "First mentor coffee — she shared the club case vault and her interview timeline.\n\nAsk next time:\n- How did her BCG return offer negotiation go?\n- Which second-years run the mock-case pool this year?" },
     ],
   },
   {

@@ -1,11 +1,13 @@
 import "server-only";
-import { and, eq, gte, isNull } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, isNotNull, isNull } from "drizzle-orm";
 import { db, tables } from "@/lib/db";
 import { listContacts } from "./contacts";
 import { computeOverdue, type CadenceContact, type OverdueEntry } from "@/lib/domain/overdue";
 import { expandUpcoming, type DateSource, type UpcomingEvent } from "@/lib/domain/upcoming";
 import { pickReconnects, type ReconnectSuggestion } from "@/lib/domain/reconnect";
 import { pickTodaysThree, type TodayMove } from "@/lib/domain/today";
+import { extractPocketHooks, type PocketHook } from "@/lib/domain/pocket";
+import { pairKey, pickIntroMatch, type IntroMatch } from "@/lib/domain/intro-match";
 import type { PipelineCard } from "./pipeline";
 import { listPipeline } from "./pipeline";
 import type { TaskWithContact } from "./tasks";
@@ -17,9 +19,18 @@ export type WeekPulse = {
   byDay: number[];
 };
 
+export type ThankYouItem = {
+  contactId: string;
+  contactName: string;
+  when: "today" | "yesterday";
+};
+
 export type DashboardData = {
   todaysThree: TodayMove[];
   weekPulse: WeekPulse;
+  pocketHooks: PocketHook[];
+  thankYous: ThankYouItem[];
+  introMatch: IntroMatch | null;
   overdue: OverdueEntry[];
   upcoming: UpcomingEvent[];
   reconnects: ReconnectSuggestion[];
@@ -27,6 +38,9 @@ export type DashboardData = {
   stalePipeline: PipelineCard[];
   contactCount: number;
 };
+
+/** Touchpoint types that represent a live conversation worth thanking. */
+const LIVE_TYPES = ["coffee", "call", "meal", "event"] as const;
 
 const STALE_PIPELINE_DAYS = 7;
 
@@ -129,9 +143,85 @@ export function getDashboardData(userId: string, todayIso: string): DashboardDat
     })),
   });
 
+  // "In your pocket": the debrief coach's ask-next-time hooks for today's people.
+  const heroIds = todaysThree.map((m) => m.contactId);
+  let pocketHooks: PocketHook[] = [];
+  if (heroIds.length > 0) {
+    const noteRows = db()
+      .select({
+        contactId: tables.interactions.contactId,
+        notes: tables.interactions.notes,
+        date: tables.interactions.date,
+      })
+      .from(tables.interactions)
+      .where(
+        and(
+          eq(tables.interactions.userId, userId),
+          inArray(tables.interactions.contactId, heroIds),
+          isNotNull(tables.interactions.notes),
+        ),
+      )
+      .orderBy(desc(tables.interactions.date), desc(tables.interactions.createdAt))
+      .all();
+    pocketHooks = extractPocketHooks(
+      noteRows.map((r) => ({
+        contactId: r.contactId,
+        contactName: nameById.get(r.contactId) ?? "Unknown",
+        notes: r.notes ?? "",
+      })),
+    );
+  }
+
+  // Thank-you queue: live conversations from today/yesterday.
+  const yesterday = addDays(todayIso, -1);
+  const recentRows = db()
+    .select({
+      contactId: tables.interactions.contactId,
+      type: tables.interactions.type,
+      date: tables.interactions.date,
+    })
+    .from(tables.interactions)
+    .where(and(eq(tables.interactions.userId, userId), gte(tables.interactions.date, yesterday)))
+    .orderBy(desc(tables.interactions.date))
+    .all();
+  const thankYous: ThankYouItem[] = [];
+  const thanked = new Set<string>();
+  for (const row of recentRows) {
+    if (!(LIVE_TYPES as readonly string[]).includes(row.type)) continue;
+    if (thanked.has(row.contactId)) continue;
+    const name = nameById.get(row.contactId);
+    if (!name) continue;
+    thankYous.push({
+      contactId: row.contactId,
+      contactName: name,
+      when: row.date === todayIso ? "today" : "yesterday",
+    });
+    thanked.add(row.contactId);
+    if (thankYous.length >= 3) break;
+  }
+
+  // Give-first: one plausible intro between two of the user's people.
+  const introRows = db()
+    .select({
+      fromContactId: tables.intros.fromContactId,
+      toContactId: tables.intros.toContactId,
+    })
+    .from(tables.intros)
+    .where(eq(tables.intros.userId, userId))
+    .all();
+  const introduced = new Set(introRows.map((r) => pairKey(r.fromContactId, r.toContactId)));
+  const introMatch = pickIntroMatch(
+    contacts.map((c) => ({ id: c.id, name: c.name, industry: c.industry, company: c.company })),
+    introduced,
+    todayIso,
+  );
+
   return {
     todaysThree,
     weekPulse,
+    pocketHooks,
+    thankYous,
+    introMatch,
     overdue,
     upcoming,
     reconnects,

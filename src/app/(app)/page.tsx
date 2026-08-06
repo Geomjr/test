@@ -12,13 +12,16 @@ import { ListRow, ListSection } from "@/components/ui/List";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import {
+  BookIcon,
   CakeIcon,
   CalendarIcon,
   ChecklistIcon,
   ColumnsIcon,
+  CupIcon,
   EllipsisCircleIcon,
   MicIcon,
   PeopleIcon,
+  SwapIcon,
 } from "@/components/ui/icons";
 import { STAGE_META } from "@/lib/pipeline-meta";
 
@@ -50,6 +53,7 @@ export default async function TodayPage() {
 
   const today = await userToday();
   const greeting = await userGreeting(user.name.split(" ")[0]);
+  const aiOn = aiEnabled();
   const data = getDashboardData(user.id, today);
   const todayUTC = new Date(isoToUTC(today));
   const weekday = WEEKDAYS[todayUTC.getUTCDay()];
@@ -112,7 +116,7 @@ export default async function TodayPage() {
               <h2 className="px-1.5 pb-2.5 text-[19px] font-semibold tracking-[-0.015em]">
                 {data.todaysThree.length === 1 ? "One for today" : "Today's three"}
               </h2>
-              <TodaysThree moves={data.todaysThree} aiOn={aiEnabled()} />
+              <TodaysThree moves={data.todaysThree} aiOn={aiOn} />
             </section>
           ) : (
             <ListSection title="Today">
@@ -127,6 +131,58 @@ export default async function TodayPage() {
               </div>
             </ListSection>
           )}
+
+          {/* In your pocket — remembered details for today's people. */}
+          {data.pocketHooks.length > 0 ? (
+            <ListSection title="In your pocket">
+              {data.pocketHooks.map((hook) => (
+                <ListRow
+                  key={hook.contactId}
+                  href={`/contacts/${hook.contactId}`}
+                  leading={
+                    <Medallion bg="var(--accent-soft)" color="var(--label)">
+                      <BookIcon size={19} />
+                    </Medallion>
+                  }
+                  title={<span className="whitespace-normal font-medium">{hook.hook}</span>}
+                  subtitle={`For ${hook.contactName}`}
+                  subtitleLines={2}
+                  chevron
+                />
+              ))}
+            </ListSection>
+          ) : null}
+
+          {/* Thank-you queue — yesterday's conversations, thanked today. */}
+          {data.thankYous.length > 0 ? (
+            <ListSection title="Say thanks">
+              {data.thankYous.map((item) => (
+                <ListRow
+                  key={item.contactId}
+                  href={
+                    aiOn
+                      ? `/assistant?q=${encodeURIComponent(
+                          `Draft a short thank-you note to ${item.contactName} for our conversation ${item.when}.`,
+                        )}`
+                      : `/contacts/${item.contactId}`
+                  }
+                  leading={
+                    <Medallion bg="var(--orange-soft)" color="var(--orange)">
+                      <CupIcon size={19} />
+                    </Medallion>
+                  }
+                  title={<span className="font-medium">{item.contactName}</span>}
+                  subtitle={`You talked ${item.when} — a quick thanks lands best within a day`}
+                  subtitleLines={2}
+                  value={
+                    <span className="rounded-full bg-fill px-3 py-1.5 text-[13px] font-semibold text-label">
+                      Say thanks
+                    </span>
+                  }
+                />
+              ))}
+            </ListSection>
+          ) : null}
 
           {/* Week pulse — a compact strip, deliberately quieter than the hero. */}
           <section className="mt-4">
@@ -244,6 +300,37 @@ export default async function TodayPage() {
                   chevron
                 />
               ))}
+            </ListSection>
+          ) : null}
+
+          {/* Give first — an intro only you can make. */}
+          {data.introMatch ? (
+            <ListSection
+              title="Be the connector"
+              footer="Giving an intro beats asking for one — it's the opposite of transactional."
+            >
+              <ListRow
+                href={
+                  aiOn
+                    ? `/assistant?q=${encodeURIComponent(
+                        `Should I introduce ${data.introMatch.aName} and ${data.introMatch.bName}? Both are in ${data.introMatch.why}. If yes, draft a short double-opt-in message to each.`,
+                      )}`
+                    : `/contacts/${data.introMatch.aId}`
+                }
+                leading={
+                  <Medallion bg="var(--teal-soft)" color="var(--teal)">
+                    <SwapIcon size={19} />
+                  </Medallion>
+                }
+                title={
+                  <span className="font-medium">
+                    {data.introMatch.aName} × {data.introMatch.bName}
+                  </span>
+                }
+                subtitle={`Both in ${data.introMatch.why} — worth an intro?`}
+                subtitleLines={2}
+                chevron
+              />
             </ListSection>
           ) : null}
 
