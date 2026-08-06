@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, gte, inArray, isNotNull, isNull } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, isNotNull, isNull, lte } from "drizzle-orm";
 import { db, tables } from "@/lib/db";
 import { listContacts } from "./contacts";
 import { computeOverdue, type CadenceContact, type OverdueEntry } from "@/lib/domain/overdue";
@@ -121,7 +121,11 @@ export function getDashboardData(userId: string, todayIso: string): DashboardDat
     .select({ date: tables.interactions.date })
     .from(tables.interactions)
     .where(
-      and(eq(tables.interactions.userId, userId), gte(tables.interactions.date, weekStart)),
+      and(
+        eq(tables.interactions.userId, userId),
+        gte(tables.interactions.date, weekStart),
+        lte(tables.interactions.date, todayIso),
+      ),
     )
     .all();
   const byDay = Array.from({ length: 7 }, (_, i) => {
@@ -172,7 +176,8 @@ export function getDashboardData(userId: string, todayIso: string): DashboardDat
     );
   }
 
-  // Thank-you queue: live conversations from today/yesterday.
+  // Thank-you queue: live conversations from today/yesterday only —
+  // future-dated (pre-logged) interactions must not read as "you talked".
   const yesterday = addDays(todayIso, -1);
   const recentRows = db()
     .select({
@@ -181,7 +186,13 @@ export function getDashboardData(userId: string, todayIso: string): DashboardDat
       date: tables.interactions.date,
     })
     .from(tables.interactions)
-    .where(and(eq(tables.interactions.userId, userId), gte(tables.interactions.date, yesterday)))
+    .where(
+      and(
+        eq(tables.interactions.userId, userId),
+        gte(tables.interactions.date, yesterday),
+        lte(tables.interactions.date, todayIso),
+      ),
+    )
     .orderBy(desc(tables.interactions.date))
     .all();
   const thankYous: ThankYouItem[] = [];

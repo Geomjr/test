@@ -6,6 +6,7 @@ import { aiEnabled } from "@/lib/ai/client";
 import { userGreeting, userToday } from "@/lib/today";
 import { formatDate, isoToUTC, relativeFuture } from "@/lib/dates";
 import { TodaysThree } from "@/components/home/TodaysThree";
+import { DraftChip } from "@/components/home/DraftChip";
 import { Screen } from "@/components/ui/Screen";
 import { Avatar } from "@/components/ui/Avatar";
 import { ListRow, ListSection } from "@/components/ui/List";
@@ -64,8 +65,13 @@ export default async function TodayPage() {
   );
   const overdueRest = data.overdue.filter((e) => !heroContactIds.has(e.id));
   const tasksRest = data.dueTasks.filter((t) => !heroTaskIds.has(t.id));
+  // Only birthdays actually shown as birthday hero moves leave "Coming up" —
+  // a contact hero'd for a promise still deserves their birthday row.
+  const heroBirthdayIds = new Set(
+    data.todaysThree.filter((m) => m.kind === "birthday").map((m) => m.contactId),
+  );
   const upcomingRest = data.upcoming.filter(
-    (e) => !(e.label === "Birthday" && heroContactIds.has(e.contactId)),
+    (e) => !(e.label === "Birthday" && heroBirthdayIds.has(e.contactId)),
   );
 
   const pulseMax = Math.max(...data.weekPulse.byDay, 1);
@@ -157,29 +163,44 @@ export default async function TodayPage() {
           {data.thankYous.length > 0 ? (
             <ListSection title="Say thanks">
               {data.thankYous.map((item) => (
-                <ListRow
+                <div
                   key={item.contactId}
-                  href={
-                    aiOn
-                      ? `/assistant?q=${encodeURIComponent(
-                          `Draft a short thank-you note to ${item.contactName} for our conversation ${item.when}.`,
-                        )}`
-                      : `/contacts/${item.contactId}`
-                  }
-                  leading={
+                  className="hairline-b last:after:hidden flex min-h-[60px] items-center gap-3.5 px-4 py-2.5"
+                >
+                  <Link
+                    href={`/contacts/${item.contactId}`}
+                    className="pressable flex min-w-0 flex-1 items-center gap-3.5"
+                  >
                     <Medallion bg="var(--orange-soft)" color="var(--orange)">
                       <CupIcon size={19} />
                     </Medallion>
-                  }
-                  title={<span className="font-medium">{item.contactName}</span>}
-                  subtitle={`You talked ${item.when} — a quick thanks lands best within a day`}
-                  subtitleLines={2}
-                  value={
-                    <span className="rounded-full bg-fill px-3 py-1.5 text-[13px] font-semibold text-label">
-                      Say thanks
+                    <span className="min-w-0 flex-1 py-[2px]">
+                      <span className="block truncate text-[17px] font-medium leading-snug">
+                        {item.contactName}
+                      </span>
+                      <span className="mt-[1px] line-clamp-2 block text-[13.5px] leading-snug text-label-2">
+                        You talked {item.when} — a quick thanks lands best within a day
+                      </span>
                     </span>
-                  }
-                />
+                  </Link>
+                  {aiOn ? (
+                    <DraftChip
+                      contactId={item.contactId}
+                      contactName={item.contactName}
+                      kind="thank_you"
+                      label="Say thanks"
+                      sheetTitle={`Thanks for ${item.contactName.split(" ")[0]}`}
+                    />
+                  ) : (
+                    <Link
+                      href={`/contacts/${item.contactId}`}
+                      aria-label={`Say thanks to ${item.contactName}`}
+                      className="pressable shrink-0 rounded-full bg-fill px-3.5 py-2 text-[13px] font-semibold text-label"
+                    >
+                      Say thanks
+                    </Link>
+                  )}
+                </div>
               ))}
             </ListSection>
           ) : null}

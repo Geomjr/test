@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StreamedText } from "@/components/ui/StreamedText";
@@ -22,6 +23,7 @@ export function AssistantScreen({
   aiOn: boolean;
   initialQuestion?: string;
 }) {
+  const router = useRouter();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -92,6 +94,8 @@ export function AssistantScreen({
     if (initialQuestion && !sentInitial.current && aiOn) {
       sentInitial.current = true;
       void send(initialQuestion);
+      // Strip ?q so refresh/back-nav doesn't re-send and burn AI budget.
+      router.replace("/assistant", { scroll: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialQuestion, aiOn]);

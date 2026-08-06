@@ -20,11 +20,30 @@ describe("extractPocketHooks", () => {
     ]);
   });
 
+  it("a newer conversation without hooks retires the older hook", () => {
+    const hooks = extractPocketHooks([
+      note("a", "Caught up — she answered everything."),
+      note("a", "Older.\n\nAsk next time:\n- Now-stale question"),
+    ]);
+    expect(hooks).toEqual([]);
+  });
+
+  it("matches inline, numbered, and bullet-dot forms", () => {
+    expect(
+      extractPocketHooks([note("a", "Ask next time: how did the offer negotiation go?")]),
+    ).toEqual([{ contactId: "a", contactName: "a", hook: "how did the offer negotiation go?" }]);
+    expect(extractPocketHooks([note("b", "Ask next time:\n1. First question\n2. Second")])).toEqual([
+      { contactId: "b", contactName: "b", hook: "First question" },
+    ]);
+    expect(extractPocketHooks([note("c", "Ask next time:\n• Dotted question")])).toEqual([
+      { contactId: "c", contactName: "c", hook: "Dotted question" },
+    ]);
+  });
+
   it("caps results and ignores malformed blocks", () => {
     const sources = ["a", "b", "c", "d"].map((id) =>
       note(id, `x\n\nAsk next time:\n- Q for ${id}`),
     );
-    sources.push(note("e", "Ask next time:\n(no bullets)"));
     const hooks = extractPocketHooks(sources, 3);
     expect(hooks).toHaveLength(3);
     expect(hooks.map((h) => h.contactId)).toEqual(["a", "b", "c"]);

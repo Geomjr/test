@@ -31,6 +31,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       {message ? (
         <div
+          role="status"
+          aria-live="polite"
           className="pointer-events-none fixed inset-x-0 z-[60] flex justify-center"
           style={{ bottom: "calc(env(safe-area-inset-bottom) + 70px)" }}
         >
