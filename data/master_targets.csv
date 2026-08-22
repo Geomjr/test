@@ -1,6 +1,6 @@
 Master Target Database
-"All 65 targets across the IB, Corp Dev, and VC lanes in one view  |  CBS Class of 2028  |  Compiled Aug 22, 2026; expanded same day"
-"Priority / Status / Next Step mirror the lane tabs live: edit them THERE (yellow columns), not here. Sort or filter this sheet freely; formulas follow.",,,,,,Targets:,65,High priority:,0,In motion:,0
+"All 74 targets across the IB, Corp Dev, and VC lanes in one view  |  CBS Class of 2028  |  Compiled and expanded Aug 22, 2026"
+"Priority / Status / Next Step mirror the lane tabs live: edit them THERE (yellow columns), not here. Sort or filter this sheet freely; formulas follow.",,,,,,Targets:,74,High priority:,0,In motion:,0
 
 Target,Lane,Tier / Category,HQ,Edge in One Line,Access Channel,Timing,Personal Angle,Priority,Status,Next Step,Next Step Date
 PJT Partners,IB,1 - OCR,New York,"Payward's house bank (NinjaTrader, Bitnomial, Reap) plus Core Scientific debtor mandate and $9B co-sell to CoreWeave",OCR presentations and closed lists; RSSG restructuring is a separate MBA-heavy track,Sept-Jan OCR,"You are living the process they sell; pitch market-structure conviction, not one client"
@@ -43,6 +43,13 @@ MoonPay,Corp Dev,Payments,"Miami, FL",Serial acquirer: Helio $175M plus bolt-ons
 PayPal,Corp Dev,Payments,"San Jose, CA",PYUSD; Ventures arm; historic M&A muscle,Structured recruiting,Fall cycle,Stablecoin distribution thesis
 Visa,Corp Dev,Payment network,San Francisco,USDC settlement live; Pismo $1B (Brazil); crypto team,Structured MBA recruiting,Fall cycle,Pismo = Brazil angle; settlement = thesis
 Nubank,Corp Dev,Neobank,"Sao Paulo, BR",Crypto at 100M+ customer scale,Structured + network,Rolling,"Brazil: language, market, network"
+BlackRock (Digital Assets),Corp Dev,Asset manager,New York,IBIT + BUIDL tokenized fund; largest TradFi digital-asset platform,Structured MBA recruiting + digital-assets team,Fall cycle,Tokenization + ETF: both your theses at max scale
+Chainalysis,Corp Dev,Data / compliance,New York,"Serial acquirer: Hexagate, Alterya",NYC postings + network,Rolling,Archetype's Egan backed it early
+Paxos,Corp Dev,Stablecoin infra,New York,"NYDFS-regulated issuer: PYUSD, USDG",NYC postings + network,Rolling,Regulated-issuer language; Liberty City web
+Ondo Finance,Corp Dev,Tokenization,New York,Oasis Pro license buy; tokenized treasuries leader,NYC network,Rolling,Tokenized treasuries = thesis center
+21Shares,Corp Dev,ETP issuer,NYC (US base),Largest crypto ETP issuer; FalconX deal agreed (verify),NYC team; in transition,Rolling,"Your ETP market, known cold"
+BitGo,Corp Dev,Custody,Palo Alto + NYC Trust,Custody consolidator; NYDFS trust; IPO track (verify),Postings on IPO path,Rolling,Regulated custody adjacent to prime
+Digital Asset (Canton),Corp Dev,Market infra,New York,Canton Network; institutional consortium,Institutional hiring; NYC,Rolling,Post-trade market structure
 Galaxy Ventures,VC,One-roof,New York,"Fund I $175M+ (Jun 2025); stablecoins, payments, tokenization thesis",Same relationship as Galaxy IB; CVF-compatible,CVF Sept; rolling,"Your exit comps are their underwriting; one Galaxy relationship, three doors"
 Fintech Collective,VC,Fintech VC,New York,Best pure stablecoins/payments thesis fit in NYC; capital markets DNA,"Newsletter, Layer One podcast, Stablecon",Rolling,Their capital-markets DNA matches your prime-lending seat
 Archetype,VC,Independent,New York,"Fund III $100M+ (Sep 2025); stablecoins, payments infra, crypto x AI","Archebyte podcast, NYC in-person events",Rolling,-
@@ -68,5 +75,7 @@ Nyca Partners,VC,Fintech VC,New York,Hans Morris (ex-Visa president); payments/c
 Illuminate Financial,VC,Cap-markets VC,NYC + London,Capital-markets infra thesis; bank strategic LPs,Market-structure content; both cities,Rolling,Market-structure bullseye for your seat
 Liberty City Ventures,VC,Independent,New York,Quiet NYC fund; early Paxos/Lukka backers,NYC network play,Opportunistic,Paxos web
 Bain Capital Crypto,VC,Institutional,SF + Boston,"$560M Fund I; technical depth, institutional platform",BCC research engagement,Rolling,Institutional-path optionality
+a16z crypto,VC,Mega-platform,Menlo Park + NYC,Fund 5 $2.2B; stablecoins/tokenization thesis; CSX,NYC office + CSX events,Rolling,Dixon Columbia tie; CSX cohorts in NYC
+Index Ventures,VC,Generalist w/ crypto,SF + NYC + London,Bridge (-> Stripe $1.1B) credential; fintech bench,NYC office network,Rolling,Stablecoin credential; verify current appetite
 
-"Static columns compiled Aug 22, 2026 from the lane tabs, Target Profiles, and the NYC fund research. Rows for the 18 targets promoted the same day (Tether through Nubank; ParaFi through Bain Capital Crypto) and several HQ entries come from general knowledge, not the verified research - confirm before citing. Priority / Status / Next Step are live formulas into the lane tabs; keep working there. Full universes: Corp Dev Universe and VC Universe tabs."
+"Static columns compiled Aug 22, 2026 from the lane tabs, Target Profiles, and the NYC fund research. The 27 targets promoted the same day (universe + NYC-presence waves) and several HQ entries come from general knowledge - confirm before citing. Priority / Status / Next Step are live formulas into the lane tabs; keep working there. Full universes with NYC-presence flags: Corp Dev Universe and VC Universe tabs."

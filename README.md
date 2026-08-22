@@ -12,14 +12,14 @@ People Directory, Personal Angles, Engagement Feed) and keeps every original she
 
 | # | Sheet | What it holds |
 |---|-------|---------------|
-| 1 | **Master Targets** | All 65 targets in one sortable view. Priority / Status / Next Step are live formulas mirroring the three lane tabs — edit status there, not here. |
+| 1 | **Master Targets** | All 74 targets in one sortable view. Priority / Status / Next Step are live formulas mirroring the three lane tabs — edit status there, not here. |
 | 2 | IB Targets | 23 advisory firms in three tiers (OCR / Direct / Network) with deal evidence and access channels. Yellow columns F–M are the working columns. |
-| 3 | Corp Dev Targets | 17 buy-side corp dev teams — the original 9 plus 8 promoted from the universe (Tether, Anchorage, FalconX, Fireblocks, MoonPay, PayPal, Visa, Nubank). |
-| 4 | **Corp Dev Universe** *(new)* | 139 strategic acquirers across every category: exchanges, payments, stablecoins, custody, prime brokerage, data, asset managers/ETPs, tokenization, market infrastructure, miners/DATs, wallets, and banks. |
-| 5 | VC Targets | 25 priority funds — the original 15 plus 10 promoted (ParaFi, Paradigm, Haun, Electric, Multicoin, Ribbit, Nyca, Illuminate, Liberty City, Bain Capital Crypto). |
+| 3 | Corp Dev Targets | 24 buy-side teams — the original 9, plus 8 from the universe expansion (Tether, Anchorage, FalconX, Fireblocks, MoonPay, PayPal, Visa, Nubank), plus 7 promoted for NYC presence (BlackRock, Chainalysis, Paxos, Ondo, 21Shares, BitGo, Digital Asset). |
+| 4 | **Corp Dev Universe** *(new)* | 139 strategic acquirers across every category, each tagged with an **NYC Presence** column (HQ / Metro / Office / People / Verify) — 84 are NYC-reachable in some form. |
+| 5 | VC Targets | 27 priority funds — the original 15, plus 10 from the universe expansion (ParaFi, Paradigm, Haun, Electric, Multicoin, Ribbit, Nyca, Illuminate, Liberty City, Bain Capital Crypto), plus a16z crypto and Index Ventures for their NYC offices. |
 | 6 | VC Fund Database | Full-fidelity detail on 42 funds from the verified Aug 2026 NYC research. |
-| 7 | **VC Universe** *(new)* | 149 funds globally: NYC core, US crypto-native elite, Chicago trading capital, Europe, Asia, Middle East, CVCs, ecosystem funds, accelerators, and fintech-crossover firms. |
-| 8 | People Directory | 77 named individuals across all lanes — role, background, engagement channel, personal/Columbia tie. Verify each on LinkedIn before outreach. |
+| 7 | **VC Universe** *(new)* | 149 funds globally, each tagged with an **NYC Presence** column — 78 are NYC-reachable (NYC offices include a16z crypto, Index, Sequoia, General Catalyst, BCV, DRW/Jump, CoinShares, and more). |
+| 8 | People Directory | 84 named individuals across all lanes — role, background, engagement channel, personal/Columbia tie. Verify each on LinkedIn before outreach. |
 | 9 | Target Profiles | Depth per target: hiring reality, entry route, timing, watch items. |
 | 10 | Personal Angles | 13 CV assets mapped to the targets they open — the one-liner, how to use it, and the confidentiality cautions. |
 | 11 | League Table | Disclosed crypto M&A advisor mandates, Jan 2024 – Aug 2026. |
@@ -60,7 +60,7 @@ Two sources feed the database, marked in the `Src` column of the universe sheets
 - **R** — the verified Aug 22, 2026 NYC crypto-VC deep research and the deal/advisor research
   through Aug 21, 2026. Fund sizes from third-party databases remain approximate.
 - **K** — general knowledge with a **January 2026 information horizon**, used for the
-  Corp Dev Universe, VC Universe, the 18 promoted working-tab rows, and People Directory rows
+  Corp Dev Universe, VC Universe, the 27 promoted working-tab rows, and People Directory rows
   63 onward. Deal states, fund sizes, tickers, and team rosters there MUST be verified before
   any outreach or citation — several entries are explicitly marked "verify". "n/a" means not
   confidently known, not zero.
