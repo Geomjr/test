@@ -1,0 +1,51 @@
+Deal Evidence: Advisor Attributions by Transaction
+
+Announced,Category,Acquirer / Situation,Target / Company,Value,Sell-side / Debtor FA,Buy-side / Creditor FA,Legal / Notes
+Apr 2024,Strategic,Talos,Cloudwall,Undisclosed,Not disclosed,Not disclosed,Risk management bolt-on
+May 2024,Strategic,Talos,Skolem,Undisclosed,Not disclosed,Not disclosed,Institutional DeFi infrastructure bolt-on
+Jun 2024,Strategic,Robinhood,Bitstamp,$200M,Galaxy Digital Partners (excl.),Barclays (excl.),Closed Jun 2025
+Jun 2024,Strategic,CleanSpark,GRIID Infrastructure,$155M EV,Lincoln International (FA + fairness),Not disclosed,Cozen O'Connor (CleanSpark); Troutman Pepper (GRIID); closed Oct 2024
+Jul 2024,Strategic,Riot Platforms,Block Mining,$92.5M,XMS Capital (excl.),Stifel (excl.),Greenberg Traurig (Riot); Winston & Strawn (Block Mining)
+Aug 2024,Strategic,Bitfarms,Stronghold Digital,$125M,Cohen & Co Capital Markets,Moelis
+Aug 2024,Strategic,Bitwise,ETC Group,Undisclosed,Not disclosed,Not disclosed,Latham (Bitwise); US-Europe ETP consolidation
+Oct 2024,Strategic,Stripe,Bridge,$1.1B,Not disclosed,Not disclosed,Wilson Sonsini (Stripe); largely relationship-driven
+Mar 2025,Strategic,Kraken (Payward),NinjaTrader,$1.5B,Jefferies,PJT Partners,"Jones Day, Lowenstein (Kraken); Choate, Katten (NinjaTrader)"
+Mar 2025,Strategic,Tether,Adecoagro (~70%),~$615.5M tender,JPMorgan (excl.),Not disclosed,"Davis Polk, Elvinger Hoss (Adecoagro); McDermott (Tether); closed Apr 2025"
+Apr 2025,Strategic,Ripple,Hidden Road,$1.25B,FT Partners,Not disclosed,Closed Oct 2025; rebranded Ripple Prime
+May 2025,Strategic,Coinbase,Deribit,$2.9B ($3.9-4.3B at close),FT Partners,Not disclosed,Latham (Coinbase); Willkie (Deribit)
+May 2025,Strategic,Robinhood,WonderFi,C$250M,FT Partners,JPMorgan,Closed Jun 2026
+Jul 2025,Strategic,CoreWeave,Core Scientific,$9B,Moelis + PJT Partners,Goldman Sachs,"Wachtell (Core Sci); Davis Polk, Kirkland (CoreWeave)"
+Jul 2025,Strategic,Talos,Coin Metrics,$100M+,Not disclosed,Not disclosed,Fenwick (Talos); direct CEO-to-CEO process per Fortune
+Aug 2025,Strategic,Ripple,Rail,$200M,Not disclosed,Not disclosed
+Sep 2025,Strategic,Coincheck,Aplo,Undisclosed,Galaxy Digital Partners (excl.),Not disclosed,Stock-for-stock; completed Oct 2025
+Oct 2025,Strategic,Ripple,GTreasury,$1B,"Goldman Sachs (excl., for Hg)",Not disclosed,Morrison Foerster (Hg); Gunderson Dettmer (Ripple)
+Oct 2025,Strategic,Coinbase,Echo,$375M,Not disclosed,Not disclosed,Latham (Coinbase)
+Oct 2025,Strategic,Kraken (Payward),Small Exchange,$100M,Not disclosed,Not disclosed
+Jan 2026,Strategic,Polygon Labs,Coinme + Sequence,~$250M combined,"Architect Partners (Coinme, excl.)",Not disclosed
+Feb 2026,Strategic,Payward,Magna,Undisclosed,Not disclosed,Not disclosed
+Mar 2026,Strategic,Mastercard,BVNK,Up to $1.8B,Not disclosed,Not disclosed,"Skadden (BVNK); Wilson Sonsini (Mastercard, privacy); closed Aug 3, 2026"
+Apr 2026,Strategic,Ripple,BC Payments (Australia),Undisclosed,Not disclosed,Not disclosed,License-driven
+Apr 2026,Strategic,Payward,Bitnomial,Up to $550M,PJT Partners (excl.),Not disclosed,"Haynes Boone, Katten (Bitnomial); Jones Day, Morrison Foerster (Payward); closed May 1"
+Apr 2026,Strategic,MARA,Long Ridge (FTAI),$1.5B,Jefferies + Lazard,Barclays + Compass Point,"Paul Weiss, Sidley (MARA); Skadden (FTAI); Barclays bridge loan"
+May 2026,Strategic,Bullish,Equiniti (Siris),$4.2B,"Evercore + FT Partners (leads); Wells Fargo, LionTree",Goldman Sachs (excl.),"Morgan Lewis, A&M (Bullish); Sidley (Siris)"
+May 2026,Strategic,Payward,Reap,Up to $600M,CRB Securities + Goldman Sachs (Asia),PJT Partners,"Latham (Reap); Jones Day, Drew & Napier (Payward); closed Jul 1"
+May 2026,Strategic,Standard Chartered,Zodia Custody,Undisclosed,Not disclosed,Not disclosed,Minority buyout; close targeted end Aug 2026
+Jun 2026,Strategic,Figure,Kiavi,$717M,Jefferies,"Barclays (excl., Figure/Sixth Street)",Latham (Figure); Wilson Sonsini (Kiavi); Simpson Thacher (financing)
+Jun 2026,Strategic,SBI Holdings,bitbank,$289M,Not disclosed,Not disclosed,Close expected ~Oct 2026
+Jul 2026,Strategic,Mirae Asset,Korbit,$91.5M,Not disclosed,Not disclosed,Completed Jul 2026
+Jul 2026,Strategic,Payward,Magic Labs (wallet biz),Undisclosed,Architect Partners (excl.),Not disclosed
+Aug 2026,Strategic,OpenFX,Global Ledger,Undisclosed,Not disclosed,Not disclosed
+Aug 2026,Adjacent,Goldman Sachs,NEOS Investments,Up to $2.25B,Barclays (excl.),GS Global Banking & Markets,"Wachtell, Willkie (GS); Ropes & Gray (NEOS); crypto-adjacent ETF deal"
+Jan 2024,Restructuring,Ch. 11 emergence,Core Scientific,-,PJT Partners (debtors),-,"Weil, AlixPartners"
+Jan 2024,Restructuring,Ch. 11 emergence,Celsius,-,Centerview (debtors),Perella Weinberg (creditors),"Kirkland, A&M; ~$20.1M Centerview fee allocation"
+Aug 2024,Restructuring,Plan completed,Genesis Global,-,Moelis (debtors),Houlihan Lokey (creditors),"Cleary, A&M; White & Case"
+Oct 2024,Restructuring,Plan confirmed,FTX,-,Perella Weinberg (debtors),Jefferies (creditors),"Sullivan & Cromwell, A&M; Paul Hastings, FTI"
+2023-24,Restructuring,Wind-down,Voyager Digital,-,Moelis (debtors),-,"Kirkland, BRG"
+2023-24,Restructuring,Wind-down,BlockFi,-,Moelis (debtors),-,"Kirkland, Haynes Boone, BRG"
+Apr 2025,DAT / de-SPAC,Cantor Equity Partners,Twenty One Capital,-,Cantor Fitzgerald (FA + placement),-,"Skadden (Twenty One, Tether); NYSE: XXI Dec 2025"
+Jun 2025,DAT / de-SPAC,Columbus Circle Capital I,ProCap BTC,~$1B,Cohen & Co CM (excl. FA; co-placement with Clear Street),-,Reed Smith; Ellenoff Grossman
+2025,DAT / de-SPAC,KindlyMD,Nakamoto,~$710M,Cohen & Co CM (lead FA + placement); 10X Capital,-,Reed Smith (Nakamoto)
+Sep 2025,DAT / de-SPAC,Strive,Semler Scientific,~$1.4B all-stock,LionTree (excl.),Cantor Fitzgerald,Davis Polk (Strive); Goodwin (Semler); first DAT stock-for-stock merger; closed Jan 2026
+Oct 2025,DAT / de-SPAC,Cantor Equity Partners II,Securitize,$1.25B pre-money,Citi (Securitize),Cantor Fitzgerald (CEPT),Davis Polk; Hughes Hubbard; NYSE: SECZ Jul 2026
+
+"Attributions from company press releases, law firm and bank announcements, SEC filings, and Architect Partners M&A alerts. 'Not disclosed' means no public advisor attribution was found, not that no advisor was engaged. Restructuring engagements originated 2022-23 but concluded in the window shown."
