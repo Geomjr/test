@@ -6,10 +6,9 @@ A consolidated list of Columbia Business School (CBS) courses, compiled 2026-08-
 
 | Code range | Meaning |
 |---|---|
-| B5xxx | EMBA core (mirrors of the MBA core) + EMBA-only electives |
 | B6xxx | MBA core curriculum |
-| B7xxx | EMBA versions of MBA electives |
 | B8xxx | MBA electives (B80 Accounting · B81 DRO · B82 Economics · B83–B84 Finance · B85 Management · B86 Marketing · B87–B88 cross-divisional, immersions, independent study) |
+| B5xxx / B7xxx | EMBA versions (excluded here) |
 | B9xxx | PhD (excluded here) |
 
 Course numbers get reused across years, and each term only a subset (~150–200 sections) actually runs — the live catalog at courses.business.columbia.edu is the source of truth for what's offered in a given term.
@@ -41,7 +40,7 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 - [ ] **B8008** — Earnings Quality & Fundamental Analysis
 - [ ] **B8009** — Financial Statement Analysis and Valuation
 - [ ] **B8010** — Fundamental Analysis for Investors, Managers and Entrepreneurs
-- [ ] **B8019** — Corporate Transactions and Financial… ⚠ *(title truncated in source)*
+- [ ] **B8019** — Corporate Transactions and Financial Modeling
 - [ ] **B8022** — Accounting for Value
 - [ ] **B8024** — Sovereign Risk Assessments ⚠
 - [ ] **B8025** — Mergers & Acquisitions Accounting, a Practitioner's Perspective
@@ -49,7 +48,6 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 - [ ] **B8028** — Measuring and Managing Climate Risk
 - [ ] **B8029** — Mergers and Acquisitions Transactions
 - [ ] **B8030** — LBO & Bankruptcy Transactions
-- [ ] **B8031** — MS Financial Accounting (Half-Term) *(MS programs)*
 - [ ] **B8122** — Accounting for Consultants
 
 ---
@@ -245,7 +243,8 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 - [ ] **B8694** — Building the Sales Machine ⚠
 - [ ] **B8604** — Frontiers in Retailing
 - [ ] **B8616** — The Business of Aesthetics and Experiences
-- [ ] **B8642/B8655** — The Luxury Approach ⚠ *(two codes evidenced, likely renumbered)*
+- [ ] **B8642** — The Luxury Approach (Half-Term) *(block-week edition)*
+- [ ] **B8655** — The Luxury Approach *(full-term, 3.0 cr)*
 - [ ] **B8652** — Retail Fundamentals
 - [ ] **B8697** — The Marketing of Luxury Products
 
@@ -277,6 +276,7 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 
 ### Chazen Global Immersions (destination changes yearly)
 - [ ] **B8707** — Global Immersion: Business and Entrepreneurship in Tunisia
+- [ ] **B8708** — Global Immersion: Tech in Africa — Innovation and Entrepreneurship in Nairobi, Kenya
 - [ ] **B8710** — Global Immersion: Consulting and Advising Family Enterprises (CAFÉ) in Italy
 - [ ] **B8711** — Global Immersion: Bridge of the Americas — Unlocking Opportunities in Mexico
 - [ ] **B8714** — Global Immersion: Doing Business in Brazil — Challenges & Opportunities
@@ -290,50 +290,14 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 - [ ] **B8778** — Global Immersion: South Africa's Ongoing Transformation
 - [ ] **B8780** — Global Immersion: Business and Entrepreneurship in Egypt
 - [ ] **B8781** — Global Immersion: Foundations of VC in Japan
-- [ ] **?** — Global Immersion: Tech in Africa — Kenya ⚠ *(further destinations named without codes: Rwanda, Ghana)*
+
+*(Destinations rotate; Rwanda and Ghana immersions were also named in program materials without indexed codes. Historical: B8772 Global Immersion: New Growth and Business Opportunities in East Africa.)*
 
 ### Administrative & independent work
 - [ ] **B8700** — Exchange Program / Cross Registration *(marker)*
 - [ ] **B8800** — Independent Study (3 cr)
 - [ ] **B8802** — Independent Study (1.5 cr)
 - [ ] **B8801** — ? ⚠ *(BUSI — title unresolved)*
-
----
-
-## 9. EMBA courses (B5xxx / B7xxx)
-
-The Executive MBA runs the same core under B5xxx numbers and mirrors many MBA electives under B7xxx. Verified EMBA entries:
-
-**EMBA core:** B5001 Financial Accounting · B5100 Managerial Statistics · B5101 Business Analytics · B5102 Operations Management · B5200 Managerial Economics · B5201 Global Economic Environment · B5300 Corporate Finance (3.0) · B5301 Foundations of Valuation · B5302 Corporate Finance · B5500 Leadership & Organizational Change · B5502 Strategy Formulation · B5601 Marketing Strategy (3.0)
-
-**EMBA electives (B7xxx):**
-
-| Code | Course | MBA mirror |
-|---|---|---|
-| B7022 | Fundamental Analysis for Investors… | B8010 |
-| B7106 | Operations Strategy | B8106 |
-| B7117 | Business Analytics III: Modern AI, Deep Learning, and Generative AI | — |
-| B7154 | Python for MBAs | B8154 |
-| B7216 | Economics of Strategic Behavior | B8216 |
-| B7251 | Financial Markets and the Macroeconomy | — |
-| B7308 | Debt Markets | B8308 |
-| B7331 | Real Estate Finance | B8331 |
-| B7354 | Personal Finance | B8354 |
-| B7358 | Strategic Equity Finance | — |
-| B7493 | Real Estate as an Asset and a Business | — |
-| B7510 | Managerial Negotiations | B8510 |
-| B7529 | Family Business Management | B8529 |
-| B7531 | Power and Influence | B8531 |
-| B7557 | Social Entrepreneurship for the 21st Century | — |
-| B7583 | Executive Ethics | ⚠ MBA code unresolved |
-| B7609 | Generative AI for Business | B8609 |
-| B7611 | Media, Platforms, and Content | B8611 |
-| B7640 | Digital Marketing | B8679 |
-| B7654 | The Business of Sustainability | B8654 |
-
-**EMBA-only electives (B59xx, evidenced via Coursicle):** B5905 Mergers, MBOs & Other Corporate Restructuring · B5908 ⚠ · B5913 European Financial Markets · B5919 World Economy: Problems & Prospects · B5920 Incentives in Organisations · B5921 Asian Business & Economics · B5922 Asia and the New Global Economy · B5923 Understanding International Management · B5924 Negotiation & Bargaining · B5927 New Venture Development · B5928 Managing the Growing Business · B5929 Financing the Entrepreneurial Business · B5930 Managing Corporate Turnarounds · B5931 Managing Change · B5932 Thinking Strategically · B5933 Corporate Strategy · B5934 Mergers, Acquisitions & Alliances · B5935 Leading Teams & Organizations · B5936 Achieving Strategic Agility · B5937 Strategies for Growth · B5938 Paths to Power · B5939 The New World Order: Opportunities and Risks · B5941 Family Business · B5945 Strategic Innovation · B5947 The Future of Work · B5948 Behavioural Economics and Decision-Making · B5954 Building Your Career Strategy · B5960 Banking & Monetary Policy in the Global Economy · B5963 Employee Engagement · B5965 Emerging Markets · B5966 Product Management · B5991 Asian Connectivity: Silk Road · B5999 Trade Policy
-
-**Other B5xxx:** B5008 Markets and the Economy · B5432 MBA Temporary Full-Time Marker · B5757 Creativity in Business · B5765 International Assignment: Dubai · B5801 Business Resilience
 
 ---
 
