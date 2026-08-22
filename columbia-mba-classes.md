@@ -110,6 +110,7 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 - [ ] **B8432** — International Finance
 - [ ] **B8458** — Seminar in Wealth Management: Investing for Family Offices, Endowments and Foundations
 - [ ] **B8461** — Practice of Wealth Management for High-Net-Worth Clients
+- [ ] **B8471** — Public Pensions and Retirement Security in the U.S.
 
 ### Value investing (Heilbrunn Center)
 - [ ] **B8373** — Applied Value Investing
@@ -214,6 +215,7 @@ Two full-term courses plus half-term (A/B term) courses; ~18 core credits. Exemp
 ### Business & society
 - [ ] **B8511** — Turnaround Management
 - [ ] **B8544** — The Nonprofit Sector & the City
+- [ ] **B8558** — Education Leadership
 - [ ] **B8587** — Business Strategies and Solving Social Problems
 - [ ] **B8505** — Equity by Design
 - [ ] **B8516** — Lab-to-Market: Accelerating Biomedical Innovation
