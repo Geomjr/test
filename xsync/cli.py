@@ -74,9 +74,18 @@ def cmd_login(args) -> int:
 
 
 def _finish_login(tokens: dict, args) -> int:
+    # Persist before verifying: a portal-side 403 (no project, no credits)
+    # should not burn a successfully authorised token.
+    path = auth.save_tokens(tokens, args.tokens)
     provider = auth.TokenProvider(path=args.tokens, tokens=tokens)
     client = api.XClient(provider)
-    me = client.verify_credentials()
+    try:
+        me = client.verify_credentials()
+    except api.XApiError:
+        print(f"Tokens saved to {path}, but the API rejected the first call.", file=sys.stderr)
+        print("Fix the app/project in the developer portal, then retry: python -m xsync whoami",
+              file=sys.stderr)
+        raise
     tokens["user_id"] = me["id"]
     tokens["username"] = me.get("username")
     path = auth.save_tokens(tokens, args.tokens)
