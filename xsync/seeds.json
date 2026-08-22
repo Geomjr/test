@@ -1,0 +1,298 @@
+{
+  "_comment": "Hand-curated keystone posts: tweet_id -> {theme, stance, note}. stance: support (argues the thesis), counter (argues against it), evidence (data point/news). Notes are why the post matters. Curated 2026-08-22 from a full read of the tagged corpus; edit freely.",
+  "2090452815680356365": {
+    "theme": "tokenization-rwa",
+    "stance": "evidence",
+    "note": "Franklin Templeton cleared to bring tokenized assets into traditional funds - institutional gate opens"
+  },
+  "2090101063601082715": {
+    "theme": "tokenization-rwa",
+    "stance": "support",
+    "note": "Tokenized stocks follow the stablecoin adoption curve: 24/7 settlement + global access were all it took"
+  },
+  "2086430975240589617": {
+    "theme": "tokenization-rwa",
+    "stance": "support",
+    "note": "The gap nobody is building: borrow-side demand for tokenized equities (shorting, options, RV) - first $1B of borrow demand is the unlock"
+  },
+  "2087515703792316448": {
+    "theme": "tokenization-rwa",
+    "stance": "counter",
+    "note": "Tokenization's two competing forces: offchain value creation erodes the margin the onchain layer can capture - it can win while tokens accrue nothing"
+  },
+  "2086788852434264533": {
+    "theme": "tokenization-rwa",
+    "stance": "counter",
+    "note": "The skeptic's one-liner: 'you have no idea how excited the world is to swap out a backend database'"
+  },
+  "2087934215941693555": {
+    "theme": "tokenization-rwa",
+    "stance": "support",
+    "note": "Tokenized stocks are what take DeFi to the next level: trillions of good collateral plugged into permissionless liquidity"
+  },
+  "2089768503746183584": {
+    "theme": "market-structure",
+    "stance": "support",
+    "note": "Ex-XTX (4% of US equity volume): AMMs structurally lose to orderbooks/RFQ/dark pools as professionals arrive; tokenized equity issuers already moving to RFQ mint/redeem"
+  },
+  "2086145453226398145": {
+    "theme": "market-structure",
+    "stance": "support",
+    "note": "State-of-the-market in 14 points: four PMF markets (memes/spot, perps, yield, predictions) + stablecoin payments; everything-exchanges and yield packagers; 'fintech app with crypto rails' is the game"
+  },
+  "2086584164908716253": {
+    "theme": "market-structure",
+    "stance": "support",
+    "note": "Crypto wins novel markets incumbents don't dominate (retail eurodollar, ungated leverage, predictions); the rest gets absorbed by tradfi - founders must pick which game they're in"
+  },
+  "2087253337905172978": {
+    "theme": "consumer-speculation",
+    "stance": "support",
+    "note": "Two true things: memecoins are zero-sum noise AND 100k-DAU social trading apps preview how investing+social converge"
+  },
+  "2089261054366748735": {
+    "theme": "consumer-speculation",
+    "stance": "counter",
+    "note": "'Nobody believes in anything' - PVP rotation market until new believers arrive; conviction is performative"
+  },
+  "2086746231565430823": {
+    "theme": "consumer-speculation",
+    "stance": "counter",
+    "note": "Hope the memecoin season fails to attract retail - each burned cohort poisons the next onboarding wave"
+  },
+  "2086183288213844440": {
+    "theme": "consumer-speculation",
+    "stance": "evidence",
+    "note": "Public-market thematic inputs list includes 'consumer hypergamblification' alongside frontier AI and energy"
+  },
+  "2090339550904324287": {
+    "theme": "consumer-speculation",
+    "stance": "support",
+    "note": "The whole game: find the weird little onchain experiment that looks irrelevant today and becomes a category"
+  },
+  "2090095303722684434": {
+    "theme": "consumer-speculation",
+    "stance": "evidence",
+    "note": "Talent misallocation critique: best consumer crypto founders building B2B L1s instead of viral consumer apps"
+  },
+  "2088562554360492105": {
+    "theme": "consumer-speculation",
+    "stance": "support",
+    "note": "Underrated plays: physical/brand differentiation, DeFi x Africa, enterprise prediction markets, creator earnings as collateral"
+  },
+  "2090516192352256125": {
+    "theme": "fintech-credit-wedge",
+    "stance": "support",
+    "note": "Fintech wave 2 = payments + credit; credit is how hundreds of new neobanks win customers; venture debt/warehouse lending demand follows"
+  },
+  "2090242546542743717": {
+    "theme": "fintech-credit-wedge",
+    "stance": "support",
+    "note": "The vertical wedge playbook: AI medical billing at 2-3% vs 5-6%, then own the financial stack underneath - software is distribution, banking is monetization"
+  },
+  "2088255675906302133": {
+    "theme": "fintech-credit-wedge",
+    "stance": "support",
+    "note": "Fintech beyond the 3% adoption curve requires consolidating tradfi via M&A - fintech is in a small bubble"
+  },
+  "2090151651613016282": {
+    "theme": "stablecoin-rails",
+    "stance": "counter",
+    "note": "Crypto card economics don't work: 4% rewards on prefunded spend with ~1.8% interchange and no APR revenue - either FX gouging, issuance arbitrage, or rewards-as-CAC by giants"
+  },
+  "2087897313662345702": {
+    "theme": "stablecoin-rails",
+    "stance": "support",
+    "note": "Card money still moves on bank-time plumbing from before the internet; stablecoin cards fix idle capital + unserved markets"
+  },
+  "2085794514585702906": {
+    "theme": "stablecoin-rails",
+    "stance": "counter",
+    "note": "Tokenized deposits can't exist in bearer form so they can't interoperate - banks' blockchain announcements are Clarity-killing theater; netting benefits intermediaries, not users"
+  },
+  "2085861482852413843": {
+    "theme": "stablecoin-rails",
+    "stance": "evidence",
+    "note": "80% of crypto cards run through the same issuer - concentration risk and a chokepoint"
+  },
+  "2088247452386173320": {
+    "theme": "stablecoin-rails",
+    "stance": "evidence",
+    "note": "Tether completes full big-four audit - the industry's biggest revenue machine passes its credibility test"
+  },
+  "2089785089249194105": {
+    "theme": "regulatory-unlock",
+    "stance": "evidence",
+    "note": "SEC proposal: retail token sales to $5M without registration, $75M/yr for larger projects, legal exit from the investment-contract regime"
+  },
+  "2089909569463955774": {
+    "theme": "regulatory-unlock",
+    "stance": "support",
+    "note": "Read on the SEC pre-announcement: trigger for the next bull cycle"
+  },
+  "2089846452629467293": {
+    "theme": "regulatory-unlock",
+    "stance": "support",
+    "note": "Best onchain infra without compliance is dead infra - compliance as the survival filter"
+  },
+  "2090373670313115888": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Regime-shift checklist: stops going down on bad news, goes up on good (Bessent long-end intervention, SEC framework, US BTC purchase talk) - zero exposure is the wrong bet"
+  },
+  "2090303886670377122": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Narrative arc across five cycles ends at 'the entire financial system coming onchain' - fireworks bigger than capitulated participants can imagine"
+  },
+  "2088676615064530982": {
+    "theme": "cycle-capital-rotation",
+    "stance": "counter",
+    "note": "In 2026 the opportunity cost of staying in crypto is the highest ever - AI and 5+ nascent tech sectors compete for the same capital; only stables/tokenization/predictions clear the bar"
+  },
+  "2086117492305359346": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Post-dot-com analogy: sentiment dead exactly when battle-tested infra (stables, perps, tokenized assets, credit) starts compounding - the digital assets era won't look like what came before"
+  },
+  "2086200117028368525": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Capital-cycle physics: capital's fluidity always overshoots technology's growth rate; mercenaries follow capital, quality degrades, bubble resets - time entries off this loop"
+  },
+  "2090758139759263792": {
+    "theme": "cycle-capital-rotation",
+    "stance": "evidence",
+    "note": "The pump mattered structurally: teams' treasuries were 40-60% down, founders pivoting to AI, talent leaving - price IS the industry's hiring and retention engine"
+  },
+  "2086922489716720078": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "VC churn is healthy: new managers rise while crypto embeds into AI/robotics stacks as a primitive instead of staying a silo"
+  },
+  "2085538733181333903": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "What the buy-side wants now: founders unfazed by sentiment, not pivoting to AI, sharp on why blockchains advantage their product"
+  },
+  "2086076742368653414": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Portfolio construction for the backend era: infra = onchain counterparts of tradfi friction (Tether/HL/Polymarket pattern); consumer = who packages it for retail"
+  },
+  "2086954167780942257": {
+    "theme": "cycle-capital-rotation",
+    "stance": "support",
+    "note": "Structural long case: speculation is innate and permanent; the open questions (scale, seriousness, government tolerance) already answered by stables, Solana, BTC, regulation"
+  },
+  "2088232645675393076": {
+    "theme": "value-accrual",
+    "stance": "support",
+    "note": "HODL comeback thesis: high-revenue buyback tokens + anti-cyclical categories (tokenized stocks, RWAs, stables, predictions) finally make holding rational"
+  },
+  "2089675173410607237": {
+    "theme": "value-accrual",
+    "stance": "support",
+    "note": "The named list of revenue-producing onchain businesses to lead next cycle (HL, Circle, Polymarket, Pump, Tether, Aave, Uniswap...)"
+  },
+  "2087568682612625878": {
+    "theme": "value-accrual",
+    "stance": "support",
+    "note": "Bearish crypto tokens, bullish crypto tech - zero value accrual in most tokens; Tether/Circle/tokenized stocks are the tech winning without you"
+  },
+  "2089866130798137363": {
+    "theme": "value-accrual",
+    "stance": "support",
+    "note": "Token + equity dual structures are uninvestable: value leaks to equity while token holders eat the risk"
+  },
+  "2085729553251770633": {
+    "theme": "value-accrual",
+    "stance": "counter",
+    "note": "Operator's dilemma: optimize the token and the business dies; optimize the business and the token bleeds - best move is often no token (companies staying private, but for crypto)"
+  },
+  "2085715330974843332": {
+    "theme": "value-accrual",
+    "stance": "evidence",
+    "note": "After 2 years of bear-market cleanup there are still <10 investable tokens: infinite supply, monthly unlocks, no token/equity alignment"
+  },
+  "2089085546681315470": {
+    "theme": "value-accrual",
+    "stance": "support",
+    "note": "Two-worlds split: compliant products vs credibly-neutral protocols that route fees to burning/buying the L1 - protocols become L1 revenue sources"
+  },
+  "2085645837947019633": {
+    "theme": "value-accrual",
+    "stance": "evidence",
+    "note": "Morpho vs Ethena fee-multiple comparison (Korean): market prices fee growth trend, not fee level; neither routes profit to holders"
+  },
+  "2086485463398060437": {
+    "theme": "vc-mechanics",
+    "stance": "support",
+    "note": "VCs are middlemen for LP interests: non-consensus theses carry a structural fundraising penalty regardless of company traction"
+  },
+  "2086020369727795679": {
+    "theme": "vc-mechanics",
+    "stance": "support",
+    "note": "Emerging manager survival: 2 years to close $5M Fund I - strong opinions + early first close + tiny checks to make the thesis tangible"
+  },
+  "2087630807460614469": {
+    "theme": "vc-mechanics",
+    "stance": "evidence",
+    "note": "20 under-the-radar LA family offices - the quiet LP/co-invest map"
+  },
+  "2046232037573689351": {
+    "theme": "vc-mechanics",
+    "stance": "counter",
+    "note": "The institutional token game: LPs fund VCs to play hot potato, narrative projects get funded over net-positive ones, retail eats the downside"
+  },
+  "2085070512133447881": {
+    "theme": "vc-mechanics",
+    "stance": "counter",
+    "note": "The parody memo that's really a diagnosis: VC pattern-matching passes on deep teams building useful things ('humanity is not an LP in our fund')"
+  },
+  "2082224583067783545": {
+    "theme": "ai-crypto-convergence",
+    "stance": "support",
+    "note": "Billions of AI agents transacting constantly need rails the legacy system physically can't provide - FT calls agents THE blockchain use case; Coinbase agent rails adopted by Google/Amazon"
+  },
+  "2086159051621363913": {
+    "theme": "ai-crypto-convergence",
+    "stance": "support",
+    "note": "Crypto's 24/7 adversarial security posture becomes everyone's: defense-agent spend becomes a minimum cost of shipping software"
+  },
+  "2087752360693293546": {
+    "theme": "ai-crypto-convergence",
+    "stance": "support",
+    "note": "OpenSea -> OpenRouter: same aggregation-theory playbook (fungible commodity, single endpoint, take rate) applied across NFTs then AI models"
+  },
+  "2089312144080736648": {
+    "theme": "ai-crypto-convergence",
+    "stance": "support",
+    "note": "The decade framework: own what AI can't cheaply create and what it must consume - compute, energy, chips, data, rails, trust"
+  },
+  "2090019197975765487": {
+    "theme": "adoption-barriers",
+    "stance": "support",
+    "note": "Self-custody is crypto's biggest unlock AND its biggest blocker: most people don't want to be their own bank, security team and recovery system"
+  },
+  "2086047478860660755": {
+    "theme": "adoption-barriers",
+    "stance": "support",
+    "note": "The uncomfortable question after 6 years of onboarding pushes: why are normal people still not here?"
+  },
+  "2087805023052804559": {
+    "theme": "adoption-barriers",
+    "stance": "support",
+    "note": "Everyone who entered via memecoins lost money and never came back - zero-sum onboarding permanently burns cohorts"
+  },
+  "2090109332251955240": {
+    "theme": "adoption-barriers",
+    "stance": "counter",
+    "note": "The durable counter-case: for the excluded, crypto didn't care about passport or bank account - inclusion keeps the mission investable"
+  },
+  "2086474332323115347": {
+    "theme": "adoption-barriers",
+    "stance": "counter",
+    "note": "Armstrong's scoreboard: stables brought the dollar onchain, DeFi opened credit, tokenized stocks reach 4B unbrokered people - access already unlocked"
+  }
+}

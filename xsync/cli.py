@@ -7,7 +7,7 @@ import os
 import sys
 import textwrap
 
-from xsync import api, auth, config, db, sync, tagging
+from xsync import api, auth, config, db, sync, tagging, thesis
 
 
 def _client(args) -> tuple[api.XClient, str]:
@@ -182,6 +182,72 @@ def cmd_search(args) -> int:
     return 0
 
 
+def cmd_themes(args) -> int:
+    index = thesis.ThemeIndex()
+    with _store(args) as store:
+        stats = index.apply(store, min_score=args.min_score)
+        print(
+            f"Applied themes: {stats['curated']} curated keystones, "
+            f"{stats['auto']} auto-matched (of {stats['scanned']} tagged posts)"
+            + (f"; {stats['missing_seeds']} seeds not in DB" if stats['missing_seeds'] else "")
+        )
+        if args.out:
+            text = render_thesis_report(index, store)
+            with open(args.out, "w", encoding="utf-8") as fh:
+                fh.write(text)
+            print(f"Wrote thesis report to {args.out}")
+        else:
+            for block in index.report(store):
+                counts = {}
+                for row in block["curated"]:
+                    counts[row["stance"] or "?"] = counts.get(row["stance"] or "?", 0) + 1
+                stances = ", ".join(f"{k}:{v}" for k, v in sorted(counts.items()))
+                print(f"  {block['theme']:<24} {len(block['curated'])} curated ({stances or '-'}) "
+                      f"+ {len(block['auto'])} auto")
+    return 0
+
+
+def render_thesis_report(index: thesis.ThemeIndex, store) -> str:
+    stance_headers = [("support", "The case for"), ("counter", "The case against"),
+                      ("evidence", "Evidence & data points")]
+    lines = ["# Thesis drivers", ""]
+    lines.append("Curated from your X bookmarks and likes. Each theme keeps its bull case "
+                 "and bear case side by side - conflicting takes are stored deliberately.")
+    for block in index.report(store):
+        lines += ["", f"## {block['title']}", "", f"**Working thesis:** {block['thesis']}", ""]
+        if block["drivers"]:
+            lines.append("**Drivers to watch:**")
+            lines += [f"- {d}" for d in block["drivers"]]
+            lines.append("")
+        by_stance = {}
+        for row in block["curated"]:
+            by_stance.setdefault(row["stance"] or "evidence", []).append(row)
+        for stance, header in stance_headers:
+            rows = by_stance.get(stance)
+            if not rows:
+                continue
+            lines.append(f"### {header}")
+            for row in rows:
+                handle = row["username"] or "?"
+                date = (row["created_at"] or "")[:10]
+                link = f"https://x.com/{handle}/status/{row['tweet_id']}"
+                lines.append(f"- **@{handle}** ({date}) - {row['note']} [post]({link})")
+            lines.append("")
+        if block["auto"]:
+            lines.append(f"### Also filed here automatically ({len(block['auto'])})")
+            for row in block["auto"][:12]:
+                handle = row["username"] or "?"
+                date = (row["created_at"] or "")[:10]
+                body = " ".join((row["body"] or "").split())
+                snippet = body[:140] + ("..." if len(body) > 140 else "")
+                link = f"https://x.com/{handle}/status/{row['tweet_id']}"
+                lines.append(f"- @{handle} ({date}): {snippet} [post]({link})")
+            if len(block["auto"]) > 12:
+                lines.append(f"- ... and {len(block['auto']) - 12} more in the database")
+            lines.append("")
+    return "\n".join(lines)
+
+
 def cmd_report(args) -> int:
     with _store(args) as store:
         counts = store.counts()
@@ -310,6 +376,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("query")
     p.add_argument("--limit", type=int, default=25)
     p.set_defaults(func=cmd_search)
+
+    p = sub.add_parser("themes", help="apply thesis themes (curated seeds + auto match)")
+    p.add_argument("--min-score", type=int, default=2,
+                   help="term hits needed for an automatic theme match")
+    p.add_argument("--out", default=None, help="also write the full thesis report (markdown)")
+    p.set_defaults(func=cmd_themes)
 
     p = sub.add_parser("report", help="corpus overview: tags, authors, linked domains")
     p.add_argument("--tag", default=None)

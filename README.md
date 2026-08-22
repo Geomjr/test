@@ -61,6 +61,25 @@ object counts as a resource, deduplicated per 24h UTC day.
 Note: X has been billing some Owned-Read-eligible endpoints at the standard
 rate ([known issue](https://devcommunity.x.com/t/owned-reads-0-001-rate-not-applied-to-bookmarks-endpoint-billed-at-0-005-instead/263311)) — check your first invoice.
 
+## Thesis themes
+
+On top of the tags sits a curated thesis layer (`python -m xsync themes`):
+
+- `xsync/themes.json` - 11 investable themes, each with a working thesis
+  statement, drivers to watch, and auto-match terms for future syncs.
+- `xsync/seeds.json` - hand-curated keystone posts, each with a **stance**
+  (`support` / `counter` / `evidence`) and a note on why it matters.
+  Conflicting takes are stored deliberately: every theme keeps its bull case
+  and bear case side by side.
+
+```
+python -m xsync themes                          # apply + per-theme summary
+python -m xsync themes --out thesis-drivers.md  # full report with permalinks
+```
+
+Full post bodies and raw API JSON always stay in the `tweets` table - themes
+are a lens, not a replacement.
+
 ## Tagging
 
 `xsync/lexicon.json` maps tags (`crypto`, `vc`, `thesis`, `ai`) to term lists.

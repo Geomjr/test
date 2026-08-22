@@ -347,3 +347,73 @@ class ManualLoginTest(unittest.TestCase):
         auth.start_manual_login("cid")
         with self.assertRaises(auth.AuthError):
             auth.finish_manual_login("http://127.0.0.1:8723/callback?state=WRONG&code=x")
+
+
+class ThesisTest(unittest.TestCase):
+    def setUp(self):
+        self.store = db.Store(":memory:")
+
+    def tearDown(self):
+        self.store.close()
+
+    def _seed_corpus(self):
+        from xsync import api, sync
+        posts = [
+            tweet("1", "Tokenized stocks follow the stablecoin curve, tokenization is inevitable"),
+            tweet("2", "AMMs lose to the orderbook; every perp venue and prediction market shows it"),
+            tweet("3", "Made a nice risotto tonight"),
+        ]
+        transport = FakeTransport({BOOKMARKS_PATH: [page(posts)]})
+        client = api.XClient(StubTokens(), transport=transport, sleeper=lambda _: None)
+        sync.sync_source(client, self.store, "42", "bookmarks")
+        tagging.Tagger.load().tag_store(self.store)
+
+    def test_curated_and_auto_assignment(self):
+        from xsync import thesis
+        self._seed_corpus()
+        index = thesis.ThemeIndex(
+            themes={
+                "tokenization-rwa": {"title": "Tok", "thesis": "t", "terms": ["tokenized", "tokenization", "stablecoin"]},
+                "market-structure": {"title": "MS", "thesis": "m", "terms": ["amm", "amms", "orderbook", "perp", "prediction market"]},
+            },
+            seeds={"1": {"theme": "tokenization-rwa", "stance": "support", "note": "keystone"},
+                   "999": {"theme": "market-structure", "stance": "counter", "note": "not synced yet"}},
+        )
+        stats = index.apply(self.store)
+        self.assertEqual(stats["curated"], 1)
+        self.assertEqual(stats["missing_seeds"], 1)
+        rows = self.store.conn.execute(
+            "SELECT theme, basis FROM theme_posts WHERE tweet_id='1'").fetchall()
+        self.assertEqual([(r["theme"], r["basis"]) for r in rows], [("tokenization-rwa", "curated")])
+        auto = self.store.conn.execute(
+            "SELECT theme FROM theme_posts WHERE tweet_id='2' AND basis='auto'").fetchall()
+        self.assertEqual([r["theme"] for r in auto], ["market-structure"])
+        untagged = self.store.conn.execute(
+            "SELECT count(*) FROM theme_posts WHERE tweet_id='3'").fetchone()[0]
+        self.assertEqual(untagged, 0)
+
+    def test_apply_is_idempotent(self):
+        from xsync import thesis
+        self._seed_corpus()
+        index = thesis.ThemeIndex(
+            themes={"tokenization-rwa": {"terms": ["tokenized", "stablecoin"]}},
+            seeds={},
+        )
+        index.apply(self.store)
+        index.apply(self.store)
+        n = self.store.conn.execute("SELECT count(*) FROM theme_posts").fetchone()[0]
+        self.assertEqual(n, 1)
+
+    def test_shipped_seed_and_theme_files_are_consistent(self):
+        from xsync import thesis
+        themes = thesis.load_themes()
+        seeds = thesis.load_seeds()
+        self.assertGreaterEqual(len(themes), 10)
+        self.assertGreaterEqual(len(seeds), 50)
+        for tweet_id, spec in seeds.items():
+            self.assertIn(spec["theme"], themes, f"seed {tweet_id} references unknown theme")
+            self.assertIn(spec["stance"], {"support", "counter", "evidence"})
+            self.assertTrue(spec.get("note"))
+        for name, spec in themes.items():
+            self.assertTrue(spec.get("thesis"), f"theme {name} missing thesis statement")
+            self.assertTrue(spec.get("terms"), f"theme {name} has no auto-match terms")

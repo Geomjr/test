@@ -1,0 +1,69 @@
+{
+  "_comment": "Thesis themes. `terms` auto-assign posts (same syntax as lexicon.json); `seeds` in seeds.json pin hand-curated keystone posts. Edit thesis statements freely - they are your working hypotheses.",
+  "stablecoin-rails": {
+    "title": "Stablecoins & payment rails",
+    "thesis": "Stablecoins are crypto's proven PMF and are becoming the settlement layer for cards, cross-border B2B and eventually agentic payments; distribution (Stripe/Tempo, banks, wallets) decides who captures it.",
+    "drivers": ["GENIUS act / regulated issuance", "card programs built on stablecoin settlement", "shadow-economy B2B usage (e.g. India-China trade in USDT)", "issuer concentration risk (80% of crypto cards on one issuer)", "Tether/Circle profitability as the industry's revenue anchor"],
+    "terms": ["stablecoin", "stablecoins", "usdc", "usdt", "tether", "circle", "payment rail", "payment rails", "settlement", "cards", "interchange", "neobank", "remittance", "on-ramp", "off-ramp", "tokenized deposits", "genius act"]
+  },
+  "tokenization-rwa": {
+    "title": "Tokenized equities & RWAs",
+    "thesis": "Tokenized stocks repeat the stablecoin curve (24/7 settlement + global access to 4B unbrokered people); the open questions are borrow-side demand, and whether the onchain layer captures any of the value it creates.",
+    "drivers": ["Franklin Templeton regulatory clearance", "tokenized stock market cap 46x YoY", "DeFi collateralization of tokenized equities", "RFQ mint/redeem replacing AMMs for equities", "missing stock-borrow/short economy onchain"],
+    "terms": ["tokenized", "tokenization", "rwa", "real world assets", "tokenized stocks", "tokenized equities", "tokenized assets", "onchain stocks", "24/7 settlement", "mint/redeem"]
+  },
+  "regulatory-unlock": {
+    "title": "US regulatory unlock",
+    "thesis": "SEC's token framework (retail sales up to $5M/$75M, exit from investment-contract regime) plus Clarity re-onshores founders and could restart compliant public token distribution - the single biggest cycle catalyst.",
+    "drivers": ["SEC crypto-asset regulatory proposal", "ICO-style fundraising revival", "Clarity act momentum incl. Wall St backing", "ETF flows", "compliance as survival filter"],
+    "terms": ["sec", "cftc", "regulation", "regulatory", "clarity act", "genius", "compliant", "compliance", "etf", "investment contract", "securities law", "onshore"]
+  },
+  "value-accrual": {
+    "title": "Token value accrual & revenue businesses",
+    "thesis": "The investable set collapsed to tokens of real revenue businesses doing buybacks or routing fees; token/equity misalignment makes most of the rest uninvestable, and some builders should skip tokens entirely.",
+    "drivers": ["'up only' buyback tokens in a bear market", "fee routing to L1 tokens from permissionless protocols", "token-vs-equity conflict (Coinbase/TNSR, Pump/Padre)", "<10 investable tokens after screening", "companies staying tokenless like startups staying private"],
+    "terms": ["value accrual", "buyback", "buybacks", "revenue share", "fee switch", "tokenomics", "unlock", "unlocks", "fdv", "burn", "protocol revenue", "real yield", "treasury"]
+  },
+  "market-structure": {
+    "title": "Onchain market structure",
+    "thesis": "Crypto converges on four PMF markets (spot/memes, perps, yield, predictions) plus stablecoin payments; AMMs lose to orderbooks/RFQ/dark pools as professionals arrive, and everyone races to build the everything-exchange.",
+    "drivers": ["Hyperliquid as the perps benchmark", "prediction markets going mainstream", "AMM structural critique from HFT operators", "everything-exchange convergence (Coinbase, Robinhood, Phantom, Fomo)", "24/7 trading of everything"],
+    "terms": ["amm", "amms", "orderbook", "order book", "perp", "perps", "hyperliquid", "prediction market", "prediction markets", "polymarket", "kalshi", "market maker", "market making", "dark pool", "rfq", "exchange", "liquidity", "dex", "clob"]
+  },
+  "cycle-capital-rotation": {
+    "title": "Cycle timing & capital rotation",
+    "thesis": "Crypto is in its post-dot-com chapter: prices lag while fundamentals compound; the trade is positioning for capital rotating back from AI, with $7B of fresh crypto VC dry powder already raised.",
+    "drivers": ["opportunity cost vs AI keeps sentiment at lows", "$6.9B fresh crypto VC dry powder", "narrative arc: SoV -> ICOs -> DeFi -> memes -> the financial system onchain", "capital fluidity overshoot/reset cycles", "post-GENIUS institutional adoption regardless of price"],
+    "terms": ["bear market", "bull market", "cycle", "cycles", "capital rotation", "dry powder", "sentiment", "bottom", "opportunity cost", "risk asset", "risk-on", "halving", "alt season"]
+  },
+  "vc-mechanics": {
+    "title": "VC & fund mechanics",
+    "thesis": "Fund structure explains fund behavior: GPs are middlemen for LP interests, which punishes non-consensus theses and rewards momentum; emerging managers and family offices are the structural alpha in a dislocated market.",
+    "drivers": ["GP/LP incentive chain shapes what gets funded", "emerging manager survival playbook (early first close, tiny checks)", "under-the-radar family offices", "institutional token hot-potato game", "AI-read decks changing fundraising"],
+    "terms": ["lp", "lps", "gp", "limited partner", "fund i", "fund ii", "first close", "carry", "management fee", "dpi", "tvpi", "moic", "emerging manager", "family office", "family offices", "term sheet", "cap table", "dilution", "portfolio construction", "deal flow"]
+  },
+  "fintech-credit-wedge": {
+    "title": "Fintech wave 2: credit & vertical wedges",
+    "thesis": "Fintech's next wave is credit plus industry-specific workflow wedges - own a vertical's financial workflow (e.g. AI medical billing), monetize with the banking/credit stack under it; consolidation with tradfi is the endgame.",
+    "drivers": ["credit as the neobank customer-acquisition weapon", "AI-native workflow companies collapsing service costs 5-6% -> 2-3%", "proprietary underwriting data from owning the revenue cycle", "venture debt / warehouse lending demand", "fintech-tradfi M&A"],
+    "terms": ["fintech", "neobank", "neobanks", "credit", "lending", "underwriting", "venture debt", "warehouse lending", "receivables", "factoring", "banking-as-a-service", "vertical saas", "workflow"]
+  },
+  "ai-crypto-convergence": {
+    "title": "AI x crypto convergence",
+    "thesis": "Billions of transacting AI agents need payment rails the legacy system can't provide - the machine economy is the use case that finally drives blockchain adoption, and AI red-team/defense agents become table stakes for shipping software.",
+    "drivers": ["agent-payment rails adopted by Google/Amazon", "Franklin Templeton naming agents the blockchain use case", "24/7 AI attack/defense agents on open-source financial code", "aggregation-theory marketplaces for AI (OpenRouter)", "what AI must consume: compute, energy, data, rails"],
+    "terms": ["ai agent", "ai agents", "agentic", "machine economy", "agent payments", "x402", "inference", "llm", "llms", "compute", "gpu", "red team", "aggregation theory"]
+  },
+  "consumer-speculation": {
+    "title": "Consumer crypto & speculation",
+    "thesis": "Speculation is the eternal consumer wedge - social trading apps, prediction markets and internet-culture coins are the onboarding surface; the design question is incentive structures that don't strip-mine retail.",
+    "drivers": ["onchain social trading apps at 100k+ DAUs", "consumer hypergamblification as an investable input", "memecoin cohorts burning retail vs healthier predictions/BTC onboarding", "token incentives for social networks", "brand/physical-world differentiation plays"],
+    "terms": ["memecoin", "memecoins", "social trading", "consumer crypto", "consumer app", "gambling", "gamblification", "casino", "retail", "onboarding", "nft", "nfts", "decentralized social", "creator"]
+  },
+  "adoption-barriers": {
+    "title": "Adoption barriers & UX debt",
+    "thesis": "The bull case's biggest risk is unresolved UX debt: self-custody is too much responsibility for normal people, security failures compound distrust, and memecoin-first onboarding burns each retail cohort it touches.",
+    "drivers": ["self-custody responsibility burden", "6 years of failed mass onboarding", "recurring hacks/DPRK exploits", "DeFi complexity satire as diagnosis", "financial inclusion as the durable counter-case"],
+    "terms": ["self-custody", "self custody", "custody", "wallet ux", "seed phrase", "account abstraction", "onboard", "onboarding", "hack", "hacked", "exploit", "security", "recovery", "mass adoption"]
+  }
+}
