@@ -1,6 +1,6 @@
 Master Target Database
-"All 47 targets across the IB, Corp Dev, and VC lanes in one view  |  CBS Class of 2028  |  Compiled Aug 22, 2026"
-"Priority / Status / Next Step mirror the lane tabs live: edit them THERE (yellow columns), not here. Sort or filter this sheet freely; formulas follow.",,,,,,Targets:,47,High priority:,0,In motion:,0
+"All 65 targets across the IB, Corp Dev, and VC lanes in one view  |  CBS Class of 2028  |  Compiled Aug 22, 2026; expanded same day"
+"Priority / Status / Next Step mirror the lane tabs live: edit them THERE (yellow columns), not here. Sort or filter this sheet freely; formulas follow.",,,,,,Targets:,65,High priority:,0,In motion:,0
 
 Target,Lane,Tier / Category,HQ,Edge in One Line,Access Channel,Timing,Personal Angle,Priority,Status,Next Step,Next Step Date
 PJT Partners,IB,1 - OCR,New York,"Payward's house bank (NinjaTrader, Bitnomial, Reap) plus Core Scientific debtor mandate and $9B co-sell to CoreWeave",OCR presentations and closed lists; RSSG restructuring is a separate MBA-heavy track,Sept-Jan OCR,"You are living the process they sell; pitch market-structure conviction, not one client"
@@ -35,6 +35,14 @@ Robinhood,Corp Dev,Broker,Menlo Park,"Bitstamp, WonderFi, TradePMR; outside bank
 Circle,Corp Dev,Stablecoin,New York (One WTC),Hashnote and infrastructure bolt-ons; public-company stablecoin consolidation mandate,Postings plus NYC network,Rolling,Stablecoin thesis plus your regulated-product operating history
 Figure,Corp Dev,Tokenization,San Francisco,Kiavi ($717M) with Sixth Street; tokenization consolidator,Network via the Kiavi advisor web,Deal-driven,Your ETC Group equity-tokenization platform work is directly relevant
 Talos,Corp Dev,Infra (FROZEN),New York,"Cloudwall, Skolem, D3X, Coin Metrics; principal-to-principal, no bankers ever disclosed",POST-CLOSE ONLY: no contact while Project Optimus is live,After Optimus close,The warmest door available afterward; total discipline until signing
+Tether,Corp Dev,Stablecoin,El Salvador,"Tether Investments: Adecoagro ~70%, Twenty One, mining/AI; largest strategic balance sheet in crypto",Network-only; no conventional corp dev path,Opportunistic,Adecoagro = Brazil-agri + your LatAm M&A lens
+Anchorage Digital,Corp Dev,Crypto bank,San Francisco,OCC charter moat; Mountain Protocol (USDM) buy 2025,Postings + network,Rolling,Charter-bank language matches your regulated-platform seat
+FalconX,Corp Dev,Prime broker,"San Mateo, CA",Serial: Arbelos 2025; 21Shares deal agreed Oct 2025 (verify close),Postings + network,Rolling,Prime brokerage + ETP: both your worlds in one seat
+Fireblocks,Corp Dev,Infra,New York,Serial infra bolt-ons; tokenization push,NYC postings + network,Rolling,Your COR PRIME stack likely runs on them
+MoonPay,Corp Dev,Payments,"Miami, FL",Serial acquirer: Helio $175M plus bolt-ons,Postings + network,Rolling,Serial-acquirer corp dev seat
+PayPal,Corp Dev,Payments,"San Jose, CA",PYUSD; Ventures arm; historic M&A muscle,Structured recruiting,Fall cycle,Stablecoin distribution thesis
+Visa,Corp Dev,Payment network,San Francisco,USDC settlement live; Pismo $1B (Brazil); crypto team,Structured MBA recruiting,Fall cycle,Pismo = Brazil angle; settlement = thesis
+Nubank,Corp Dev,Neobank,"Sao Paulo, BR",Crypto at 100M+ customer scale,Structured + network,Rolling,"Brazil: language, market, network"
 Galaxy Ventures,VC,One-roof,New York,"Fund I $175M+ (Jun 2025); stablecoins, payments, tokenization thesis",Same relationship as Galaxy IB; CVF-compatible,CVF Sept; rolling,"Your exit comps are their underwriting; one Galaxy relationship, three doors"
 Fintech Collective,VC,Fintech VC,New York,Best pure stablecoins/payments thesis fit in NYC; capital markets DNA,"Newsletter, Layer One podcast, Stablecon",Rolling,Their capital-markets DNA matches your prime-lending seat
 Archetype,VC,Independent,New York,"Fund III $100M+ (Sep 2025); stablecoins, payments infra, crypto x AI","Archebyte podcast, NYC in-person events",Rolling,-
@@ -50,5 +58,15 @@ Castle Island Ventures,VC,Independent,Boston,Backed both Talos and Coin Metrics;
 Coinbase Ventures,VC,CVC,SF / remote,Most active CVC in crypto; sits inside the corp dev org,Through Coinbase MBA channels,Fall,Double-counts with the Coinbase corp dev track
 Kraken Ventures,VC,CVC,SF / remote,Standalone fund beside the most acquisitive corp dev team in crypto,Ecosystem network,Rolling,Double-counts with the Kraken corp dev track
 Pantera Capital,VC,Independent,Menlo Park,Oldest dedicated crypto fund; venture plus liquid,Network; CVF thesis material travels well here,Rolling,-
+ParaFi Capital,VC,Independent,New York,Market-structure/DeFi institutional fund; venture + liquid; ex-KKR founder,NYC network; research engagement,Rolling,"Missing from the research - verify, then engage; strong thesis fit"
+Paradigm,VC,Elite,San Francisco,The reference crypto fund; Fund III $850M; research + policy,Research-first engagement,Long game,Rare MBA entry; play via research
+Haun Ventures,VC,Elite,San Francisco,$1.5B; Katie Haun; policy-forward,Policy/regulatory events,Rolling,-
+Electric Capital,VC,Elite,Palo Alto,Developer-data franchise; annual Developer Report,Developer Report as entry,Rolling,The report is conversation currency
+Multicoin Capital,VC,Thesis fund,"Austin, TX",Fund III $430M; Solana/DePIN; prolific public theses,Writing-first; Breakpoint,Rolling,Respond to their essays in writing
+Ribbit Capital,VC,Fintech elite,Menlo Park,Coinbase/Robinhood/Nubank/Revolut backer,Warm intros via fintech web,Rolling,Nubank web = Brazil angle
+Nyca Partners,VC,Fintech VC,New York,Hans Morris (ex-Visa president); payments/capital markets,NYC fintech network; direct outreach,Rolling,Hires MBAs; payments royalty
+Illuminate Financial,VC,Cap-markets VC,NYC + London,Capital-markets infra thesis; bank strategic LPs,Market-structure content; both cities,Rolling,Market-structure bullseye for your seat
+Liberty City Ventures,VC,Independent,New York,Quiet NYC fund; early Paxos/Lukka backers,NYC network play,Opportunistic,Paxos web
+Bain Capital Crypto,VC,Institutional,SF + Boston,"$560M Fund I; technical depth, institutional platform",BCC research engagement,Rolling,Institutional-path optionality
 
-"Static columns compiled Aug 22, 2026 from the lane tabs, Target Profiles, and the NYC fund research. HQ entries for Canaccord Genuity, BTIG, Compass Point, Robinhood, and Figure come from general knowledge, not the research; confirm before citing. Priority / Status / Next Step are live formulas into the lane tabs; keep working there."
+"Static columns compiled Aug 22, 2026 from the lane tabs, Target Profiles, and the NYC fund research. Rows for the 18 targets promoted the same day (Tether through Nubank; ParaFi through Bain Capital Crypto) and several HQ entries come from general knowledge, not the verified research - confirm before citing. Priority / Status / Next Step are live formulas into the lane tabs; keep working there. Full universes: Corp Dev Universe and VC Universe tabs."
