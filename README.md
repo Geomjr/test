@@ -1,69 +1,43 @@
 # CBS Crypto Recruiting Database
 
-Master database of recruiting targets for George's Columbia MBA (Class of 2028), covering the
-crypto/digital-asset M&A, corporate development, and venture capital lanes. Built August 22, 2026 —
-the week before orientation.
+Recruiting-target database for George's Columbia MBA (Class of 2028): crypto/digital-asset
+investment banking, corporate development, and venture capital. Started August 22, 2026.
 
-## The file
+## Structure — one sheet per thing, no duplication
 
-**`CBS_Crypto_Recruiting_Database.xlsx`** is the single working file. It extends the original
-recruiting tracker with six added sheets (Master Targets, Corp Dev Universe, VC Universe,
-People Directory, Personal Angles, Engagement Feed) and keeps every original sheet intact.
+**`CBS_Crypto_Recruiting_Database.xlsx`**, 10 sheets:
 
-| # | Sheet | What it holds |
-|---|-------|---------------|
-| 1 | **Master Targets** | All 74 targets in one sortable view. Priority / Status / Next Step are live formulas mirroring the three lane tabs — edit status there, not here. |
-| 2 | IB Targets | 23 advisory firms in three tiers (OCR / Direct / Network) with deal evidence and access channels. Yellow columns F–M are the working columns. |
-| 3 | Corp Dev Targets | 24 buy-side teams — the original 9, plus 8 from the universe expansion (Tether, Anchorage, FalconX, Fireblocks, MoonPay, PayPal, Visa, Nubank), plus 7 promoted for NYC presence (BlackRock, Chainalysis, Paxos, Ondo, 21Shares, BitGo, Digital Asset). |
-| 4 | **Corp Dev Universe** *(new)* | 139 strategic acquirers across every category, each tagged with an **NYC Presence** column (HQ / Metro / Office / People / Verify) — 84 are NYC-reachable in some form. |
-| 5 | VC Targets | 27 priority funds — the original 15, plus 10 from the universe expansion (ParaFi, Paradigm, Haun, Electric, Multicoin, Ribbit, Nyca, Illuminate, Liberty City, Bain Capital Crypto), plus a16z crypto and Index Ventures for their NYC offices. |
-| 6 | VC Fund Database | Full-fidelity detail on 42 funds from the verified Aug 2026 NYC research. |
-| 7 | **VC Universe** *(new)* | 149 funds globally, each tagged with an **NYC Presence** column — 78 are NYC-reachable (NYC offices include a16z crypto, Index, Sequoia, General Catalyst, BCV, DRW/Jump, CoinShares, and more). |
-| 8 | People Directory | 84 named individuals across all lanes — role, background, engagement channel, personal/Columbia tie. Verify each on LinkedIn before outreach. |
-| 9 | Target Profiles | Depth per target: hiring reality, entry route, timing, watch items. |
-| 10 | Personal Angles | 13 CV assets mapped to the targets they open — the one-liner, how to use it, and the confidentiality cautions. |
-| 11 | League Table | Disclosed crypto M&A advisor mandates, Jan 2024 – Aug 2026. |
-| 12 | Deal Evidence | 48 transactions with full advisor attributions. |
-| 13 | Engagement Feed | 25 hooks — podcasts, newsletters, research, conferences, and CBS-cycle actions — with cadence and priority. |
-| 14 | Timeline | The CBS Class of 2028 recruiting calendar with moves per window. |
+| Sheet | Rows | What it is |
+|---|---|---|
+| **VC Database** | 833 | The entire fund universe in one flat, filterable table (autofilter on). One row per fund. Sort/filter by Tier, Region, NYC presence, Type. Yellow Status + Notes columns are yours. |
+| **Corp Dev Database** | 139 | Every strategic acquirer, same flat format. |
+| IB Targets | 23 | The advisory lane (unchanged): three tiers, deal evidence, working columns F–M. |
+| People Directory | 84 | Named individuals with roles, hooks, and ties. Verify on LinkedIn before outreach. |
+| Target Profiles | 31 | Depth per priority target: hiring reality, entry route, timing. |
+| Personal Angles | 13 | CV assets mapped to targets, with usage notes and confidentiality cautions. |
+| League Table | — | Disclosed crypto M&A advisor mandates, Jan 2024 – Aug 2026. |
+| Deal Evidence | 48 | Transactions with advisor attributions. |
+| Engagement Feed | 25 | Podcasts, newsletters, conferences, CBS-cycle actions. |
+| Timeline | — | The CBS recruiting calendar. |
 
-## How to use it weekly
+Tier column: **S1** pursue · **S2** engage · **S3** track · **Monitor** watch · **Track** long-tail
+(unvetted) · **Exclude** avoid. Tiers of the VC Database: Exclude 64, Monitor 54, S1 14, S2 29, S3 46, Track 626.
+181 funds are NYC-reachable (HQ/Metro/Office/Team/People).
 
-1. Work the **yellow columns** on the three lane tabs (and People Directory / Engagement Feed) —
-   contacts, status, next steps. The Master sheet and header counts update automatically.
-2. Check **Engagement Feed** "Now" items first: club fair, CVF (~Aug 28), IBC resume book,
-   Architect Partners alerts.
-3. Before any outreach, pull the target's row in **Target Profiles** and your line in
-   **Personal Angles**; verify the person in **People Directory** on LinkedIn.
+## Provenance
 
-## Standing rules embedded in the tracker
+- **Src R** — verified Aug 2026 research (NYC deep research + deal research; also archived at
+  `docs/nyc-crypto-vc-research-2026-08.md`).
+- **Src K** — general knowledge, Jan 2026 horizon. The ~684 long-tail VC rows were
+  compiled by a multi-agent sweep (50 + 24 sliced generators with anti-fabrication anchors,
+  dedupe, and an adversarial fact-check pass that dropped flagged names). They are for mapping
+  and prioritization — **verify any K row before outreach or citation**. "verify" in Notes marks
+  medium confidence; "(defunct/exited - verify)" marks funds flagged as wound down.
+- Raw generated data: `data/vc_generated/*.json`. CSV snapshots of every sheet: `data/*.csv`.
 
-- **Talos is frozen** until Project Optimus signs — no contact of any kind. Post-close it becomes
-  the warmest door (and the Castle Island intro follows from it).
+## Standing rules
+
+- **Talos is frozen** until Project Optimus signs — no contact of any kind.
 - Never signal the venture endgame in Tier 1 IB conversations.
-- Never reference Project Optimus, COR PRIME's process, or non-public ETC Group/Bitwise terms
-  before close/public disclosure.
+- Never reference Project Optimus, COR PRIME's process, or non-public ETC Group/Bitwise terms.
 - Dragonfly: do not lead with GP Tom Schmidt (2025 DOJ / Tornado Cash caveat).
-
-## Repo contents
-
-- `CBS_Crypto_Recruiting_Database.xlsx` — the working database (source of truth)
-- `data/*.csv` — generated snapshots of each sheet for diffing/search; regenerate after edits,
-  don't edit directly
-- `docs/nyc-crypto-vc-research-2026-08.md` — the verified NYC crypto-VC research the fund
-  database is built from
-
-## Provenance — read this before citing anything
-
-Two sources feed the database, marked in the `Src` column of the universe sheets:
-
-- **R** — the verified Aug 22, 2026 NYC crypto-VC deep research and the deal/advisor research
-  through Aug 21, 2026. Fund sizes from third-party databases remain approximate.
-- **K** — general knowledge with a **January 2026 information horizon**, used for the
-  Corp Dev Universe, VC Universe, the 27 promoted working-tab rows, and People Directory rows
-  63 onward. Deal states, fund sizes, tickers, and team rosters there MUST be verified before
-  any outreach or citation — several entries are explicitly marked "verify". "n/a" means not
-  confidently known, not zero.
-
-HQ entries for a handful of firms (noted in sheet footers) also come from general knowledge.
-The master CV (Jul 2026) feeds Personal Angles; finalize its bracketed [X] figures before use.
