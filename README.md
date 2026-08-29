@@ -9,7 +9,7 @@ investment banking, corporate development, and venture capital. Started August 2
 
 | Sheet | Rows | What it is |
 |---|---|---|
-| **VC Database** | 833 | The entire fund universe in one flat, filterable table (autofilter on). One row per fund. Sort/filter by Tier, Region, NYC presence, Type. Yellow Status + Notes columns are yours. |
+| **VC Database** | 1132 | The entire fund universe in one flat, filterable table (autofilter on). One row per fund. Sort/filter by Tier, Region, NYC presence, Type. Yellow Status + Notes columns are yours. |
 | **Corp Dev Database** | 139 | Every strategic acquirer, same flat format. |
 | IB Targets | 23 | The advisory lane (unchanged): three tiers, deal evidence, working columns F–M. |
 | People Directory | 84 | Named individuals with roles, hooks, and ties. Verify on LinkedIn before outreach. |
@@ -21,14 +21,14 @@ investment banking, corporate development, and venture capital. Started August 2
 | Timeline | — | The CBS recruiting calendar. |
 
 Tier column: **S1** pursue · **S2** engage · **S3** track · **Monitor** watch · **Track** long-tail
-(unvetted) · **Exclude** avoid. Tiers of the VC Database: Exclude 64, Monitor 54, S1 14, S2 29, S3 46, Track 626.
-181 funds are NYC-reachable (HQ/Metro/Office/Team/People).
+(unvetted) · **Exclude** avoid. Tiers of the VC Database: Exclude 85, Monitor 54, S1 14, S2 29, S3 46, Track 904.
+225 funds are NYC-reachable (HQ/Metro/Office/Team/People).
 
 ## Provenance
 
 - **Src R** — verified Aug 2026 research (NYC deep research + deal research; also archived at
   `docs/nyc-crypto-vc-research-2026-08.md`).
-- **Src K** — general knowledge, Jan 2026 horizon. The ~684 long-tail VC rows were
+- **Src K** — general knowledge, Jan 2026 horizon. The ~983 long-tail VC rows were
   compiled by a multi-agent sweep (50 + 24 sliced generators with anti-fabrication anchors,
   dedupe, and an adversarial fact-check pass that dropped flagged names). They are for mapping
   and prioritization — **verify any K row before outreach or citation**. "verify" in Notes marks
