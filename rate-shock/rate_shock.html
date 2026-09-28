@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rate Shock</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11,11,11,0.10);
+  --neg: #d03b3b;
+  --pos: #006300;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --accent-wash: rgba(42,120,214,0.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255,255,255,0.10);
+    --neg: #e66767;
+    --pos: #0ca30c;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --accent-wash: rgba(57,135,229,0.16);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface-1: #1a1a19;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --border: rgba(255,255,255,0.10);
+  --neg: #e66767;
+  --pos: #0ca30c;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --accent-wash: rgba(57,135,229,0.16);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text-primary);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
+header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+h1 { font-size: 22px; margin: 0 0 4px; font-weight: 650; letter-spacing: -0.01em; }
+.sub { color: var(--text-secondary); margin: 0; font-size: 14px; }
+h2 { font-size: 15px; font-weight: 600; margin: 0 0 2px; }
+.cap { color: var(--text-muted); font-size: 13px; margin: 0 0 12px; }
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.theme-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
+  border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer;
+}
+
+/* Control */
+.control { margin-top: 20px; }
+.control-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.shock-readout { font-size: 28px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.shock-readout small { font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-left: 6px; }
+input[type=range] { width: 100%; margin: 14px 0 6px; accent-color: var(--series-1); height: 28px; }
+.ticks { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.presets button {
+  font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.presets button:hover { background: var(--accent-wash); }
+.presets button.on { border-color: var(--series-1); background: var(--accent-wash); font-weight: 600; }
+
+/* Tiles */
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.tile .label { color: var(--text-secondary); font-size: 13px; }
+.tile .value { font-size: 30px; font-weight: 650; letter-spacing: -0.01em; margin-top: 2px; }
+.tile .note { color: var(--text-muted); font-size: 13px; }
+.neg { color: var(--neg); }
+.pos { color: var(--pos); }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.full { margin-top: 12px; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: inherit; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text-secondary); margin: 0 0 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.sw.line { height: 2px; border-radius: 1px; width: 14px; }
+.sw.dash { height: 0; width: 14px; border-top: 2px dashed var(--text-muted); border-radius: 0; }
+
+/* Table */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 7px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { color: var(--text-secondary); font-weight: 550; font-size: 12px; }
+th:first-child, td:first-child { text-align: left; }
+tbody tr:last-child td { border-bottom: none; }
+tfoot td { font-weight: 650; border-top: 1px solid var(--axis); border-bottom: none; }
+.bondname { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Tooltip */
+.tip {
+  position: fixed; pointer-events: none; z-index: 10; opacity: 0;
+  background: var(--surface-1); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px;
+  font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  font-variant-numeric: tabular-nums; min-width: 150px;
+}
+.tip .t { font-weight: 600; margin-bottom: 4px; }
+.tip .r { display: flex; justify-content: space-between; gap: 12px; color: var(--text-secondary); }
+.tip .r b { color: var(--text-primary); font-weight: 600; }
+
+details { margin-top: 12px; }
+summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+details p, details li { color: var(--text-secondary); font-size: 14px; }
+
+@media (max-width: 760px) {
+  .tiles { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
+  .tile .value { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Rate Shock: Hudson Valley Bank Treasury Book</h1>
+      <p class="sub">Four Treasuries priced off the 07/23/2026 par curve. Drag the slider to shift the whole curve up or down.</p>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button">Toggle theme</button>
+  </header>
+
+  <section class="card control">
+    <div class="control-top">
+      <div>
+        <div class="cap" style="margin:0">Parallel shift to every yield on the curve</div>
+        <div class="shock-readout" id="shockOut">+0.00%<small>0 bp</small></div>
+      </div>
+      <div class="presets" id="presets"></div>
+    </div>
+    <input type="range" id="shock" min="-3" max="4" step="0.05" value="0" aria-label="Change in interest rates, percent">
+    <div class="ticks"><span>−3%</span><span>−2%</span><span>−1%</span><span>0</span><span>+1%</span><span>+2%</span><span>+3%</span><span>+4%</span></div>
+  </section>
+
+  <section class="tiles">
+    <div class="card tile">
+      <div class="label">Portfolio value today</div>
+      <div class="value" id="vBase">—</div>
+      <div class="note">4 bonds, $4,000 total face value</div>
+    </div>
+    <div class="card tile">
+      <div class="label">Portfolio value after shock</div>
+      <div class="value" id="vNow">—</div>
+      <div class="note" id="vNowNote">&nbsp;</div>
+    </div>
+    <div class="card tile">
+      <div class="label">Gain / loss</div>
+      <div class="value" id="vChg">—</div>
+      <div class="note" id="vChgPct">&nbsp;</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Which bonds get hurt</h2>
+      <p class="cap">Price change of each bond at the current shock</p>
+      <div id="bars"></div>
+    </div>
+    <div class="card">
+      <h2>The yield curve</h2>
+      <p class="cap">Today's par yields vs. the shifted curve</p>
+      <div class="legend">
+        <span><i class="sw dash"></i>Today</span>
+        <span><i class="sw line" style="background:var(--series-1)"></i>Shifted</span>
+      </div>
+      <div id="curve"></div>
+    </div>
+  </section>
+
+  <section class="card full">
+    <h2>Price change across all shocks</h2>
+    <p class="cap">Each line is one bond. The vertical rule marks the current slider position. Steeper line = more rate risk.</p>
+    <div class="legend" id="lineLegend"></div>
+    <div id="lines"></div>
+  </section>
+
+  <section class="card full">
+    <h2>Duration vs. what actually happened</h2>
+    <p class="cap">Durations are measured at today's YTM. Duration estimate: ΔP/P ≈ −D* × ΔYTM.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bond</th><th>Price today</th><th>Price after</th><th>$ change</th><th>% change</th>
+            <th>YTM today</th><th>YTM after</th><th>Macaulay D</th><th>Modified D*</th>
+            <th>Duration est.</th><th>Est. error</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <details class="card">
+    <summary>How the tool prices the bonds</summary>
+    <ol>
+      <li>Par yields between the quoted maturities (1, 2, 3, 5, 7, 10, 20, 30Y) are linearly interpolated to get a par yield for every year 1–30.</li>
+      <li>Annual spot rates (discount factors) are bootstrapped from that par curve, since all four bonds pay annual coupons.</li>
+      <li>Each bond is priced as the sum of its cash flows times the matching discount factor.</li>
+      <li>A shock adds the same amount to every par yield, re-bootstraps the spot curve and reprices every bond.</li>
+      <li>YTM is solved from each price. Macaulay D = Σ t·PV(CF<sub>t</sub>) / P, and modified D* = D / (1 + YTM).</li>
+    </ol>
+    <p>Why the duration estimate drifts for big shocks: duration is a straight-line (first-order) approximation. The true price–yield curve bends (convexity), so for large rate rises the real loss is <em>smaller</em> than duration predicts, and for rate falls the real gain is <em>larger</em>.</p>
+  </details>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+(() => {
+  // ---------- Data ----------
+  const PAR = [[1,4.15],[2,4.37],[3,4.40],[5,4.46],[7,4.58],[10,4.71],[20,5.20],[30,5.17]];
+  const BONDS = [
+    { name: "Bond 1", desc: "2Y · 5%",  n: 2,  c: 0.05, face: 1000, color: "--series-1" },
+    { name: "Bond 2", desc: "10Y · 5%", n: 10, c: 0.05, face: 1000, color: "--series-2" },
+    { name: "Bond 3", desc: "30Y · 5%", n: 30, c: 0.05, face: 1000, color: "--series-3" },
+    { name: "Bond 4", desc: "30Y · 2%", n: 30, c: 0.02, face: 1000, color: "--series-4" },
+  ];
+  const PRESETS = [-1, 0, 1, 2, 3];
+
+  // ---------- Math ----------
+  function parAt(t) {
+    for (let i = 0; i < PAR.length - 1; i++) {
+      const [x0, y0] = PAR[i], [x1, y1] = PAR[i + 1];
+      if (t >= x0 && t <= x1) return y0 + (y1 - y0) * (t - x0) / (x1 - x0);
+    }
+    return PAR[PAR.length - 1][1];
+  }
+  function parCurve(shiftPct) {
+    const out = [];
+    for (let t = 1; t <= 30; t++) out.push((parAt(t) + shiftPct) / 100);
+    return out; // index t-1
+  }
+  function bootstrap(par) {
+    const df = [];
+    let sum = 0;
+    for (let i = 0; i < par.length; i++) {
+      const c = par[i];
+      const d = (1 - c * sum) / (1 + c);
+      df.push(d);
+      sum += d;
+    }
+    return df;
+  }
+  function cashflows(b) {
+    const cf = [];
+    for (let t = 1; t <= b.n; t++) cf.push(b.face * b.c + (t === b.n ? b.face : 0));
+    return cf;
+  }
+  function priceDF(b, df) {
+    return cashflows(b).reduce((s, cf, i) => s + cf * df[i], 0);
+  }
+  function priceY(b, y) {
+    return cashflows(b).reduce((s, cf, i) => s + cf / Math.pow(1 + y, i + 1), 0);
+  }
+  function ytm(b, P) {
+    let lo = -0.9, hi = 1.0;
+    for (let k = 0; k < 200; k++) {
+      const mid = (lo + hi) / 2;
+      if (priceY(b, mid) > P) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+  function durations(b, y) {
+    const cf = cashflows(b);
+    let pv = 0, tpv = 0;
+    cf.forEach((c, i) => { const v = c / Math.pow(1 + y, i + 1); pv += v; tpv += (i + 1) * v; });
+    const mac = tpv / pv;
+    return { mac, mod: mac / (1 + y) };
+  }
+  function evaluate(shiftPct) {
+    const df = bootstrap(parCurve(shiftPct));
+    return BONDS.map(b => {
+      const P = priceDF(b, df);
+      return { P, y: ytm(b, P) };
+    });
+  }
+
+  const base = evaluate(0);
+  const baseInfo = BONDS.map((b, i) => ({ ...base[i], ...durations(b, base[i].y) }));
+  const baseTotal = base.reduce((s, r) => s + r.P, 0);
+
+  // Precompute the price-change lines
+  const LINE_X = [];
+  for (let s = -3; s <= 4.0001; s += 0.1) LINE_X.push(Math.round(s * 100) / 100);
+  const LINE_Y = LINE_X.map(s => evaluate(s).map((r, i) => (r.P / base[i].P - 1) * 100));
+
+  // ---------- Formatting ----------
+  const money = (v, d = 0) => (v < 0 ? "−" : "") + "$" + Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const sMoney = (v, d = 0) => (v > 0 ? "+" : "") + money(v, d);
+  const pct = (v, d = 2) => (v < 0 ? "−" : v > 0 ? "+" : "") + Math.abs(v).toFixed(d) + "%";
+  const plain = (v, d = 2) => (v < 0 ? "−" : "") + Math.abs(v).toFixed(d);
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs = {}, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  // ---------- Tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(evt, html) {
+    tip.innerHTML = html;
+    tip.style.opacity = 1;
+    const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = evt.clientX + pad, y = evt.clientY + pad;
+    if (x + w > window.innerWidth - 8) x = evt.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = evt.clientY - h - pad;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.style.opacity = 0; }
+  const row = (k, v) => `<div class="r"><span>${k}</span><b>${v}</b></div>`;
+
+  // ---------- State ----------
+  let shock = 0;
+  const slider = document.getElementById("shock");
+
+  // Presets
+  const presetBox = document.getElementById("presets");
+  PRESETS.forEach(p => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = p === 0 ? "Reset" : (p > 0 ? "+" : "−") + Math.abs(p) + "%";
+    btn.dataset.v = p;
+    btn.addEventListener("click", () => { slider.value = p; update(); });
+    presetBox.appendChild(btn);
+  });
+
+  // Legend for line chart
+  document.getElementById("lineLegend").innerHTML = BONDS.map(b =>
+    `<span><i class="sw line" style="background:var(${b.color})"></i>${b.name} (${b.desc})</span>`
+  ).join("");
+
+  // ---------- Charts ----------
+  function drawBars(rows) {
+    const box = document.getElementById("bars");
+    box.innerHTML = "";
+    const W = Math.max(300, box.clientWidth), rowH = 44, top = 8, H = top + rowH * BONDS.length + 22;
+    const labelW = 80, right = 56;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Price change by bond" }, box);
+    const vals = rows.map(r => r.chg);
+    const maxAbs = Math.max(5, ...vals.map(Math.abs));
+    const hasNeg = vals.some(v => v < 0), hasPos = vals.some(v => v > 0);
+    let lo = hasNeg ? -maxAbs : 0, hi = hasPos ? maxAbs : 0;
+    if (!hasNeg && !hasPos) { lo = -5; hi = 5; }
+    const x0 = labelW + (hasNeg ? 52 : 8), x1 = W - (hasPos ? right : 12);
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+
+    // gridlines
+    const step = maxAbs > 30 ? 10 : maxAbs > 12 ? 5 : maxAbs > 6 ? 2 : 1;
+    for (let g = Math.ceil(lo / step) * step; g <= hi + 1e-9; g += step) {
+      el("line", { x1: X(g), x2: X(g), y1: top, y2: H - 22, stroke: css("--grid"), "stroke-width": 1 }, svg);
+      const t = el("text", { x: X(g), y: H - 6, "text-anchor": "middle", "font-size": 11, fill: css("--text-muted") }, svg);
+      t.textContent = (g > 0 ? "+" : g < 0 ? "−" : "") + Math.abs(g) + "%";
+    }
+    // zero axis
+    el("line", { x1: X(0), x2: X(0), y1: top, y2: H - 22, stroke: css("--axis"), "stroke-width": 1 }, svg);
+
+    rows.forEach((r, i) => {
+      const b = BONDS[i];
+      const cy = top + i * rowH + rowH / 2;
+      const nm = el("text", { x: 0, y: cy - 3, "font-size": 12, "font-weight": 600, fill: css("--text-primary") }, svg);
+      nm.textContent = b.name;
+      const ds = el("text", { x: 0, y: cy + 12, "font-size": 11, fill: css("--text-secondary") }, svg);
+      ds.textContent = b.desc;
+
+      const v = r.chg, bh = 18;
+      const xa = X(Math.min(0, v)), xb = X(Math.max(0, v));
+      const w = Math.max(xb - xa, 0);
+      if (w > 0.5) {
+        // rounded data end, flat at baseline
+        const rr = Math.min(4, w);
+        let d;
+        if (v < 0) {
+          d = `M${xb},${cy - bh/2} H${xa + rr} Q${xa},${cy - bh/2} ${xa},${cy - bh/2 + rr} V${cy + bh/2 - rr} Q${xa},${cy + bh/2} ${xa + rr},${cy + bh/2} H${xb} Z`;
+        } else {
+          d = `M${xa},${cy - bh/2} H${xb - rr} Q${xb},${cy - bh/2} ${xb},${cy - bh/2 + rr} V${cy + bh/2 - rr} Q${xb},${cy + bh/2} ${xb - rr},${cy + bh/2} H${xa} Z`;
+        }
+        el("path", { d, fill: css(b.color) }, svg);
+      }
+      const lab = el("text", {
+        x: v < 0 ? xa - 6 : xb + 6, y: cy + 4, "font-size": 12, "font-weight": 600,
+        "text-anchor": v < 0 ? "end" : "start", fill: css("--text-primary")
+      }, svg);
+      lab.textContent = pct(v, 1);
+      // hit target
+      const hit = el("rect", { x: 0, y: cy - rowH / 2, width: W, height: rowH, fill: "transparent" }, svg);
+      hit.addEventListener("mousemove", e => showTip(e,
+        `<div class="t">${b.name} · ${b.desc}</div>` +
+        row("Price today", money(baseInfo[i].P, 2)) +
+        row("Price after", money(r.P, 2)) +
+        row("Change", sMoney(r.P - baseInfo[i].P, 2)) +
+        row("% change", pct(v, 2)) +
+        row("Modified D*", baseInfo[i].mod.toFixed(2))));
+      hit.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  function drawCurve() {
+    const box = document.getElementById("curve");
+    box.innerHTML = "";
+    const W = Math.max(300, box.clientWidth), H = 230, m = { l: 40, r: 12, t: 10, b: 28 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Yield curve" }, box);
+    const hiRaw = Math.max(...PAR.map(p => p[1])) + Math.max(0, shock);
+    const yMin = Math.max(0, Math.floor(Math.min(...PAR.map(p => p[1])) + Math.min(0, shock) - 0.5));
+    const yMax = Math.ceil(hiRaw + 0.5);
+    const X = t => m.l + t / 30 * (W - m.l - m.r);
+    const Y = v => H - m.b - (v - yMin) / (yMax - yMin) * (H - m.t - m.b);
+    for (let g = yMin; g <= yMax; g++) {
+      el("line", { x1: m.l, x2: W - m.r, y1: Y(g), y2: Y(g), stroke: css("--grid") }, svg);
+      const t = el("text", { x: m.l - 6, y: Y(g) + 4, "text-anchor": "end", "font-size": 11, fill: css("--text-muted") }, svg);
+      t.textContent = g + "%";
+    }
+    [0, 5, 10, 15, 20, 25, 30].forEach(t => {
+      const tx = el("text", { x: X(t), y: H - 8, "text-anchor": "middle", "font-size": 11, fill: css("--text-muted") }, svg);
+      tx.textContent = t + "Y";
+    });
+    el("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, stroke: css("--axis") }, svg);
+    const path = pts => pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
+    el("path", { d: path(PAR), fill: "none", stroke: css("--text-muted"), "stroke-width": 2, "stroke-dasharray": "5 4" }, svg);
+    const shifted = PAR.map(p => [p[0], p[1] + shock]);
+    el("path", { d: path(shifted), fill: "none", stroke: css("--series-1"), "stroke-width": 2 }, svg);
+    shifted.forEach((p, i) => {
+      el("circle", { cx: X(p[0]), cy: Y(p[1]), r: 4, fill: css("--series-1"), stroke: css("--surface-1"), "stroke-width": 2 }, svg);
+      const hit = el("circle", { cx: X(p[0]), cy: Y(p[1]), r: 12, fill: "transparent" }, svg);
+      hit.addEventListener("mousemove", e => showTip(e,
+        `<div class="t">${p[0]}-year par yield</div>` + row("Today", PAR[i][1].toFixed(2) + "%") + row("Shifted", p[1].toFixed(2) + "%")));
+      hit.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  function drawLines() {
+    const box = document.getElementById("lines");
+    box.innerHTML = "";
+    const W = Math.max(300, box.clientWidth), narrow = W < 600;
+    const H = narrow ? 280 : 340, m = { l: 44, r: narrow ? 58 : 110, t: 12, b: 30 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Price change versus shock, by bond" }, box);
+    const all = LINE_Y.flat();
+    const yMin = Math.floor(Math.min(...all) / 10) * 10, yMax = Math.ceil(Math.max(...all) / 10) * 10;
+    const xMin = LINE_X[0], xMax = LINE_X[LINE_X.length - 1];
+    const X = s => m.l + (s - xMin) / (xMax - xMin) * (W - m.l - m.r);
+    const Y = v => m.t + (yMax - v) / (yMax - yMin) * (H - m.t - m.b);
+    for (let g = yMin; g <= yMax; g += 10) {
+      el("line", { x1: m.l, x2: W - m.r, y1: Y(g), y2: Y(g), stroke: g === 0 ? css("--axis") : css("--grid") }, svg);
+      const t = el("text", { x: m.l - 6, y: Y(g) + 4, "text-anchor": "end", "font-size": 12, fill: css("--text-muted") }, svg);
+      t.textContent = (g > 0 ? "+" : g < 0 ? "−" : "") + Math.abs(g) + "%";
+    }
+    for (let s = -3; s <= 4; s += narrow ? 2 : 1) {
+      const t = el("text", { x: X(s), y: H - 8, "text-anchor": "middle", "font-size": 12, fill: css("--text-muted") }, svg);
+      t.textContent = s === 0 ? "0" : (s > 0 ? "+" : "−") + Math.abs(s) + "%";
+    }
+    // current shock rule
+    el("line", { x1: X(shock), x2: X(shock), y1: m.t, y2: H - m.b, stroke: css("--text-secondary"), "stroke-width": 1 }, svg);
+
+    const now = evaluate(shock).map((r, i) => (r.P / base[i].P - 1) * 100);
+    BONDS.forEach((b, bi) => {
+      const d = LINE_X.map((s, k) => (k ? "L" : "M") + X(s).toFixed(1) + "," + Y(LINE_Y[k][bi]).toFixed(1)).join(" ");
+      el("path", { d, fill: "none", stroke: css(b.color), "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+    });
+    // end labels, de-collided
+    const ends = BONDS.map((b, bi) => ({ b, y: Y(LINE_Y[LINE_Y.length - 1][bi]) })).sort((a, c) => a.y - c.y);
+    for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 15) ends[i].y = ends[i - 1].y + 15;
+    ends.forEach(e => {
+      const t = el("text", { x: W - m.r + 8, y: e.y + 4, "font-size": 12, fill: css("--text-secondary") }, svg);
+      t.textContent = narrow ? e.b.name : `${e.b.name} ${e.b.desc}`;
+    });
+    // markers at current shock
+    BONDS.forEach((b, bi) => {
+      el("circle", { cx: X(shock), cy: Y(now[bi]), r: 5, fill: css(b.color), stroke: css("--surface-1"), "stroke-width": 2 }, svg);
+    });
+
+    // crosshair hover
+    const cross = el("line", { y1: m.t, y2: H - m.b, stroke: css("--axis"), "stroke-width": 1, opacity: 0 }, svg);
+    const overlay = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" }, svg);
+    overlay.addEventListener("mousemove", e => {
+      const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+      const s = xMin + (p.x - m.l) / (W - m.l - m.r) * (xMax - xMin);
+      const k = Math.max(0, Math.min(LINE_X.length - 1, Math.round((s - xMin) / 0.1)));
+      cross.setAttribute("x1", X(LINE_X[k])); cross.setAttribute("x2", X(LINE_X[k])); cross.setAttribute("opacity", 1);
+      showTip(e, `<div class="t">Rates ${pct(LINE_X[k], 1)}</div>` +
+        BONDS.map((b, bi) => `<div class="r"><span><i class="sw" style="background:var(${b.color})"></i> ${b.name}</span><b>${pct(LINE_Y[k][bi], 1)}</b></div>`).join(""));
+    });
+    overlay.addEventListener("mouseleave", () => { cross.setAttribute("opacity", 0); hideTip(); });
+  }
+
+  // ---------- Update ----------
+  function update() {
+    shock = Math.round(parseFloat(slider.value) * 100) / 100;
+    const res = evaluate(shock);
+    const rows = res.map((r, i) => ({ ...r, chg: (r.P / baseInfo[i].P - 1) * 100 }));
+    const total = res.reduce((s, r) => s + r.P, 0);
+    const dTot = total - baseTotal;
+
+    document.getElementById("shockOut").innerHTML =
+      pct(shock, 2) + `<small>${shock > 0 ? "+" : shock < 0 ? "−" : ""}${Math.abs(Math.round(shock * 100))} bp</small>`;
+    document.querySelectorAll("#presets button").forEach(b => b.classList.toggle("on", parseFloat(b.dataset.v) === shock));
+
+    document.getElementById("vBase").textContent = money(baseTotal, 0);
+    document.getElementById("vNow").textContent = money(total, 0);
+    document.getElementById("vNowNote").textContent = shock === 0 ? "No shock applied" : `Curve shifted ${pct(shock, 2)}`;
+    const chgEl = document.getElementById("vChg");
+    chgEl.textContent = sMoney(dTot, 0);
+    chgEl.className = "value " + (dTot < -0.005 ? "neg" : dTot > 0.005 ? "pos" : "");
+    document.getElementById("vChgPct").textContent = pct(dTot / baseTotal * 100, 2) + " of portfolio value";
+
+    // table
+    document.getElementById("tbody").innerHTML = rows.map((r, i) => {
+      const b = BONDS[i], bi = baseInfo[i];
+      const dy = (r.y - bi.y) * 100;
+      const est = -bi.mod * dy;
+      const cls = r.chg < -0.005 ? "neg" : r.chg > 0.005 ? "pos" : "";
+      return `<tr>
+        <td><span class="bondname"><i class="sw" style="background:var(${b.color})"></i><b>${b.name}</b>&nbsp;<span style="color:var(--text-secondary)">${b.desc}</span></span></td>
+        <td>${money(bi.P, 2)}</td>
+        <td>${money(r.P, 2)}</td>
+        <td class="${cls}">${sMoney(r.P - bi.P, 2)}</td>
+        <td class="${cls}">${pct(r.chg, 2)}</td>
+        <td>${(bi.y * 100).toFixed(3)}%</td>
+        <td>${(r.y * 100).toFixed(3)}%</td>
+        <td>${bi.mac.toFixed(2)}</td>
+        <td>${bi.mod.toFixed(2)}</td>
+        <td>${pct(est, 2)}</td>
+        <td>${plain(est - r.chg, 2)} pts</td>
+      </tr>`;
+    }).join("");
+    // portfolio duration = value-weighted modified duration
+    const pMod = baseInfo.reduce((s, bi) => s + bi.mod * bi.P, 0) / baseTotal;
+    const pMac = baseInfo.reduce((s, bi) => s + bi.mac * bi.P, 0) / baseTotal;
+    document.getElementById("tfoot").innerHTML = `<tr>
+      <td>Portfolio</td><td>${money(baseTotal, 2)}</td><td>${money(total, 2)}</td>
+      <td class="${dTot < 0 ? "neg" : dTot > 0 ? "pos" : ""}">${sMoney(dTot, 2)}</td>
+      <td class="${dTot < 0 ? "neg" : dTot > 0 ? "pos" : ""}">${pct(dTot / baseTotal * 100, 2)}</td>
+      <td colspan="2" style="color:var(--text-muted);font-weight:500">value-weighted →</td>
+      <td>${pMac.toFixed(2)}</td><td>${pMod.toFixed(2)}</td><td>${pct(-pMod * shock, 2)}</td><td></td></tr>`;
+
+    drawBars(rows);
+    drawCurve();
+    drawLines();
+  }
+
+  slider.addEventListener("input", update);
+  let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(update, 100); });
+
+  // Theme toggle
+  const root = document.documentElement;
+  try { const t = localStorage.getItem("rs-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById("themeBtn").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("rs-theme", root.dataset.theme); } catch (e) {}
+    update();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", update);
+
+  update();
+})();
+</script>
+</body>
+</html>
