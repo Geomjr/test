@@ -1,0 +1,42 @@
+name: Daily startup scrape
+
+on:
+  schedule:
+    - cron: "17 11 * * *"  # 11:17 UTC, early morning in New York
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Screen companies but don't write to the sheet"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write  # lets the job sign in to Google with Workload Identity Federation, no key file
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/209727787254/locations/global/workloadIdentityPools/github/providers/github-repo
+          service_account: startup-scraper@startup-scraper-geomj.iam.gserviceaccount.com
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+
+      - run: python -m scraper
+        env:
+          SHEET_ID: 1WQCdweYgo9BasoBTy0zsNTztH29PbMl-acrmZngaXmg
+          TWITTERAPI_KEY: ${{ secrets.TWITTERAPI_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || '' }}
