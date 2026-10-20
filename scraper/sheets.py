@@ -13,7 +13,7 @@ SKIPPED = "Skipped"
 RUN_LOG = "Run log"
 
 LEADS_HEADERS = ["Company", "X handle", "Website", "Sector", "Token status", "Sources", "First seen", "Status", "Client", "Comments"]
-CONFERENCES_HEADERS = ["Conference", "X handle", "Website", "Active", "Last checked"]
+CONFERENCES_HEADERS = ["Conference", "X handle", "Website", "Active", "Last checked", "Luma"]
 SKIPPED_HEADERS = ["Account", "Name", "Reason", "Sources", "Date"]
 RUN_LOG_HEADERS = ["Run at", "Conferences checked", "Accounts found", "Leads added", "Errors"]
 
@@ -70,7 +70,7 @@ class Sheet:
         """Conferences with Active not set to FALSE/No, with their row number for updates."""
         out = []
         for i, row in enumerate(self.conferences.rows, start=2):
-            if not (row.get("X handle") or row.get("Website")):
+            if not (row.get("X handle") or row.get("Website") or row.get("Luma")):
                 continue
             if row.get("Active", "").strip().lower() in ("false", "no", "n", "0", "off"):
                 continue

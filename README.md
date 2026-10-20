@@ -6,7 +6,8 @@ Finds pre-seed and seed crypto startups without a live token by watching confere
 
 1. Reads the **Conferences** tab. For each active conference it:
    - pulls the conference's X posts since its **Last checked** time (the first run looks back 120 days) and collects every tagged @handle, plus handles shown on speaker-card images;
-   - if a **Website** is set, opens it in a headless browser and lists the companies named on it.
+   - if a **Website** is set, opens it in a headless browser and lists the companies named on it;
+   - if a **Luma** link is set, reads every upcoming event on it and collects the hosts and organising calendars (their X handles and websites). The link can be a calendar (`luma.com/devcon` for Devcon side events), a category (`luma.com/crypto` for every crypto event on Luma) or a single event.
 2. Screens each new account:
    - skips accounts with over 100,000 followers;
    - checks DefiLlama for a listed token;
@@ -45,6 +46,7 @@ Set these as `env:` entries in `.github/workflows/daily-scrape.yml` to change th
 | `MAX_FOLLOWERS` | 100000 | Accounts above this are treated as established and skipped |
 | `MAX_CLASSIFICATIONS_PER_RUN` | 300 | Cap on Claude calls per run |
 | `MAX_IMAGES_PER_RUN` | 40 | Cap on speaker-card images read per run |
+| `MAX_LUMA_PAGES` | 20 | Pages of 50 upcoming events read per Luma link |
 | `CLAUDE_MODEL` | claude-opus-5-5 | Model used for classification |
 
 ## Running locally

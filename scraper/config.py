@@ -15,6 +15,8 @@ MAX_PAGES_PER_CONFERENCE = int(os.environ.get("MAX_PAGES_PER_CONFERENCE", "10"))
 MAX_FOLLOWERS = int(os.environ.get("MAX_FOLLOWERS", "100000"))
 # Cap on accounts classified per run, to bound cost if a conference posts a huge list.
 MAX_CLASSIFICATIONS_PER_RUN = int(os.environ.get("MAX_CLASSIFICATIONS_PER_RUN", "300"))
+# Pages of 50 upcoming events read per Luma calendar or category.
+MAX_LUMA_PAGES = int(os.environ.get("MAX_LUMA_PAGES", "20"))
 # Speaker cards are often images; read up to this many per run.
 MAX_IMAGES_PER_RUN = int(os.environ.get("MAX_IMAGES_PER_RUN", "40"))
 

@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from datetime import timedelta
 
-from . import config, web
+from . import config, luma, web
 from .sheets import lead_key
 from .xapi import image_urls, mentioned_handles, parse_x_date, profile_website
 
@@ -35,8 +35,9 @@ def merge_sources(existing, new):
 
 
 class Run:
-    def __init__(self, sheet, x, classifier, defillama, now, log=print):
+    def __init__(self, sheet, x, classifier, defillama, now, log=print, luma=None):
         self.sheet, self.x, self.classifier, self.defillama = sheet, x, classifier, defillama
+        self.luma = luma
         self.now, self.log = now, log
         self.errors = []
         self.classified = 0
@@ -79,6 +80,10 @@ class Run:
                     page_text = web.rendered_page_text(conf["Website"].strip())
                     for company in self.classifier.companies_on_page(source, page_text):
                         add(company["x_handle"], company["name"], company["website"], source)
+                if conf.get("Luma", "").strip() and self.luma:
+                    for entry in self.luma.entries(conf["Luma"].strip(), config.MAX_LUMA_PAGES):
+                        for account in luma.accounts(entry):
+                            add(account["handle"], account["name"], account["website"], source)
                 checked.append(conf)
             except Exception as exc:  # one broken conference shouldn't stop the others
                 self.errors.append(f"{source}: {exc}")

@@ -258,3 +258,50 @@ def test_helpers():
     assert web.domain("https://www.SohoPay.ai/about") == "sohopay.ai"
     assert merge_sources("A; B", ["B", "C"]) == "A; B; C"
     assert build_index([{"twitter": "@x", "symbol": "-", "gecko_id": None}])["x"]["has_token"] is False
+
+
+def luma_entry(name, hosts, calendar=None):
+    return {
+        "event": {"name": name},
+        "hosts": [{"name": n, "twitter_handle": h, "website": w} for n, h, w in hosts],
+        "calendar": calendar or {"name": "", "is_personal": True},
+    }
+
+
+class FakeLuma:
+    def __init__(self, entries):
+        self.by_ref = entries
+        self.calls = []
+
+    def entries(self, ref, max_pages):
+        self.calls.append(ref)
+        return self.by_ref.get(ref, [])
+
+
+def test_luma_hosts_and_calendars_become_candidates():
+    from scraper import luma
+
+    entry = luma_entry(
+        "Agentic payments night",
+        [("Philip", "philip0x", ""), ("No socials", None, ""), ("Site only", None, "https://siteonly.xyz")],
+        calendar={"name": "Soho Pay", "twitter_handle": "soho_pay", "website": "https://sohopay.ai", "is_personal": False},
+    )
+    assert [a["handle"] or a["website"] for a in luma.accounts(entry)] == ["philip0x", "https://siteonly.xyz", "soho_pay"]
+    assert luma.slug("https://luma.com/devcon?k=c") == "devcon"
+    assert luma.slug("crypto") == "crypto"
+
+    sheet, book = make_sheet([["Devcon side events", "", "", "Yes", "", "https://luma.com/devcon"]])
+    x = FakeX({}, {"philip0x": profile("philip0x", "Philip"), "soho_pay": profile("soho_pay", "Soho Pay")})
+    classifier = FakeClassifier({
+        "philip0x": verdict(kind="person", employer="soho_pay"),
+        "soho_pay": verdict(name="Soho Pay"),
+        "": verdict(kind="other"),
+    })
+    fake_luma = FakeLuma({"https://luma.com/devcon": [entry]})
+
+    Run(sheet, x, classifier, {}, NOW, log=lambda *_: None, luma=fake_luma).execute()
+
+    assert fake_luma.calls == ["https://luma.com/devcon"]
+    assert [r[1] for r in book.tabs["Leads"].values[1:]] == ["@soho_pay"]
+    assert book.tabs["Leads"].values[1][5] == "Devcon side events"
+    assert {r[0] for r in book.tabs["Skipped"].values[1:]} == {"@philip0x", "siteonly.xyz"}

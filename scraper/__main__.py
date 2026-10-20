@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from . import config
 from .classify import Classifier
+from .luma import LumaClient
 from .pipeline import Run
 from .sheets import open_sheet
 from .tokens import load_defillama_index
@@ -22,6 +23,7 @@ def main():
         classifier=Classifier(),
         defillama=load_defillama_index(),
         now=datetime.now(timezone.utc),
+        luma=LumaClient(),
     )
     summary = run.execute()
     print(summary)
