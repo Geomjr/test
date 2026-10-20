@@ -289,6 +289,7 @@ def test_luma_hosts_and_calendars_become_candidates():
     assert [a["handle"] or a["website"] for a in luma.accounts(entry)] == ["philip0x", "https://siteonly.xyz", "soho_pay"]
     assert luma.slug("https://luma.com/devcon?k=c") == "devcon"
     assert luma.slug("crypto") == "crypto"
+    assert luma.slug("https://luma.com/calendar/cal-J8WZ4jDbwzD9TWi") == "cal-J8WZ4jDbwzD9TWi"
 
     sheet, book = make_sheet([["Devcon side events", "", "", "Yes", "", "https://luma.com/devcon"]])
     x = FakeX({}, {"philip0x": profile("philip0x", "Philip"), "soho_pay": profile("soho_pay", "Soho Pay")})

@@ -32,7 +32,10 @@ class LumaClient:
 
     def entries(self, ref, max_pages=20):
         """Upcoming event entries (each with 'event', 'hosts' and 'calendar') for a Luma URL or slug."""
-        resolved = self._get("/url", {"url": slug(ref)})
+        key = slug(ref)
+        if key.startswith("cal-"):  # luma.com/calendar/cal-... links name the calendar directly
+            return list(self._paginate("/calendar/get-items", {"calendar_api_id": key, "period": "future"}, max_pages))
+        resolved = self._get("/url", {"url": key})
         kind, data = resolved.get("kind"), resolved.get("data") or {}
         if kind == "calendar":
             cal_id = data["calendar"]["api_id"]
@@ -46,11 +49,14 @@ class LumaClient:
 
 
 def slug(ref):
-    """'https://luma.com/devcon?k=c' -> 'devcon'; a bare slug is returned unchanged."""
+    """'https://luma.com/devcon?k=c' -> 'devcon', 'luma.com/calendar/cal-abc' -> 'cal-abc'; a bare slug is unchanged."""
     ref = ref.strip()
     if "://" in ref:
         ref = urlparse(ref).path
-    return ref.strip("/").split("/")[0]
+    parts = [p for p in ref.strip("/").split("/") if p]
+    if len(parts) >= 2 and parts[0] == "calendar":
+        return parts[1]
+    return parts[0] if parts else ""
 
 
 def accounts(entry):
