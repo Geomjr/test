@@ -82,7 +82,7 @@ class Run:
                         add(company["x_handle"], company["name"], company["website"], source)
                 if conf.get("Luma", "").strip() and self.luma:
                     for entry in self.luma.entries(conf["Luma"].strip(), config.MAX_LUMA_PAGES):
-                        for account in luma.accounts(entry):
+                        for account in luma.accounts(entry, config.LUMA_INCLUDE_GUESTS):
                             add(account["handle"], account["name"], account["website"], source)
                 checked.append(conf)
             except Exception as exc:  # one broken conference shouldn't stop the others

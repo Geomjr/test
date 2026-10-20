@@ -83,14 +83,18 @@ def slug(ref):
     return parts[0] if parts else ""
 
 
-def accounts(entry):
-    """People and organisations behind one event: its hosts and, unless personal, its calendar."""
+def accounts(entry, include_guests=False):
+    """People and organisations behind one event: its hosts, unless personal its calendar, and
+    optionally the featured guests Luma shows publicly (people are later resolved to their company)."""
+    people = list(entry.get("hosts") or [])
+    if include_guests:
+        people += entry.get("featured_guests") or []
     found = []
-    for host in entry.get("hosts") or []:
+    for person in people:
         found.append({
-            "handle": (host.get("twitter_handle") or "").lstrip("@"),
-            "name": host.get("name") or "",
-            "website": host.get("website") or "",
+            "handle": (person.get("twitter_handle") or "").lstrip("@"),
+            "name": person.get("name") or "",
+            "website": person.get("website") or "",
         })
     calendar = entry.get("calendar") or {}
     if calendar and not calendar.get("is_personal"):

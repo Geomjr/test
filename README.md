@@ -47,6 +47,7 @@ Set these as `env:` entries in `.github/workflows/daily-scrape.yml` to change th
 | `MAX_CLASSIFICATIONS_PER_RUN` | 300 | Cap on Claude calls per run |
 | `MAX_IMAGES_PER_RUN` | 40 | Cap on speaker-card images read per run |
 | `MAX_LUMA_PAGES` | 20 | Pages of 50 upcoming events read per Luma link |
+| `LUMA_INCLUDE_GUESTS` | off | Also screen the up-to-10 featured guests Luma shows publicly on each event (people are resolved to the company in their bio; people themselves aren't stored) |
 | `CLAUDE_MODEL` | claude-opus-5-5 | Model used for classification |
 
 ## Running locally

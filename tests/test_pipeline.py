@@ -306,3 +306,12 @@ def test_luma_hosts_and_calendars_become_candidates():
     assert [r[1] for r in book.tabs["Leads"].values[1:]] == ["@soho_pay"]
     assert book.tabs["Leads"].values[1][5] == "Devcon side events"
     assert {r[0] for r in book.tabs["Skipped"].values[1:]} == {"@philip0x", "siteonly.xyz"}
+
+
+def test_luma_featured_guests_only_when_enabled():
+    from scraper import luma
+
+    entry = luma_entry("Founder dinner", [("Host Co", "hostco", "")])
+    entry["featured_guests"] = [{"name": "Ana", "twitter_handle": "ana_builds", "website": ""}]
+    assert [a["handle"] for a in luma.accounts(entry)] == ["hostco"]
+    assert [a["handle"] for a in luma.accounts(entry, include_guests=True)] == ["hostco", "ana_builds"]

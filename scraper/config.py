@@ -17,6 +17,8 @@ MAX_FOLLOWERS = int(os.environ.get("MAX_FOLLOWERS", "100000"))
 MAX_CLASSIFICATIONS_PER_RUN = int(os.environ.get("MAX_CLASSIFICATIONS_PER_RUN", "300"))
 # Pages of 50 upcoming events read per Luma calendar or category.
 MAX_LUMA_PAGES = int(os.environ.get("MAX_LUMA_PAGES", "20"))
+# Also screen the up-to-10 featured guests Luma shows publicly on each event.
+LUMA_INCLUDE_GUESTS = os.environ.get("LUMA_INCLUDE_GUESTS", "").lower() in ("1", "true", "yes")
 # Speaker cards are often images; read up to this many per run.
 MAX_IMAGES_PER_RUN = int(os.environ.get("MAX_IMAGES_PER_RUN", "40"))
 
